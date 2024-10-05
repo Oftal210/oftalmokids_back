@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 // Importamos el modelo de usuarios con la siguiente direccion
 use App\Models\User;
 // Importamos el paquete para encriptar la contraseña
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 // Importamos el paquete para autenticar
 use Illuminate\Support\Facades\Auth;
@@ -161,5 +161,32 @@ class loginController extends Controller
     
         return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
     }
+
+
+
+
+
+    // public function register(Request $request) {
+    //     $validatedData = $request->validate([
+    //         'id_usuario' => 'required',
+    //         'cod_rol'=> 'required',
+    //         'name' => 'required|max:255',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required',
+    //         'tele_usuario'=> 'required'
+    //     ]);
+
+    //     $validatedData['password'] = Hash::make($request->password);
+
+    //     $user = User::Create($validatedData);
+
+    //     $accessToken = $user->createToken('authToken')->accessToken;
+
+    //     return response([
+    //         'user' => $user,
+    //         'access_token' => $accessToken
+    //     ]);
+
+    // }
 
 }
