@@ -114,7 +114,7 @@ class loginController extends Controller
             // retornamos un mensaje de error en las credenciales
             return response()->json(['mensaje' => 'No tiene autorización'], 401);
         }
-
+        // $credenciales = $request->only('email', 'password');
 
         // if(Auth::attempt($credenciales)) {
             
@@ -139,27 +139,33 @@ class loginController extends Controller
         //     return response()->json(['mensaje' => 'Usuario o contraseña incorrecta', 'mensaje2' => $credenciales]);
         // }
 
-        // return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
+        return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
     }
 
-    // public function logout(){
-    //     $token = auth()->user()->tokens();
+    public function logout(){
+        $token = auth()->user()->token();
 
-    //     $token->revoke();
+        $token->revoke();
 
-    //     return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
+        // $user = auth()->user();
+
+        // // Revocar todos los tokens del usuario
+        // $user->tokens()->delete();
+
+
+        return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
+    }
+
+    // public function logout(Request $request) {
+
+    //     dd($request);
+
+    //     $user = $request->user(); // Obtiene el usuario autenticado
+    
+    //     // Revoca el token del usuario
+    //     $user->token()->revoke();
+    
+    //     return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
     // }
-
-    public function logout(Request $request) {
-
-        dd($request);
-
-        $user = $request->user(); // Obtiene el usuario autenticado
-    
-        // Revoca el token del usuario
-        $user->token()->revoke();
-    
-        return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
-    }
 
 }

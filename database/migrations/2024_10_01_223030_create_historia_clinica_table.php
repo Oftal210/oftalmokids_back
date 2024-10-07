@@ -29,7 +29,7 @@ return new class extends Migration
             // fecha en la que se realiza la consulta y se genera el registro de la historia clinica
             $table->date('fech_consulta')->nullable(false);
 
-            // Anamnesis ↓
+            // Anamnesis ↓ 
             // motivo de la consulta
             $table->text('motivo_consulta')->nullable(false);
 
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->boolean('alto_riesgo')->nullable(false);
 
             // especifique porque fue de alto riesgo el embarazo (Si el dato anterior fue TRUE o SI)          
-            $table->text('especif_riesg');
+            $table->text('especif_riesg')->nullable();
 
             // semanas de gestacion                       
             $table->integer('semanas_gestacion')->nullable(false);
@@ -53,13 +53,13 @@ return new class extends Migration
             $table->boolean('complicacion')->nullable(false);
 
             // especifique porque hubieron complicaciones en el embarazo (Si el dato anterior fue TRUE o SI)           
-            $table->text('especif_compli');
+            $table->text('especif_compli')->nullable();
 
             // si uso o no incubadora (TRUE = SI  |  FALSE = NO)                       
             $table->boolean('uso_incubadora')->nullable(false);
 
             // cuanto tiempo uso la incubadora (Si el dato anterior fue TRUE o SI)           
-            $table->integer('tiempo_incubadora');
+            $table->string('tiempo_incubadora')->nullable();
 
             // puntaje de la prueba que se les realiza a los recien nacidos, PRUEBA DE APGAR                        
             $table->integer('apgar_incubadora')->nullable(false);
@@ -71,25 +71,25 @@ return new class extends Migration
             $table->boolean('enferme_embarazo')->nullable(false);
 
             // que enfermedades presento durante el embarazo (Si el dato anterior fue TRUE o SI)           
-            $table->text('especif_enferme_embar');
+            $table->text('especif_enferme_embar')->nullable();
 
             // uso/tomo o no medicamento/droga durante el embarazo                       
             $table->boolean('medicam_embarazo')->nullable(false);
 
             // que medicamento/droga uso/tomo durante el embarazo (Si el dato anterior fue TRUE o SI)           
-            $table->text('especif_medicam_embar');
+            $table->text('especif_medicam_embar')->nullable();
 
             // si presento o no alguna enfermedad sistemica                       
             $table->boolean('enferm_sistemica')->nullable(false);
 
             // que enfermedad/es presento (Si el dato anterior fue TRUE o SI)           
-            $table->text('especif_enferm_sistemica');
+            $table->text('especif_enferm_sistemica')->nullable();
 
             // si presenta/tiene o no alergias                       
             $table->boolean('alergia')->nullable(false);
 
             // que alergias presenta/tiene           
-            $table->text('especif_alergia');
+            $table->text('especif_alergia')->nullable();
 
             // a que cirugias general ocular se ha sometido                        
             $table->text('cirug_gener_ocular')->nullable(false);            
@@ -99,22 +99,22 @@ return new class extends Migration
             $table->boolean('correc_optica')->nullable(false);          
 
             // a que edad utilizo lentes por primera vez (se espera un numero de maximo 2 cifras)
-            $table->integer('edad_lente_prim_vez');                       
+            $table->integer('edad_lente_prim_vez')->nullable();                       
 
             // cuantos cambios rx ha tenido (se refiere al numero de recetas diferentes que ha tenido)
-            $table->integer('cuant_cambio_rx');                       
+            $table->integer('cuant_cambio_rx')->nullable();                       
 
             // motivo del cambio rx que ha tenido
             $table->text('motiv_cambio_rx')->nullable(false);             
 
             // material y tratamiento optico que ha tenido
-            $table->text('mater_tratam_optic');                      
+            $table->text('mater_tratam_optic')->nullable();                      
 
             // indicaciones de uso  para el tratamiento que ha tenido
-            $table->text('indicaci_uso');                     
+            $table->text('indicaci_uso')->nullable();                     
 
             // fecha del ultimo examen realizado (oftalmologia)
-            $table->date('fech_ultim_exam');
+            $table->date('fech_ultim_exam')->nullable();
             
             // Agudeza visual  (OD = ojo derecho  |  OS = ojo izquierdo)
             // test de agudeza visual a usar
@@ -199,7 +199,7 @@ return new class extends Migration
             $table->string('test_bruckner', 150)->nullable(false);
 
             // resultado del test del angulo kappa
-            $table->string('angulo_kappa', 150)->nullable(false);
+            //$table->string('angulo_kappa', 150)->nullable(false);
 
             // resultado del covet test para vl (vision lejana)
             $table->string('covet_test_vl', 150)->nullable(false);

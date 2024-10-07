@@ -16,6 +16,9 @@ return new class extends Migration
             // identificador para el padre (se espera el numero de la C.C.)
             $table->integer('id_padre')->primary();
 
+            // foranea de la tabla rol, identificador del rol
+            $table->integer('cod_rol')->nullable(false);
+
             // nombres del padre
             $table->string('nom_padre', 70)->nullable(false);
             

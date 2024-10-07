@@ -14,8 +14,13 @@ class Padre extends Model
 
 
     // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primarykey = 'id_padre';
+    protected $primaryKey = 'id_padre';
 
+    // Si la clave primaria no es un incremento automático
+    public $incrementing = false;
+
+    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
+    public $timestamps = false;
 
     protected $fillable = [
         'id_padre',
@@ -31,4 +36,9 @@ class Padre extends Model
     public function hijos(){
         return $this->hasMany(Hijo::class, 'id_hijo');
     }
+
+    public function rol(){
+        return $this->belongsTo(Rol::class, 'cod_rol');
+    }
 }
+
