@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 // Importamos el modelo de usuarios con la siguiente direccion
 use App\Models\User;
 // Importamos el paquete para encriptar la contraseña
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 // Importamos el paquete para autenticar
 use Illuminate\Support\Facades\Auth;
@@ -142,30 +142,84 @@ class loginController extends Controller
         return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
     }
 
-    public function logout(){
-        $token = auth()->user()->token();
+    // public function logout(){
+    //     $token = auth()->user()->token();
 
-        $token->revoke();
+    //     $token->revoke();
 
-        // $user = auth()->user();
+    //     // $user = auth()->user();
 
-        // // Revocar todos los tokens del usuario
-        // $user->tokens()->delete();
+    //     // Revocar todos los tokens del usuario
+    //     // $user->tokens()->delete();
 
 
-        return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
+    //     return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
+    // }
+
+    public function logout(Request $request) {
+
+        dd($request);
+
+        $user = $request->user(); // Obtiene el usuario autenticado
+    
+        // Revoca el token del usuario
+        $user->token()->revoke();
+    
+        return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
     }
 
-    // public function logout(Request $request) {
 
-    //     dd($request);
 
-    //     $user = $request->user(); // Obtiene el usuario autenticado
-    
-    //     // Revoca el token del usuario
-    //     $user->token()->revoke();
-    
-    //     return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
+
+
+    // public function register(Request $request) {
+    //     $validatedData = $request->validate([
+    //         'id_usuario' => 'required',
+    //         'cod_rol'=> 'required',
+    //         'name' => 'required|max:255',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required',
+    //         'tele_usuario'=> 'required'
+    //     ]);
+
+    //     $validatedData['password'] = Hash::make($request->password);
+
+    //     $user = User::Create($validatedData);
+
+    //     $accessToken = $user->createToken('authToken')->accessToken;
+
+    //     return response([
+    //         'user' => $user,
+    //         'access_token' => $accessToken
+    //     ]);
+
+    // }
+
+
+
+
+
+    // public function register(Request $request) {
+    //     $validatedData = $request->validate([
+    //         'id_usuario' => 'required',
+    //         'cod_rol'=> 'required',
+    //         'name' => 'required|max:255',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required',
+    //         'tele_usuario'=> 'required'
+    //     ]);
+
+    //     $validatedData['password'] = Hash::make($request->password);
+
+    //     $user = User::Create($validatedData);
+
+    //     $accessToken = $user->createToken('authToken')->accessToken;
+
+    //     return response([
+    //         'user' => $user,
+    //         'access_token' => $accessToken
+    //     ]);
+
     // }
 
 }
