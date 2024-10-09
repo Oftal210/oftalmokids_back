@@ -12,9 +12,11 @@ class Historia_clinica extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'historia_clinica';
 
-
     // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primarykey = 'cod_historia';
+    protected $primaryKey = 'cod_historia';
+
+    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
+    public $timestamps = false;
 
 
     protected $fillable = [
@@ -76,7 +78,6 @@ class Historia_clinica extends Model
         'retino_final_os',
         'test_hirschberg',
         'test_bruckner',
-        'angulo_kappa',
         'covet_test_vl',
         'covet_test_vp',
         'esta_acomo_flex',

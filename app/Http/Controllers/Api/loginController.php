@@ -24,11 +24,11 @@ class loginController extends Controller
         $validator = Validator::make($request->all(), [
             'documento' => 'required|numeric|digits_between:8,10',
             'rol' => 'required|digits:1',
-            'nombre' => 'required',
-            'apellido' => 'required',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
             'email' => 'required|email',
             'telefono' => 'required|digits:10',
-            'password' => 'required'
+            'password' => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -82,7 +82,7 @@ class loginController extends Controller
         // Verificamos los datos que nos estan enviando
         $validator = Validator::make($request->all(), [
             'id_usuario' => 'required|numeric|digits_between:8,10',
-            'cont_usuario' => 'required'
+            'cont_usuario' => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -107,6 +107,7 @@ class loginController extends Controller
             // retornamos el id de usuario y el token, si todo sale correcto
             return response()->json([
                 'user' => $user->id_usuario,
+                'rol' => $user->cod_rol,
                 'token' => $token
             ], 200);
         } else {
@@ -114,112 +115,44 @@ class loginController extends Controller
             // retornamos un mensaje de error en las credenciales
             return response()->json(['mensaje' => 'No tiene autorización'], 401);
         }
-        // $credenciales = $request->only('email', 'password');
-
+        
+        // $credenciales = $request->only('id_usuario', 'cont_usuario');
+        // dd($credenciales);
         // if(Auth::attempt($credenciales)) {
-            
-        //     //
-        //     $user = Auth::user();
-
-        //     //
+        //     $user = Auth::user($credenciales);
         //     $token = $user->createToken('Token')->accessToken;
-
         //     return response()->json ([
         //         'user' => $user->id_usuario,
         //         'token' => $token
         //     ], 200);
-            
         // } else {
         //     return response()->json(['mensaje' => 'No tiene autorización'], 200);
         // }
-
         // if (auth()->attempt($credenciales)) {
         //     $token = auth()->user()->createToken('Token')->accessToken;
         // } else {
         //     return response()->json(['mensaje' => 'Usuario o contraseña incorrecta', 'mensaje2' => $credenciales]);
         // }
-
-        return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
+        //return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
     }
 
     // public function logout(){
     //     $token = auth()->user()->token();
-
     //     $token->revoke();
-
     //     // $user = auth()->user();
-
     //     // Revocar todos los tokens del usuario
     //     // $user->tokens()->delete();
-
-
     //     return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
     // }
 
     public function logout(Request $request) {
 
-        dd($request);
-
-        $user = $request->user(); // Obtiene el usuario autenticado
+        // Obtiene el usuario autenticado
+        $user = $request->user(); 
     
         // Revoca el token del usuario
         $user->token()->revoke();
     
         return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
     }
-
-
-
-
-
-    // public function register(Request $request) {
-    //     $validatedData = $request->validate([
-    //         'id_usuario' => 'required',
-    //         'cod_rol'=> 'required',
-    //         'name' => 'required|max:255',
-    //         'email' => 'required|email|unique:users',
-    //         'password' => 'required',
-    //         'tele_usuario'=> 'required'
-    //     ]);
-
-    //     $validatedData['password'] = Hash::make($request->password);
-
-    //     $user = User::Create($validatedData);
-
-    //     $accessToken = $user->createToken('authToken')->accessToken;
-
-    //     return response([
-    //         'user' => $user,
-    //         'access_token' => $accessToken
-    //     ]);
-
-    // }
-
-
-
-
-
-    // public function register(Request $request) {
-    //     $validatedData = $request->validate([
-    //         'id_usuario' => 'required',
-    //         'cod_rol'=> 'required',
-    //         'name' => 'required|max:255',
-    //         'email' => 'required|email|unique:users',
-    //         'password' => 'required',
-    //         'tele_usuario'=> 'required'
-    //     ]);
-
-    //     $validatedData['password'] = Hash::make($request->password);
-
-    //     $user = User::Create($validatedData);
-
-    //     $accessToken = $user->createToken('authToken')->accessToken;
-
-    //     return response([
-    //         'user' => $user,
-    //         'access_token' => $accessToken
-    //     ]);
-
-    // }
-
 }

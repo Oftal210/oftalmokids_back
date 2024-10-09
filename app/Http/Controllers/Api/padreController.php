@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Importamos el modelo de padres con la siguiente direccion
 use App\Models\Padre;
 
+// Importamos el modelo de hijos con la siguiente direccion
+use App\Models\Hijo;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -212,5 +215,36 @@ class padreController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+    public function hijosdepadre ($id){
+
+        // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
+        $padre = Padre::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$padre){
+            $data = [
+                'mensaje' => 'No se encontro al Padre',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Aquí $usuarios es una colección que contiene todos los registros encontrados
+        $hijos = Hijo::where('id_padre', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijos){
+            $data = [
+                'mensaje' => 'No se encontraron hijos del Padre enviado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($hijos, 200);
+
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 // Importamos el modelo de Preconsulta con la siguiente direccion
 use App\Models\Preconsulta;
 
+use App\Models\Hijo;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -229,5 +231,35 @@ class preconsultaController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+    public function preconsdelhijo ($id){
+
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensaje' => 'No se encontro al hijo',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Aquí $hijoprecon es una colección que contiene todos los registros encontrados
+        $hijoprecon = Preconsulta::where('id_hijo', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijoprecon){
+            $data = [
+                'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($hijoprecon, 200);
     }
 }

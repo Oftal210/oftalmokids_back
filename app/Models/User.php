@@ -32,7 +32,7 @@ class User extends Authenticatable
      */
     public function validateForPassportPasswordGrant(string $password): bool
     {
-        return Hash::check($password, $this->cont_usuario);
+        return Hash::check($password, $this->password);
     }
 
     /**
@@ -41,13 +41,13 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'ape_usuario',
-        'tele_usuario',
         'id_usuario',
         'cod_rol',
+        'nom_usuario',
+        'ape_usuario',
+        'tele_usuario',
+        'cont_usuario',
+        'email_usuario',
     ];
 
     /**
@@ -56,7 +56,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'cont_usuario',
         'remember_token',
     ];
 
@@ -69,7 +69,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'cont_usuario' => 'hashed',
         ];
     }
 

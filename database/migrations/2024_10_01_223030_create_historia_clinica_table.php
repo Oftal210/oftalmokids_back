@@ -336,7 +336,7 @@ return new class extends Migration
             // se define la llave foranea en esta tabla que apunta a padre
             $table->foreign('id_padre')->references('id_padre')->on('padre');
             // se define la llave foranea en esta tabla que apunta a usuario
-            $table->foreign('id_usuario')->references('id_usuario')->on('usuario');
+            $table->foreign('id_usuario')->references('id_usuario')->on('users');
 
         });
     }

@@ -22,12 +22,12 @@ return new class extends Migration
 
             // nombres del usuario
             //$table->string('name');
-            $table->string('name', 70)->nullable(false);
+            $table->string('nom_usuario', 70)->nullable(false);
 
             // apellidos del usuario
-            $table->string('email')->unique();
+            $table->string('email_usuario', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('cont_usuario', 255)->nullable(false);
 
             // telefono del usuario (se esperan 10 digitos sin frefijo telefonico del pais)
             $table->decimal('tele_usuario', 10,0)->nullable(false);

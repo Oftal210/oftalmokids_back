@@ -38,11 +38,11 @@ class usuarioController extends Controller
         $validator = Validator::make($request->all(), [
             'documento' => 'required|numeric|digits_between:8,10',
             'rol' => 'required|digits:1',
-            'nombre' => 'required',
-            'apellido' => 'required',
+            'nombre' => 'required|string',
+            'apellido' => 'required|string',
             'email' => 'required|email',
             'telefono' => 'required|digits:10',
-            'password' => 'required'
+            'password' => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
