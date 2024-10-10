@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('codigo', function (Blueprint $table) {
+        Schema::create('diagnostico', function (Blueprint $table) {
+            // identificador del codigo de diagnostico
+            $table->string('cod_diagnostico', 10)->primary();
 
-            // identificador del codigo
-            $table->bigIncrements('cod_codigo')->primary();
-
-            // nombre del codigo
-            $table->string('nom_codigo', 50)->nullable(false);
-
-            // descripcion del codigo
+            // descripcion del codigo de diagnostico
             $table->text('descrip_codigo')->nullable(false);
-
         });
     }
 
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('codigo');
+        Schema::dropIfExists('diagnostico');
     }
 };

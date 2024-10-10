@@ -76,4 +76,9 @@ class User extends Authenticatable
     public function rol(){
         return $this->belongsTo(Rol::class, 'cod_rol');
     }
+
+    // Relacion de los datos en el modelo, un padre puede tener varios hijos
+    public function hijos(){
+        return $this->hasMany(Hijo::class, 'id_hijo');
+    }
 }

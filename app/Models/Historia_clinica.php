@@ -21,10 +21,10 @@ class Historia_clinica extends Model
 
     protected $fillable = [
         'id_hijo',
-        'id_padre',
-        'id_usuario',
-        'fech_consulta',
-        'motivo_consulta',
+        'nom_padre',
+        'ape_padre',
+        'direccion_padre',
+        'telefono_padre',
         'edad_embar_madre',
         'alto_riesgo',
         'especif_riesg',
@@ -44,81 +44,7 @@ class Historia_clinica extends Model
         'especif_enferm_sistemica',
         'alergia',
         'especif_alergia',
-        'cirug_gener_ocular',
-        'correc_optica',
-        'edad_lente_prim_vez',
-        'cuant_cambio_rx',
-        'motiv_cambio_rx',
-        'mater_tratam_optic',
-        'indicaci_uso',
-        'fech_ultim_exam',
-        'agude_visu_test',
-        'agude_visu_distan',
-        'od_sc_vl',
-        'od_vp',
-        'od_ph',
-        'os_sc_vl',
-        'os_vp',
-        'os_ph',
-        'lensome_od',
-        'lensome_os',
-        'od_cc_vl',
-        'od_vp_lenso',
-        'os_cc_vl',
-        'os_vp_lenso',
-        'queratome_od',
-        'queratome_os',
-        'retino_tecnica',
-        'retino_ciclople',
-        'retino_refrac_od',
-        'retino_refrac_os',
-        'retino_subjet_od',
-        'retino_subjet_os',
-        'retino_final_od',
-        'retino_final_os',
-        'test_hirschberg',
-        'test_bruckner',
-        'covet_test_vl',
-        'covet_test_vp',
-        'esta_acomo_flex',
-        'esta_acomo_aa',
-        'versi_observaci',
-        'ducc_normal_od',
-        'ducc_parecia_od',
-        'ducc_paralisis_od',
-        'ducc_normal_os',
-        'ducc_parecia_os',
-        'ducc_paralisis_os',
-        'mo_seguimiento_od',
-        'mo_sacadicos_od',
-        'mo_seguimiento_os',
-        'mo_sacadicos_os',
-        'mo_seguimiento_ao',
-        'mo_sacadicos_ao',
-        'explo_exter_od',
-        'explo_exter_os',
-        'medi_refrin_od',
-        'refle_fovea_od',
-        'papila_od',
-        'excav_fisio_od',
-        'profundidad_od',
-        'vasos_od',
-        'rela_arte_od',
-        'macula_od',
-        'reti_perif_od',
-        'medi_refrin_os',
-        'refle_fovea_os',
-        'papila_os',
-        'excav_fisio_os',
-        'profundidad_os',
-        'vasos_os',
-        'rela_arte_os',
-        'macula_os',
-        'reti_perif_os',
-        'diagnostico',
-        'pronostico',
-        'tratamiento',
-        'control_historia_cli'
+        'cirug_gener_ocular'
     ];
 
 
@@ -128,15 +54,54 @@ class Historia_clinica extends Model
         return $this->belongsTo(Hijo::class, 'id_hijo');
     }
 
-    // Relacion de los datos en el modelo, una historia tiene un padre
-    public function padreHisCli()
-    {
-        return $this->belongsTo(Padre::class, 'id_padre');
+    // Relacion de los datos en el modelo, una historia clinica puede tener varios diagnostico x historia clinica
+    public function diag_his_cli(){
+        return $this->hasMany(Diagnostico_historia_clinica::class, 'cod_diag_his');
     }
 
-    // Relacion de los datos en el modelo, una historia tiene un usuario
-    public function usuarioHisCli()
-    {
-        return $this->belongsTo(Usuario::class, 'id_usuario');
+    // Relacion de los datos en el modelo, una historia clinica puede tener varios antecedentes visuales
+    public function antece_visual(){
+        return $this->hasMany(Antecedente_visual::class, 'cod_antece_visua');
     }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias agudeza visual
+    public function agudeza_visual(){
+        return $this->hasMany(Agudeza_visual::class, 'cod_agude_visua');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias retinoscopia
+    public function retinoscopia(){
+        return $this->hasMany(Retinoscopia::class, 'cod_retinoscopia');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varios alineamiento motor
+    public function alinea_motor(){
+        return $this->hasMany(Alineamiento_motor::class, 'cod_alinea_motor');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias version
+    public function versiones(){
+        return $this->hasMany(Version::class, 'cod_versiones');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias duccion
+    public function ducciones(){
+        return $this->hasMany(Duccion::class, 'cod_ducciones');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias motalidad ocular
+    public function motal_ocular(){
+        return $this->hasMany(Motalidad_ocular::class, 'cod_motali_ocular');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias exploracion externo
+    public function explo_exter(){
+        return $this->hasMany(Exploracion_externo::class, 'cod_explo_exter');
+    }
+
+    // Relacion de los datos en el modelo, una historia clinica puede tener varias oftalmoscopia
+    public function oftalmoscopia(){
+        return $this->hasMany(Oftalmoscopia::class, 'cod_oftalmoscopia');
+    }
+
 }

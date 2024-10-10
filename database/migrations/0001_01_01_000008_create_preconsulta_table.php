@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('motiv_uso_medicam', 255)->nullable();         
 
             // si esta limitando el uso de pantallas (TRUE = SI  |  FALSE = NO)
-            $table->boolean('limit_pantalla')->nullable(false);     
+            $table->boolean('limit_pantalla')->nullable(false);
 
             // motivo porque no esta limitando el uso de pantallas (Si el dato anterior fue FALSE o NO)
             $table->string('motiv_limit_pantalla', 255)->nullable();           

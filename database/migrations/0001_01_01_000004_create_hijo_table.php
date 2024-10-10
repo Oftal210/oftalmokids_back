@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('id_hijo')->primary();
             
             // foranea de la tabla padre, identificador del padre
-            $table->integer('id_padre')->nullable(false);
+            $table->integer('id_usuario')->nullable(false);
 
             // nombres del hijo
             $table->string('nom_hijo', 70)->nullable(false);
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('foto_hijo', 255)->nullable(false);
 
             // se define la llave foranea en esta tabla que apunta a padre
-            $table->foreign('id_padre')->references('id_padre')->on('padre');
+            $table->foreign('id_usuario')->references('id_usuario')->on('users');
 
         });
     }

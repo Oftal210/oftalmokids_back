@@ -23,7 +23,7 @@ class Hijo extends Model
 
     protected $fillable = [
         'id_hijo',
-        'id_padre', 
+        'id_usuario', 
         'nom_hijo', 
         'ape_hijo', 
         'tipdoc_hijo', 
@@ -32,9 +32,9 @@ class Hijo extends Model
     ];
 
 
-    // Relacion de los datos en el modelo, un hijo puede tener solo un padre
-    public function padre(){
-        return $this->belongsTo(Padre::class, 'id_padre');
+    // Relacion de los datos en el modelo, un hijo puede tener solo un usuario (padre)
+    public function usuario(){
+        return $this->belongsTo(User::class, 'id_usuario');
     }
 
     // Relacion de los datos en el modelo, un hijo puede tener varias consultas
@@ -42,4 +42,9 @@ class Hijo extends Model
         return $this->hasMany(Preconsulta::class, 'cod_preconsul');
     }
 
+    // Relacion de los datos en el modelo, un hijo tiene una sola historia clinica
+    public function historiaClinica()
+    {
+        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+    }
 }
