@@ -68,7 +68,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'cont_usuario' => 'hashed',
+            'contrasena' => 'hashed',
         ];
     }
 
