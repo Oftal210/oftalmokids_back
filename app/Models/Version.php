@@ -16,7 +16,7 @@ class Version extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'idd_historia',
+        'id_historia',
         'observacion'
     ];
 
