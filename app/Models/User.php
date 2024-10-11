@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'id_usuario';
+    protected $primaryKey = 'id';
 
     // Si la clave primaria no es un incremento automático
     public $incrementing = false;
@@ -24,7 +24,7 @@ class User extends Authenticatable
      */
     public function findForPassport(string $username): User
     {
-        return $this->where('id_usuario', $username)->first();
+        return $this->where('id', $username)->first();
     }
 
     /**
