@@ -12,37 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            
+
+            $table->id();
             // Identificador para el usuario (se espera el numero de la C.C.)
-            // $table->id();
-            $table->integer('id_usuario')->primary();
-
-            // Foranea de la tabla rol, identificador del rol
-            $table->integer('cod_rol')->nullable(false);
-
-            // Nombres del usuario
-            //$table->string('name');
-            $table->string('nom_usuario', 70)->nullable(false);
-
-            // Apellidos del usuario
-            $table->string('ape_usuario', 70)->nullable(false);
-
-            // Email del usuario
-            $table->string('email_usuario', 255)->unique(false);
-
-            // telefono del usuario (se esperan 10 digitos sin frefijo telefonico del pais)
-            $table->decimal('tele_usuario', 10,0)->nullable(false);
+            $table->string('documento')->nullable(value: false);
 
             // Contraseña del usuario
-            $table->string('cont_usuario', 255)->nullable(false);
+            $table->string('contrasena', 255)->nullable(false);
 
-            $table->timestamp('email_verified_at')->nullable();            
-            $table->rememberToken();
-            $table->timestamps();
+            // Nombres del usuario
+            $table->string('nombre', 50)->nullable(false);
 
+            // Apellidos del usuario
+            $table->string('apellido', 50)->nullable(false);
+
+            // Email del usuario
+            $table->string('email', 50)->unique(true);
+
+            // telefono del usuario 
+            $table->string('telefono',13)->nullable(false);
+        
+
+            // Foranea de la tabla rol, identificador del rol
+            $table->unsignedBigInteger('id_rol')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a rol
-            $table->foreign('cod_rol')->references('cod_rol')->on('rol');
-
+            $table->foreign('id')->references('id_rol')->on('rol');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
+            //$table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -41,13 +41,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id_usuario',
-        'cod_rol',
-        'nom_usuario',
-        'ape_usuario',
-        'tele_usuario',
-        'cont_usuario',
-        'email_usuario',
+        'nombre',
+        'apellido',
+        'telefono',
+        'contrasena',
+        'email',
+        'id_rol',
     ];
 
     /**
@@ -56,7 +55,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'cont_usuario',
+        'contrasena',
         'remember_token',
     ];
 
@@ -74,7 +73,7 @@ class User extends Authenticatable
     }
 
     public function rol(){
-        return $this->belongsTo(Rol::class, 'cod_rol');
+        return $this->belongsTo(Rol::class, 'id_rol');
     }
 
     // Relacion de los datos en el modelo, un padre puede tener varios hijos
