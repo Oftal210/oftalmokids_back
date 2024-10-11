@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // Importamos el modelo de usuarios con la siguiente direccion
 use App\Models\User;
+use Illuminate\Database\QueryException;
 // Importamos el paquete para encriptar la contraseña
 use Illuminate\Support\Facades\Hash;
 
@@ -19,65 +20,72 @@ use Illuminate\Support\Facades\Validator;
 class loginController extends Controller
 {
     //
-    public function registrarse(Request $request){
-        // aqui se validan los datos que llegan en la variable $request segunda haga falta
+    public function registrarse(Request $request)
+    {
+        // Validación de datos
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|numeric|digits_between:8,10',
-            'rol' => 'required|digits:1',
+            'documento' => 'required|string',
             'nombre' => 'required|string',
             'apellido' => 'required|string',
             'email' => 'required|email',
-            'telefono' => 'required|digits:10',
-            'password' => 'required|string'
+            'telefono' => 'required|string',
+            'contrasena' => 'required'
         ]);
 
-        // aqui se mandan los datos que quedaron mal segun la validacion
-        if($validator->fails()) {
+        // Manejo de errores de validación
+        if ($validator->fails()) {
             $data = [
-                'mensaje' => 'Error en la validacion, datos incorrectos reg',
-                'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
+                'mensaje' => 'Error en la validación, datos incorrectos',
+                'errors' => $validator->errors(),
                 'status' => 400
             ];
             return response()->json($data, 400);
         }
 
-        // aqui intentamos crear un Usuario validando que los datos que vamos a agregar existan
-        $usuario = User::create([
-            'id_usuario'    => $request->documento,
-            'cod_rol'       => $request->rol,
-            'nom_usuario'   => $request->nombre,
-            'ape_usuario'   => $request->apellido,
-            'email_usuario' => $request->email,
-            'tele_usuario'  => $request->telefono,
-            'cont_usuario'  => Hash::make( $request->password)
-        ]);
+        // Intento de creación del usuario
+        try {
+            $usuario = User::create([
+                'documento'    => $request->documento,
+                'nombre'   => $request->nombre,
+                'apellido'   => $request->apellido,
+                'email' => $request->email,
+                'telefono'  => $request->telefono,
+                'contrasena'  => Hash::make($request->contrasena),
+                'id_rol'       => 2,
+            ]);
 
-        // aqui validamos si se puedo crear el Usuario, en caso de que este vacia, no se deberia haber guardado
-        if(!$usuario) {
-            $data = [
-                'mensaje' => 'Error al crear el Usuario',
-                'errors' => $validator->errors(),
+            // Se verifica si el usuario fue creado exitosamente
+            if (!$usuario) {
+                $data = [
+                    'mensaje' => 'Error al crear el usuario',
+                    'status' => 500
+                ];
+                return response()->json($data, 500);
+            }
+
+            return response()->json($usuario, 200);
+        } catch (QueryException $e) {
+            // Captura la excepción de duplicado
+            if ($e->errorInfo[1] == 1062) { // Código de error SQL para clave duplicada
+                return response()->json([
+                    'mensaje' => 'El documento o email ya están registrados',
+                    'status' => 409
+                ], 409);
+            }
+
+            // Otros errores de base de datos
+            return response()->json([
+                'mensaje' => 'Error al crear el usuario',
+                'error' => $e->getMessage(),
                 'status' => 500
-            ];
-            return response()->json($data, 500);
+            ], 500);
         }
-
-        // Generamos el token para el usuario
-        $accessToken = $usuario->createToken('authToken')->accessToken; 
-
-        // aqui colocamos en la variable $data el usuario que fue agregado y enviamos un 201 (se creo un registro correctamente)
-        $data = [
-            'usuario' => $usuario,
-            'access_token' => $accessToken
-        ];
-
-        // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
     }
-    
+
 
     // funcion para realizar el inicio de sesion de los usuarios
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
 
         // Verificamos los datos que nos estan enviando
         $validator = Validator::make($request->all(), [
@@ -86,7 +94,7 @@ class loginController extends Controller
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
-        if($validator->fails()) {
+        if ($validator->fails()) {
             $data = [
                 'mensaje' => 'Error en la validacion, datos incorrectos, login',
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
@@ -98,13 +106,13 @@ class loginController extends Controller
         // verificamos que el usuario exista buscandolo de la siguiente forma
         $user = User::where('documento', $request->documento)->first();
 
-        if(!$user) {
+        if (!$user) {
             return response()->json(['message' => 'Tu usuario no existe en el sistema'], 400);
         }
 
         // verificamos que la contrasea sea correcta
         if ($user && Hash::check($request->contrasena, $user->contrasena)) {
-            
+
             // si la contraseña y el usuario esta correctos se genera el token asi:
             $token = $user->createToken('Token')->accessToken;
 
@@ -119,17 +127,17 @@ class loginController extends Controller
             // retornamos un mensaje de error en las credenciales
             return response()->json(['mensaje' => 'Tu constraseña es incorrecta'], 401);
         }
-        
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
 
         // Obtiene el usuario autenticado
-        $user = $request->user(); 
-    
+        $user = $request->user();
+
         // Revoca el token del usuario
         $user->token()->revoke();
-    
+
         return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
     }
 }

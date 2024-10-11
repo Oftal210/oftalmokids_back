@@ -15,7 +15,7 @@ return new class extends Migration
 
             $table->id();
             // Identificador para el usuario (se espera el numero de la C.C.)
-            $table->string('documento')->nullable(value: false);
+            $table->string('documento')->unique();
 
             // Contraseña del usuario
             $table->string('contrasena', 255)->nullable(false);
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('apellido', 50)->nullable(false);
 
             // Email del usuario
-            $table->string('email', 50)->unique(true);
+            $table->string('email', 50)->unique();
 
             // telefono del usuario 
             $table->string('telefono',13)->nullable(false);

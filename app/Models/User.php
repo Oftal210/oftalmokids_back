@@ -41,6 +41,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'documento',
         'nombre',
         'apellido',
         'telefono',
@@ -48,6 +49,8 @@ class User extends Authenticatable
         'email',
         'id_rol',
     ];
+
+    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for serialization.
