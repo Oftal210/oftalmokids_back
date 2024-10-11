@@ -81,8 +81,8 @@ class loginController extends Controller
 
         // Verificamos los datos que nos estan enviando
         $validator = Validator::make($request->all(), [
-            'id_usuario' => 'required|numeric|digits_between:8,10',
-            'cont_usuario' => 'required|string'
+            'documento' => 'required',
+            'contrasena' => 'required'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -96,54 +96,31 @@ class loginController extends Controller
         }
 
         // verificamos que el usuario exista buscandolo de la siguiente forma
-        $user = User::where('id_usuario', $request->id_usuario)->first();
+        $user = User::where('documento', $request->documento)->first();
+
+        if(!$user) {
+            return response()->json(['message' => 'Tu usuario no existe en el sistema'], 400);
+        }
 
         // verificamos que la contrasea sea correcta
-        if ($user && Hash::check($request->cont_usuario, $user->cont_usuario)) {
+        if ($user && Hash::check($request->contrasena, $user->contrasena)) {
             
             // si la contraseña y el usuario esta correctos se genera el token asi:
             $token = $user->createToken('Token')->accessToken;
 
             // retornamos el id de usuario y el token, si todo sale correcto
             return response()->json([
-                'user' => $user->id_usuario,
-                'rol' => $user->cod_rol,
+                'user' => $user->documento,
+                'rol' => $user->id_rol,
                 'token' => $token
             ], 200);
         } else {
 
             // retornamos un mensaje de error en las credenciales
-            return response()->json(['mensaje' => 'No tiene autorización'], 401);
+            return response()->json(['mensaje' => 'Tu constraseña es incorrecta'], 401);
         }
         
-        // $credenciales = $request->only('id_usuario', 'cont_usuario');
-        // dd($credenciales);
-        // if(Auth::attempt($credenciales)) {
-        //     $user = Auth::user($credenciales);
-        //     $token = $user->createToken('Token')->accessToken;
-        //     return response()->json ([
-        //         'user' => $user->id_usuario,
-        //         'token' => $token
-        //     ], 200);
-        // } else {
-        //     return response()->json(['mensaje' => 'No tiene autorización'], 200);
-        // }
-        // if (auth()->attempt($credenciales)) {
-        //     $token = auth()->user()->createToken('Token')->accessToken;
-        // } else {
-        //     return response()->json(['mensaje' => 'Usuario o contraseña incorrecta', 'mensaje2' => $credenciales]);
-        // }
-        //return response()->json(['token' => $token, 'mensaje' => $credenciales], 200);
     }
-
-    // public function logout(){
-    //     $token = auth()->user()->token();
-    //     $token->revoke();
-    //     // $user = auth()->user();
-    //     // Revocar todos los tokens del usuario
-    //     // $user->tokens()->delete();
-    //     return response()->json(['mensaje' => 'Se cerro la Sesion del Usuario']);
-    // }
 
     public function logout(Request $request) {
 

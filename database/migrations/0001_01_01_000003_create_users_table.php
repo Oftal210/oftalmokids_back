@@ -36,7 +36,7 @@ return new class extends Migration
             // Foranea de la tabla rol, identificador del rol
             $table->unsignedBigInteger('id_rol')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a rol
-            $table->foreign('id')->references('id_rol')->on('rol');
+            $table->foreign('id_rol')->references('id')->on('rol');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             //$table->timestamps();

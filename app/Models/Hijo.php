@@ -22,13 +22,13 @@ class Hijo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_hijo',
+
         'id_usuario', 
-        'nom_hijo', 
-        'ape_hijo', 
-        'tipdoc_hijo', 
-        'fechnac_hijo',
-        'foto_hijo'
+        'nombre', 
+        'apellido', 
+        'tipo_documento', 
+        'fecha_nacimiento',
+        'foto'
     ];
 
 
@@ -39,12 +39,12 @@ class Hijo extends Model
 
     // Relacion de los datos en el modelo, un hijo puede tener varias consultas
     public function preconsultas(){
-        return $this->hasMany(Preconsulta::class, 'cod_preconsul');
+        return $this->hasMany(Preconsulta::class, 'id_preconsul');
     }
 
     // Relacion de los datos en el modelo, un hijo tiene una sola historia clinica
     public function historiaClinica()
     {
-        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+        return $this->belongsTo(Historia_clinica::class, 'id_historia');
     }
 }

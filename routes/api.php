@@ -28,15 +28,17 @@ use App\Http\Controllers\Api\diagnosticohistoriaclinicaController;
 // });
 
 // RUTAS PARA EL REGISTRO E INICIO DE SESION
-Route::post('/registrarse', [loginController::class, 'registrarse']);
+
 
 // Ruta iniciar sesion y generar el token
-Route::post('/login', [loginController::class, 'login']);
+Route::group([
+    'prefix' => 'auth'
+], function(){
 
-// Ruta para mencionar cuando el usuario no tiene autenticacion en el sistema
-Route::get('/login', function () {
-    return response()->json(['message' => 'Please log in to access this route.'], 401);
-})->name('login');
+    Route::post('/login', [loginController::class, 'login']);
+    Route::post('/registrarse', [loginController::class, 'registrarse']);
+});
+
 
 
 

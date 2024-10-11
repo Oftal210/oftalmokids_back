@@ -12,14 +12,12 @@ class Alineamiento_motor extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'alineamiento_motor';
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'cod_alinea_motor';
 
     // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
     public $timestamps = false;
 
     protected $fillable = [
-        'cod_historia',
+        'id_historia',
         'test_hirschberg',
         'test_bruckner',
         'covet_test_vl',
@@ -31,6 +29,6 @@ class Alineamiento_motor extends Model
     // Relacion de los datos en el modelo, un alineamiento motor tiene una historia clinica
     public function historiaClinica()
     {
-        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+        return $this->belongsTo(Historia_clinica::class, 'id_historia');
     }
 }

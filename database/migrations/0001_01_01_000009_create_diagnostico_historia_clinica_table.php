@@ -14,13 +14,7 @@ return new class extends Migration
         Schema::create('diagnostico_historia_clinica', function (Blueprint $table) {
 
             // identificador del diagnostico por historia clinica 
-            $table->bigIncrements('cod_diag_his')->primary();
-
-            // foranea de la tabla diagnostico, idenficador del diagnostico que tiene este registro
-            $table->string('cod_diagnostico', 150)->nullable(false);
-
-            // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
-            $table->unsignedBigInteger('cod_historia')->nullable(false);
+            $table->id();
 
             // Anamnesis ↓ 
             // motivo de la consulta
@@ -28,23 +22,27 @@ return new class extends Migration
 
             // Datos finales 
             // resultado del tratamiento
-            $table->text('tratam_diag_his')->nullable(false);
+            $table->text('tratamiento')->nullable(false);
 
             // resultado del pronostico
-            $table->text('pronos_diag_his')->nullable(false); 
+            $table->text('pronostico')->nullable(false);
 
             // resultado de los controles o fechas
-            $table->text('control_diag_his')->nullable(false); 
+            $table->text('control')->nullable(false);
 
             // fecha y hora en la cual se realizo 
-            $table->timestamp('hora_fecha_diag')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('fecha');
 
             // Foraneas
+            // foranea de la tabla diagnostico, idenficador del diagnostico que tiene este registro
+            $table->unsignedBigInteger('id_diagnostico')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('cod_diagnostico')->references('cod_diagnostico')->on('diagnostico');
-
+            $table->foreign('id_diagnostico')->references('id')->on('diagnostico');
+            
+            // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
+            $table->unsignedBigInteger('id_historia')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('cod_historia')->references('cod_historia')->on('historia_clinica');
+            $table->foreign('id_historia')->references('id')->on('historia_clinica');
         });
     }
 

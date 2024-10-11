@@ -14,18 +14,15 @@ class Rol extends Model
     protected $table = 'rol';
 
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primarykey = 'cod_rol';
-
-
     // Definimos los datos que se van a poder e
     protected $fillable = [
-        'nom_rol'
+        'nombre'
     ];
 
+    public $timestamps = false;
 
     // Relacion de los datos en el modelo
     public function usuarios(){
-        return $this->hasMany(Usuario::class, 'id_usuario');
+        return $this->hasMany(User::class, 'id_usuario');
     }
 }

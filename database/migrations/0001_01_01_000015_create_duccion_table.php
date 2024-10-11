@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('duccion', function (Blueprint $table) {
             
             // identificador de las ducciones por historia clinica 
-            $table->bigIncrements('cod_ducciones')->primary();
-
-            // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
-            $table->unsignedBigInteger('cod_historia')->nullable(false);
+            $table->id();
 
             // Ducciones
             // resultado de la fila normal del encabezado OD
@@ -39,8 +36,10 @@ return new class extends Migration
             $table->string('ducc_paralisis_os', 150)->nullable(false);
 
             // Foraneas
+            // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
+            $table->unsignedBigInteger('id_historia')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('cod_historia')->references('cod_historia')->on('historia_clinica');
+            $table->foreign('id_historia')->references('id')->on('historia_clinica');
 
 
         });

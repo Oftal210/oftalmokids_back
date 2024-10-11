@@ -12,31 +12,28 @@ class Diagnostico_historia_clinica extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'diagnostico_historia_clinica';
     
-    // Definimos el atributo de llave primaria de la tabla por si acaso 
-    protected $primaryKey = 'cod_diag_his';
 
     // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
     public $timestamps = false;
 
     protected $fillable = [
-        'cod_diagnostico',
-        'cod_historia',
+        'id_historia',
         'motivo_consulta',
-        'tratam_diag_his',
-        'pronos_diag_his', 
-        'control_diag_his', 
-        'hora_fecha_diag'
+        'tratamiento',
+        'pronostico', 
+        'control', 
+        'fecha'
     ];
 
     // Relacion de los datos en el modelo, una diagnostico x historia clinica tiene un diagnostico
     public function diagnostico()
     {
-        return $this->belongsTo(Diagnostico::class, 'cod_diagnostico');
+        return $this->belongsTo(Diagnostico::class, 'id_diagnostico');
     }
 
     // Relacion de los datos en el modelo, una diagnostico x historia clinica tiene una historia clinica
     public function histo_clinica()
     {
-        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+        return $this->belongsTo(Historia_clinica::class, 'id_historia');
     }
 }

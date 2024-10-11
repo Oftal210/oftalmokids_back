@@ -13,30 +13,31 @@ return new class extends Migration
     {
         Schema::create('hijo', function (Blueprint $table) {
 
-            // identificador para el hijo (se espera el numero de la T.I)
-            $table->integer('id_hijo')->primary();
-            
-            // foranea de la tabla padre, identificador del padre
-            $table->integer('id_usuario')->nullable(false);
+
+            $table->id();
+            // se espera el numero de la T.I
+            $table->string('documento');
 
             // nombres del hijo
-            $table->string('nom_hijo', 70)->nullable(false);
+            $table->string('nombre', 70)->nullable(false);
 
             // apellidos del hijo
-            $table->string('ape_hijo', 70)->nullable(false);
+            $table->string('apellido', 70)->nullable(false);
 
             // tipo de documento del hijo (TRUE = T.I  |  FALSE = C.C)
-            $table->boolean('tipdoc_hijo')->nullable(false);
+            $table->boolean('tipo_documento')->nullable(false);
 
             // fecha de nacimiento del hijo, su formato es AÑO-MES-DIA (YYYY-MM-DD)
-            $table->date('fechnac_hijo')->nullable(false);
+            $table->date('fecha_nacimiento')->nullable(false);
 
             // texto con la ruta de la imagen dentro de los archivos del servidor o dominio
-            $table->string('foto_hijo', 255)->nullable(false);
+            $table->string('foto', 255)->nullable(false);
+
+            // foranea de la tabla padre, identificador del padre
+            $table->unsignedBigInteger('id_usuario');
 
             // se define la llave foranea en esta tabla que apunta a padre
-            $table->foreign('id_usuario')->references('id_usuario')->on('users');
-
+            $table->foreign('id_usuario')->references('id')->on('users');
         });
     }
 

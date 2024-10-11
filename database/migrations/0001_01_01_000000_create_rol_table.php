@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('rol', function (Blueprint $table) {
             
             // identificador para el rol
-            $table->integer('cod_rol')->primary();
+            $table->id();
 
             // nombrel del rol
-            $table->string('nom_rol', 20)->nullable(false);
+            $table->string('nombre', 20)->nullable(false);
             
         });
     }

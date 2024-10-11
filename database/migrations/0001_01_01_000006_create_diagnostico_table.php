@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('diagnostico', function (Blueprint $table) {
             // identificador del codigo de diagnostico
-            $table->string('cod_diagnostico', 10)->primary();
+            $table->id();
 
             // descripcion del codigo de diagnostico
-            $table->text('descrip_codigo')->nullable(false);
+            $table->text('descripcion')->nullable(false);
         });
     }
 

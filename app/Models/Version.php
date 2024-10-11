@@ -12,20 +12,17 @@ class Version extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'version';
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'cod_versiones';
-
     // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
     public $timestamps = false;
 
     protected $fillable = [
-        'cod_historia',
-        'versi_observaci'
+        'idd_historia',
+        'observacion'
     ];
 
     // Relacion de los datos en el modelo, una version tiene una historia clinica
     public function histo_clinica()
     {
-        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+        return $this->belongsTo(Historia_clinica::class, 'id_historia');
     }
 }

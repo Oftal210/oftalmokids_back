@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('oftalmoscopia', function (Blueprint $table) {
             
             // identificador de la oftalmoscopia por historia clinica 
-            $table->bigIncrements('cod_oftalmoscopia')->primary();
-
-            // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
-            $table->unsignedBigInteger('cod_historia')->nullable(false);
+            $table->id();
 
             // Oftalmoscopia
             // resultado de Medios Refringentes para el ojo derecho
@@ -75,8 +72,11 @@ return new class extends Migration
             $table->string('reti_perif_os', 150)->nullable(false);
 
             // Foraneas
+             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
+             $table->unsignedBigInteger('id_historia')->nullable(false);
+
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('cod_historia')->references('cod_historia')->on('historia_clinica');
+            $table->foreign('id_historia')->references('id')->on('historia_clinica');
         });
     }
 

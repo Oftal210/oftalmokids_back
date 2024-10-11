@@ -21,30 +21,30 @@ class Historia_clinica extends Model
 
     protected $fillable = [
         'id_hijo',
-        'nom_padre',
-        'ape_padre',
-        'direccion_padre',
-        'telefono_padre',
-        'edad_embar_madre',
+        'nomombre',
+        'apellido',
+        'direccion',
+        'telefono',
+        'edad_embarazo',
         'alto_riesgo',
-        'especif_riesg',
+        'especificar_riesgo',
         'semanas_gestacion',
         'tipo_parto',
         'complicacion',
-        'especif_compli',
+        'especificar_complicacion',
         'uso_incubadora',
         'tiempo_incubadora',
         'apgar_incubadora',
-        'respir_lloro_nacer',
-        'enferme_embarazo',
+        'respiro_lloro_nacer',
+        'enfermedad_embarazo',
         'especif_enferme_embar',
-        'medicam_embarazo',
+        'medicamento_embarazo',
         'especif_medicam_embar',
         'enferm_sistemica',
         'especif_enferm_sistemica',
         'alergia',
         'especif_alergia',
-        'cirug_gener_ocular'
+        'cirugia_ocular'
     ];
 
 

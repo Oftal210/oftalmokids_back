@@ -12,8 +12,6 @@ class Diagnostico extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'diagnostico';
     
-    // Definimos el atributo de llave primaria de la tabla por si acaso 
-    protected $primaryKey = 'cod_diagnostico';
 
     // Si la clave primaria no es un incremento automático
     public $incrementing = false;
@@ -22,8 +20,7 @@ class Diagnostico extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'cod_diagnostico',
-        'descrip_codigo'
+        'descripcion'
     ];
 
 

@@ -12,14 +12,11 @@ class Retinoscopia extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'retinoscopia';
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'cod_retinoscopia';
-
     // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
     public $timestamps = false;
 
     protected $fillable = [
-        'cod_historia',
+        'id_historia',
         'retino_tecnica',
         'retino_ciclople',
         'retino_refrac_od',
@@ -33,6 +30,6 @@ class Retinoscopia extends Model
     // Relacion de los datos en el modelo, una retinoscopia tiene una historia clinica
     public function histo_clinica()
     {
-        return $this->belongsTo(Historia_clinica::class, 'cod_historia');
+        return $this->belongsTo(Historia_clinica::class, 'id_historia');
     }
 }
