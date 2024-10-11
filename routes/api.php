@@ -16,6 +16,12 @@ use App\Http\Controllers\Api\agudezavisualController;
 use App\Http\Controllers\Api\alineamientomotorController;
 use App\Http\Controllers\Api\antecedentevisualController;
 use App\Http\Controllers\Api\diagnosticohistoriaclinicaController;
+use App\Http\Controllers\Api\duccionController;
+use App\Http\Controllers\Api\exploracionexternoController;
+use App\Http\Controllers\Api\motalidadocularController;
+use App\Http\Controllers\Api\oftalmoscopiaController;
+use App\Http\Controllers\Api\retinoscopiaController;
+use App\Http\Controllers\Api\versionController;
 
 
 // Route::get('/user', function (Request $request) {
@@ -174,6 +180,121 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para eliminiar a un Diagnostico x historia clinica
     Route::delete('/diaghistoriaclinica/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'destroy']);
 });
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A DUCCIONES
+    // Ruta API para crear una Duccion
+    Route::post('/duccion', [duccionController::class, 'store']);
+
+    // Ruta API para llamar a todos las Ducciones
+    Route::get('/duccion', [duccionController::class, 'index']);
+
+    // Ruta API para llamar a una Duccion especifca
+    Route::get('/duccion/{cod_ducciones}', [duccionController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Duccion
+    Route::put('/duccion/{cod_ducciones}', [duccionController::class, 'update']);
+
+    // Ruta API para eliminiar a una Duccion
+    Route::delete('/duccion/{cod_ducciones}', [duccionController::class, 'destroy']);
+});
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A EXPLORACION DE EXTERNO
+    // Ruta API para crear una Exploracion de externo
+    Route::post('/exploexterno', [exploracionexternoController::class, 'store']);
+
+    // Ruta API para llamar a todos las Exploracion de externo
+    Route::get('/exploexterno', [exploracionexternoController::class, 'index']);
+
+    // Ruta API para llamar a una Exploracion de externo especifco
+    Route::get('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Exploracion de externo
+    Route::put('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'update']);
+
+    // Ruta API para eliminiar a una Exploracion de externo
+    Route::delete('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'destroy']);
+});
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A MOTALIDAD OCULAR
+    // Ruta API para crear una Motalidad ocular
+    Route::post('/motaliocular', [motalidadocularController::class, 'store']);
+
+    // Ruta API para llamar a todos las Motalidad ocular
+    Route::get('/motaliocular', [motalidadocularController::class, 'index']);
+
+    // Ruta API para llamar a una Motalidad ocular especifco
+    Route::get('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Motalidad ocular
+    Route::put('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'update']);
+
+    // Ruta API para eliminiar a una Motalidad ocular
+    Route::delete('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'destroy']);
+});
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A OFTALMOSCOPIA
+    // Ruta API para crear una Oftalmoscopia
+    Route::post('/oftalmoscopia', [oftalmoscopiaController::class, 'store']);
+
+    // Ruta API para llamar a todos las Oftalmoscopia
+    Route::get('/oftalmoscopia', [oftalmoscopiaController::class, 'index']);
+
+    // Ruta API para llamar a una Oftalmoscopia especifco
+    Route::get('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Oftalmoscopia
+    Route::put('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'update']);
+
+    // Ruta API para eliminiar a una Oftalmoscopia
+    Route::delete('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'destroy']);
+});
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A RETINOSCOPIA
+    // Ruta API para crear una Retinoscopia
+    Route::post('/retinoscopia', [retinoscopiaController::class, 'store']);
+
+    // Ruta API para llamar a todos las Retinoscopia
+    Route::get('/retinoscopia', [retinoscopiaController::class, 'index']);
+
+    // Ruta API para llamar a una Retinoscopiao especifco
+    Route::get('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Retinoscopia
+    Route::put('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'update']);
+
+    // Ruta API para eliminiar a una Retinoscopia
+    Route::delete('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'destroy']);
+});
+
+
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    // RUTAS A VERSION
+    // Ruta API para crear una Version
+    Route::post('/version', [versionController::class, 'store']);
+
+    // Ruta API para llamar a todos las Version
+    Route::get('/version', [versionController::class, 'index']);
+
+    // Ruta API para llamar a una Version especifco
+    Route::get('/version/{cod_versiones}', [versionController::class, 'show']);
+
+    // Ruta API para modificar la informacion de una Version
+    Route::put('/version/{cod_versiones}', [versionController::class, 'update']);
+
+    // Ruta API para eliminiar a una Version
+    Route::delete('/version/{cod_versiones}', [versionController::class, 'destroy']);
+});
+
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A USUARIO
