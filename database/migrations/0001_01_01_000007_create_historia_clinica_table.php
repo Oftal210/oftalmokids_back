@@ -18,7 +18,10 @@ return new class extends Migration
             $table->bigIncrements('cod_historia')->primary();
 
             // foranea de la tabla hijo, idenficador del hijo al que pertenece esta historia clinica
-            $table->integer('id_hijo')->nullable(false);
+            $table->string('id_hijo', 10)->nullable(false);
+
+            // Foranea de la tabla usuario, identificador del usuario (padre)
+            $table->string('id_usuario', 10)->nullable(false);
 
             // nombre del padre al que pertenece el hijo
             $table->string('nom_padre', 70)->nullable(false);
@@ -30,7 +33,7 @@ return new class extends Migration
             $table->string('direccion_padre', 255)->nullable(false);
 
             // telefono del padre al que pertenece el hijo
-            $table->string('telefono_padre', 255)->nullable(false);
+            $table->string('telefono_padre', 10)->nullable(false);
 
             // Antecedes medico-personales ↓
             // edad en que la madre se embarazo
@@ -96,6 +99,9 @@ return new class extends Migration
             // Foraneas
             // se define la llave foranea en esta tabla que apunta a hijo
             $table->foreign('id_hijo')->references('id_hijo')->on('hijo');
+
+            // se define la llave foranea en esta tabla que apunta a usuario
+            $table->foreign('id_usuario')->references('id_usuario')->on('users');
 
         });
     }

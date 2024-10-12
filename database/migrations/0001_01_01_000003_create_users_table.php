@@ -15,7 +15,7 @@ return new class extends Migration
             
             // Identificador para el usuario (se espera el numero de la C.C.)
             // $table->id();
-            $table->integer('id_usuario')->primary();
+            $table->string('id_usuario', 10)->primary();
 
             // Foranea de la tabla rol, identificador del rol
             $table->integer('cod_rol')->nullable(false);
@@ -31,10 +31,13 @@ return new class extends Migration
             $table->string('email_usuario', 255)->unique(false);
 
             // telefono del usuario (se esperan 10 digitos sin frefijo telefonico del pais)
-            $table->decimal('tele_usuario', 10,0)->nullable(false);
+            $table->string('tele_usuario', 10)->nullable(false);
 
             // Contraseña del usuario
-            $table->string('cont_usuario', 255)->nullable(false);
+            $table->text('cont_usuario')->nullable(false);
+
+            // Foto del usuario
+            $table->text('foto_usuario')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();            
             $table->rememberToken();

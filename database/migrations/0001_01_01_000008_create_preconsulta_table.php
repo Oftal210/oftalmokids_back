@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('cod_preconsul')->primary();
 
             // foranea de la tabla hijo, identificador del hijo
-            $table->integer('id_hijo')->nullable(false);         
+            $table->string('id_hijo', 10)->nullable(false);    
 
             // si esta usando o no gafas o lentes (TRUE = SI  |  FALSE = NO)
             $table->boolean('uso_gaf_lente')->nullable(false);   
@@ -57,6 +57,9 @@ return new class extends Migration
 
             // puntuacion en numero (de 1 a 6) sobre los datos anteriores de esta tabla
             $table->integer('puntua_preconsul')->nullable(false);
+
+            // fecha en la que se realizo la preconsulta
+            $table->date('fecha_preconsul')->nullable(false);
             
             // se define la llave foranea en esta tabla que apunta a hijo
             $table->foreign('id_hijo')->references('id_hijo')->on('hijo');
