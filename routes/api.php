@@ -45,6 +45,8 @@ Route::get('/login', function () {
 })->name('login');
 
 
+Route::get('/promediomespreconsulta/{id_hijo}', [preconsultaController::class, 'promediomespreconsulta']);
+
 
 // Esta ruta Api contiene un grupo de rutas que van a estar protegidas por autenticacion
 Route::middleware('auth:api')->group(function () {
@@ -54,7 +56,7 @@ Route::middleware('auth:api')->group(function () {
 
 // ROL 1 ADMIN Y ROL 2 USUARIO NORMAL
 
-Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
@@ -86,18 +88,18 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']);
 
 
-    // RUTAS PARA EL PRECONSULTA
-    // Ruta API para crear una preconsulta
-    Route::post('/preconsulta', [preconsultaController::class, 'store']);
+    // // RUTAS PARA EL PRECONSULTA
+    // // Ruta API para crear una preconsulta
+    // Route::post('/preconsulta', [preconsultaController::class, 'store']);
 
-    // Ruta API para llamar a una preconsulta especifica
-    Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']);
+    // // Ruta API para llamar a una preconsulta especifica
+    // Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']);
 
-    // Ruta API para modificar la informacion de una preconsulta
-    Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']);
+    // // Ruta API para modificar la informacion de una preconsulta
+    // Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']);
 
-    // Ruta API para llamar solamente a las preconsultas de un hijo
-    Route::get('/preconsdelhijo/{id_hijo}', [preconsultaController::class, 'preconsdelhijo']);
+    // // Ruta API para llamar solamente a las preconsultas de un hijo
+    // Route::get('/preconsdelhijo/{id_hijo}', [preconsultaController::class, 'preconsdelhijo']);
 
 
     // RUTAS A HISTORIA CLINICA
@@ -106,7 +108,8 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
 
     //Ruta API para llamar solamente a las historias clinicas del hijo
     Route::get('/historiasdelhijo/{id_hijo}', [historiaclinicaController::class, 'historiasdelhijo']);
-});
+//});
+
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A AGUDEZA VISUAL
@@ -296,7 +299,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A USUARIO
     // Ruta API para crear un usuario
     Route::post('/usuario', [usuarioController::class, 'store']);
@@ -312,10 +315,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un usuario
     Route::delete('/usuario/{id_usuario}', [usuarioController::class, 'destroy']);
-});
+//});
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA LOS DIAGNOSTICOS
     // Ruta API para crear un diagnostico
     Route::post('/diagnostico', [diagnosticoController::class, 'store']);
@@ -331,7 +334,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar un diagnostico
     Route::delete('/diagnostico/{cod_diagnostico}', [diagnosticoController::class, 'destroy']);
-//});
+});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -372,7 +375,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL HIJO
     // Ruta API para crear un hijo
     // Route::post('/hijo', [hijoController::class, 'store']); PARA AMBBOS ROLES
@@ -388,26 +391,26 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // // Ruta API para eliminiar a un hijo
     // Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']); PARA AMBBOS ROLES
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PRECONSULTA
     // Ruta API para crear una preconsulta
-    // Route::post('/preconsulta', [preconsultaController::class, 'store']); PARA AMBBOS ROLES
+    Route::post('/preconsulta', [preconsultaController::class, 'store']); //PARA AMBBOS ROLES
 
     // Ruta API para llamar a todos las preconsulta
     Route::get('/preconsulta', [preconsultaController::class, 'index']);
 
     // Ruta API para llamar a una preconsulta especifco
-    //Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']); PARA AMBBOS ROLES
+    Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']); //PARA AMBBOS ROLES
 
     // Ruta API para modificar la informacion de una preconsulta
-    //Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']); PARA AMBBOS ROLES
+    Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']); //PARA AMBBOS ROLES
 
     // Ruta API para eliminiar a una preconsulta
     Route::delete('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'destroy']);
-});
+//});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -427,35 +430,3 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para eliminiar una historia clinica
     Route::delete('/historiaclinica/{cod_historia}', [historiaclinicaController::class, 'destroy']);
 });
-
-
-
-
-// // Esta ruta Api contiene un grupo de rutas que van a estar protegidas por autenticacion
-// Route::middleware('auth:api')->group(function () {
-//         Route::get('/usuario', [usuarioController::class, 'index']);
-//         Route::post('/logout', [loginController::class, 'logout']);
-// });
-
-
-// // RUTAS PARA EL REGISTRO E INICIO DE SESION
-// Route::post('/registrarse', [loginController::class, 'registrarse']);
-
-
-
-// // RUTAS PARA EL USUARIO
-// // Ruta API para llamar a todos los usuarios
-// //Route::get('/usuario', [usuarioController::class, 'index']);
-
-
-// // Ruta API para llamar a un Usuario especifco
-// Route::get('/usuario/{id_usuario}', [usuarioController::class, 'show']);
-
-// // Ruta API para crear un usuario
-// Route::post('/usuario', [usuarioController::class, 'store']);
-
-// // Ruta API para modificar la informacion de un usuario
-// Route::put('/usuario/{id_usuario}', [usuarioController::class, 'update']);
-
-// // Ruta API para eliminiar a un usuario
-// Route::delete('/usuario/{id_usuario}', [usuarioController::class, 'destroy']);

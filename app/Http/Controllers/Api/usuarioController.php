@@ -36,7 +36,7 @@ class usuarioController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|numeric|digits_between:8,10',
+            'documento' => 'required|string|max:10',
             'rol' => 'required|digits:1',
             'nombre' => 'required|string',
             'apellido' => 'required|string',

@@ -36,7 +36,8 @@ class Preconsulta extends Model
         'motiv_bue_alimen',
         'solicit_control',
         'motiv_soli_control',
-        'puntua_preconsul'
+        'puntua_preconsul',
+        'fecha_preconsul'
     ];
 
 
@@ -44,4 +45,6 @@ class Preconsulta extends Model
     public function hijoPreCon(){
         return $this->belongsTo(Hijo::class, 'id_hijo');
     }
+
+
 }

@@ -34,11 +34,11 @@ class hijoController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|numeric|digits_between:8,10',
-            'padre' => 'required|numeric|digits_between:8,10',
+            'documento' => 'required|string|max:10',
+            'padre' => 'required|string|max:10',
             'nombre' => 'required',
             'apellido' => 'required',
-            'tipodoc' => 'required|boolean',
+            'tipodoc' => 'required|string',
             'nacimiento' => 'required|date',
             'foto' => 'required'
         ]);
@@ -56,11 +56,11 @@ class hijoController extends Controller
         // aqui intentamos crear un Hijo validando que los datos que vamos a agregar existan
         $hijo = Hijo::create([
             'id_hijo'    => $request->documento,
-            'id_padre'       => $request->padre,
+            'id_usuario'       => $request->padre,
             'nom_hijo'   => $request->nombre,
             'ape_hijo'   => $request->apellido,
-            'tipdoc_hijo' => $request->tipodoc,
-            'fechnac_hijo'  => $request->nacimiento,
+            'tip_doc_hijo' => $request->tipodoc,
+            'fech_nac_hijo'  => $request->nacimiento,
             'foto_hijo' => $request->foto
         ]);
 
@@ -154,11 +154,9 @@ class hijoController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'sometimes|numeric|digits_between:8,10',
-            'padre' => 'sometimes|numeric|digits_between:8,10',
             'nombre' => 'sometimes',
             'apellido' => 'sometimes',
-            'tipodoc' => 'sometimes|boolean',
+            'tipodoc' => 'sometimes|string',
             'nacimiento' => 'sometimes|date',
             'foto' => 'sometimes'
         ]);

@@ -26,8 +26,8 @@ class Hijo extends Model
         'id_usuario', 
         'nom_hijo', 
         'ape_hijo', 
-        'tipdoc_hijo', 
-        'fechnac_hijo',
+        'tip_doc_hijo', 
+        'fech_nac_hijo',
         'foto_hijo'
     ];
 
