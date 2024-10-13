@@ -38,6 +38,7 @@ return new class extends Migration
             // se define la llave foranea en esta tabla que apunta a rol
             $table->foreign('id_rol')->references('id')->on('rol');
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('cod_ver', 10)->nullable()->collation('utf8mb4_unicode_ci');
             $table->rememberToken();
             //$table->timestamps();
         });
