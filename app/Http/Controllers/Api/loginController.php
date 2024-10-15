@@ -86,7 +86,7 @@ class loginController extends Controller
                 'status' => 500
             ], 500);
         }
-        dd($usuario);
+        // dd($usuario);
     }
 
     // falta colocarle protected

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Código de Verificación</title>
-    <style>
+    {{-- <style>
         body {
             font-family: 'Courier New', monospace;
             line-height: 1.6;
@@ -47,7 +47,7 @@
             margin-top: 20px;
             /* Añadido para separar los cuadros del texto */
         }
-    </style>
+    </style> --}}
 </head>
 
 <body>
