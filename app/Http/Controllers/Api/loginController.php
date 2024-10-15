@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 // Importamos el modelo de usuarios con la siguiente direccion
 use App\Models\User;
+use Exception;
 use Illuminate\Database\QueryException;
 // Importamos el paquete para encriptar la contraseña
 use Illuminate\Support\Facades\Hash;
@@ -68,6 +69,7 @@ class loginController extends Controller
             return response()->json([
                 'mensage' => 'Usuario registrado. Verifica tu correo para continuar.',
                 // 'usuario' => $usuario,
+                'email' => $request->email,
                 // 'codigo_verificacion' => $verificationCode,
                 'status' => 200
             ], 200);
@@ -92,43 +94,42 @@ class loginController extends Controller
     // falta colocarle protected
     public function validate_email(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'cod_ver' => 'required'
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'email' => 'required|email',
+                'cod_ver' => 'required',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'mensaje' => 'Datos inválidos',
-                'errors' => $validator->errors(),
-                'status' => 422
-            ], 422);
-        }
+            $usuario = User::where('email', $validatedData['email'])->first();
 
-        $usuario = User::where('email', $request->email)->first();
-        if (!$usuario) {
-            return response()->json([
-                'mensaje' => 'El correo no está registrado',
-                'status' => 404
-            ], 404);
-        }
+            if (!$usuario) {
+                return response()->json([
+                    'mensaje' => 'El correo no está registrado',
+                    'status' => 404
+                ], 404);
+            }
 
-        if ($usuario->cod_ver == $request->cod_ver) {
-            $usuario->email_verified_at = now();
-            $usuario->cod_ver = null;
-            $usuario->save();
+            if ($usuario->cod_ver == $request->cod_ver) {
+                // Marcar el correo como verificado
+                $usuario->email_verified_at = now();
+                $usuario->cod_ver = null; // Limpiar el código de verificación
+                $usuario->save();
 
-            return response()->json([
-                'mensaje' => 'Correo verificado correctamente',
-                'status' => 200
-            ], 200);
-        } else {
-            return response()->json([
-                'mensaje' => 'Código de verificación incorrecto',
-                'status' => 400
-            ], 400);
+                return response()->json([
+                    'mensaje' => 'Correo verificado correctamente',
+                    'status' => 200
+                ], 200);
+            } else {
+                return response()->json([
+                    'mensaje' => 'El código de verificación es incorrecto',
+                    'status' => 400
+                ], 400);
+            }
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error al procesar la solicitud: ' . $e->getMessage()], 500);
         }
     }
+
 
 
     // funcion para realizar el inicio de sesion de los usuarios
