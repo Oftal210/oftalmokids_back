@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 // Importamos el modelo de Preconsulta con la siguiente direccion
@@ -12,6 +13,7 @@ use App\Models\Hijo;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Type\FalseType;
 
 class preconsultaController extends Controller
 {
@@ -231,6 +233,8 @@ class preconsultaController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Funcion para buscar todos los registros de un hijo especifico
     public function preconsdelhijo ($id){
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
@@ -261,6 +265,8 @@ class preconsultaController extends Controller
         return response()->json($hijoprecon, 200);
     }
 
+
+    // Funcion para realizar un promedio del puntaje de sus preconsultas
     public function promediomespreconsulta($id){
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
         $hijo = Hijo::find($id);
@@ -303,5 +309,58 @@ class preconsultaController extends Controller
 
         // Retornamos los datos obtenidos anteriormente, (int) es para quitar los decimales y dejar solo la parte entera, ej: 5,7 lo deja en 5
         return response()->json((int)$promeprecon, 200);
+    }
+
+
+    // Funcion para verificar y rellenar consultas en caso de que no se realizan por el usuario
+    public function validarrellenarpreconsulta(){
+        // Creamos una variable para guardar mensajes
+        $mensajes = collect([]);
+
+        // Primero obtenemos las fechas inciales y finales de la semana actual 
+        $diainiciosemana = Carbon::now()->startOfWeek();
+        $diafinsemana = Carbon::now()->endOfWeek();
+
+        // buscamos a todos los hijos que estan en preconsulta para realizar la verificacion
+        $idspreconsulta = Preconsulta::select('id_hijo')->groupBy('id_hijo')->get('id_hijo');
+
+        // les realizamos con el siguiente FOR el siguente proceso
+        foreach ($idspreconsulta as $idspreconsul){
+
+            // verificamos si esta semana se inserto un registro con el id indicado
+            $verificarpreconsulta = Preconsulta::where('id_hijo', $idspreconsul->id_hijo)
+                                               ->whereBetween('fecha_preconsul', [$diainiciosemana, $diafinsemana])
+                                               ->first();
+
+            // Si la variable de arriba viene vacia o no encontro un registro de esta semana hara la parte falsa del sigueinte if
+            if($verificarpreconsulta){
+                
+                // se colocada un mensaje indicando que si se hizo registro
+                $mensajes->push('el hijo con ' .  $idspreconsul->id_hijo . ' realizo la consulta');
+            } else{
+
+                // se inserta un registro con todo en falso si no hizo la preconsulta a tiempo
+                Preconsulta::create([
+                'id_hijo'               => $idspreconsul->id_hijo,
+                'uso_gaf_lente'         => false,
+                'motiv_uso_gaf'         => 'N/A',
+                'uso_medicam'           => false,
+                'motiv_uso_medicam'     => 'N/A',
+                'limit_pantalla'        => false,
+                'motiv_limit_pantalla'  => 'N/A',
+                'activid_air_libre'     => false,
+                'motiv_acti_libre'      => 'N/A',
+                'buena_aliment'         => false,
+                'motiv_bue_alimen'      => 'N/A',
+                'solicit_control'       => false,
+                'motiv_soli_control'    => 'N/A',
+                'puntua_preconsul'      => 0
+                ]);
+
+                // se colocada un mensaje indicando que si se hizo registro
+                $mensajes->push('el hijo con ' . $idspreconsul->id_hijo . ' NO realizo la consulta');
+            }
+        }
+        return response()->json($mensajes, 200);
     }
 }

@@ -59,7 +59,7 @@ return new class extends Migration
             $table->integer('puntua_preconsul')->nullable(false);
 
             // fecha en la que se realizo la preconsulta
-            $table->date('fecha_preconsul')->default(DB::raw('CURRENT_DATE'))->nullable(false);
+            $table->timestamp('fecha_preconsul')->default(DB::raw('CURRENT_TIMESTAMP'))->nullable(false);
             
             // se define la llave foranea en esta tabla que apunta a hijo
             $table->foreign('id_hijo')->references('id_hijo')->on('hijo');

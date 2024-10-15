@@ -47,6 +47,8 @@ Route::get('/login', function () {
 
 Route::get('/promediomespreconsulta/{id_hijo}', [preconsultaController::class, 'promediomespreconsulta']);
 
+Route::get('/prueba', [preconsultaController::class, 'validarrellenarpreconsulta']);
+
 
 // Esta ruta Api contiene un grupo de rutas que van a estar protegidas por autenticacion
 Route::middleware('auth:api')->group(function () {
@@ -64,10 +66,10 @@ Route::middleware('auth:api')->group(function () {
 
     // RUTAS PARA EL PADRE
     // Ruta API para llamar a un padre especifco
-    Route::get('/padre/{id_padre}', [padreController::class, 'show']);
+    //Route::get('/padre/{id_padre}', [padreController::class, 'show']);
 
     // Ruta API para modificar la informacion de un padre
-    Route::put('/padre/{id_padre}', [padreController::class, 'update']);
+    //Route::put('/padre/{id_padre}', [padreController::class, 'update']);
 
     // Ruta API para llamar solamente a los hijos de un padre
     Route::get('/hijosdepadre/{id_padre}', [padreController::class, 'hijosdepadre']);
@@ -356,13 +358,13 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PADRE
     // Ruta API para crear un padre
-    Route::post('/padre', [padreController::class, 'store']);
+    //Route::post('/padre', [padreController::class, 'store']);
 
     // Ruta API para llamar a todos los padres
-    Route::get('/padre', [padreController::class, 'index']);
+    //Route::get('/padre', [padreController::class, 'index']);
 
     // Ruta API para llamar a un padre especifco
     // Route::get('/padre/{id_padre}', [padreController::class, 'show']); PARA AMBBOS ROLES
@@ -371,8 +373,8 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Route::put('/padre/{id_padre}', [padreController::class, 'update']); PARA AMBBOS ROLES
 
     // Ruta API para eliminiar a un padre
-    Route::delete('/padre/{id_padre}', [padreController::class, 'destroy']);
-});
+    //Route::delete('/padre/{id_padre}', [padreController::class, 'destroy']);
+//});
 
 
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
