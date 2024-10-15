@@ -131,6 +131,11 @@ class loginController extends Controller
     }
 
 
+    public function enviarRecuperarContrasena (Request $request){
+        
+    }
+
+
 
     // funcion para realizar el inicio de sesion de los usuarios
     public function login(Request $request)
