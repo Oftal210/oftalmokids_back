@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\PasswordReset;
 use App\Mail\VerificationCodeEmail;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class loginController extends Controller
 {
@@ -132,8 +134,33 @@ class loginController extends Controller
 
 
     public function enviarRecuperarContrasena (Request $request){
+        try {
+            $email=$request->email;
+
+            if (!$email) {
+                return response()->json(['error' => 'Por favor, proporciona un correo'],400);
+            }
+    
+            $user = User::where('email', $email)->first();
+    
+            if (!$user) {
+                return response()->json(['error' => 'Esta cuenta no existe'],400);
+            }
+            
+            $temporaryPassword = Str::random(10);
+            $user->contrasena = Hash::make($temporaryPassword);
+            $user->temporary_password_created_at = now();
+            $user->is_temporary_password = true;
+            $user->save();
+    
+            Mail::to($email)->send(new PasswordReset($temporaryPassword));
+            return response()->json(['message' => 'Te hemos enviado un email con tu nueva contraseña temporal. Cámbiala cuando inicies sesión.'], 200);
         
-    }
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Ocurrió un error al procesar la solicitud: ' . $e->getMessage()], 500);
+        }
+        
+       }
 
 
 

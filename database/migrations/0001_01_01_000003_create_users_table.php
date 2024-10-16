@@ -40,6 +40,11 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('cod_ver', 10)->nullable()->collation('utf8mb4_unicode_ci');
             $table->rememberToken();
+            
+            $table->string('reset_token')->nullable(); // Añadido para reset de contraseña
+            $table->timestamp('token_created_at')->nullable(); // Añadido para reset de contraseña
+            $table->timestamp('temporary_password_created_at')->nullable();
+            $table->boolean('is_temporary_password')->default(false);
             //$table->timestamps();
         });
 

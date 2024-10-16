@@ -58,7 +58,8 @@
             <h5>Su código de verificación es:</h5>
             <div class="code-container">
                 @foreach (str_split($verificationCode) as $number)
-                    <div style="display:inline-block" class="code-box">{{ $number }}</div>
+                    {{-- <div style="display:inline-block" class="code-box">{{ $number }}</div> --}}
+                    <div>{{ $number }}</div>
                 @endforeach
             </div>
         </div>
