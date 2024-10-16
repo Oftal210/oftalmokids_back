@@ -20,6 +20,7 @@ class Diagnostico extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'codigo',
         'descripcion'
     ];
 
