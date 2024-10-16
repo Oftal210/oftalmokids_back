@@ -15,9 +15,6 @@ return new class extends Migration
 
             // identificador de la preconsulta
             $table->bigIncrements('cod_foro')->primary();
-
-            // Foranea de la tabla usuario, identificador del usuario (padre)
-            $table->string('id_usuario', 10)->nullable(false);
             
             // subtitulo que tendra el foro
             $table->text('subtitulo_foro')->nullable(false);
@@ -27,7 +24,8 @@ return new class extends Migration
 
             // Foraneas
             // se define la llave foranea en esta tabla que apunta a usuario
-            $table->foreign('id_usuario')->references('id_usuario')->on('users');
+            $table->unsignedBigInteger('id_usuario');
+            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
             
         });
     }
