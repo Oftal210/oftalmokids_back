@@ -17,7 +17,14 @@ class Foro extends Model
 
 
     protected $fillable = [
-        'subtitulo',
-        'contenido'
+        'id_usuario',
+        'subtitulo_foro',
+        'contenido_foro'
     ];
+
+
+    // Relacion de los datos en el modelo, un foro tiene un usuario
+    public function rol(){
+        return $this->belongsTo(User::class, 'id');
+    }
 }

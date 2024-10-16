@@ -37,20 +37,20 @@ class preconsultaController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'hijo' => 'required|string|max:10',
-            'uso_gafas' => 'required|boolean',
-            'motivo_gafas' => 'nullable|string',
-            'uso_medic' => 'required|boolean',
-            'motivo_medic' => 'nullable|string',
-            'limite_panta' => 'required|boolean',
-            'motivo_panta' => 'nullable|string',
-            'activ_libre'=> 'required|boolean',
-            'motivo_activ'=> 'nullable|string',
-            'buen_alimen'=> 'required|boolean',
-            'motivo_buen'=> 'nullable|string',
-            'solict_contr'=> 'required|boolean',
-            'motivo_contr'=> 'nullable|string',
-            'punt_precon'=> 'required|digits:1'
+            'hijo'          => 'required',
+            'uso_gafas'     => 'required|boolean',
+            'motivo_gafas'  => 'nullable|string',
+            'uso_medic'     => 'required|boolean',
+            'motivo_medic'  => 'nullable|string',
+            'limite_panta'  => 'required|boolean',
+            'motivo_panta'  => 'nullable|string',
+            'activ_libre'   => 'required|boolean',
+            'motivo_activ'  => 'nullable|string',
+            'buen_alimen'   => 'required|boolean',
+            'motivo_buen'   => 'nullable|string',
+            'solict_contr'  => 'required|boolean',
+            'motivo_contr'  => 'nullable|string',
+            'punt_precon'   => 'required|digits:1'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -66,19 +66,19 @@ class preconsultaController extends Controller
         // aqui intentamos crear una Preconsulta validando que los datos que vamos a agregar existan
         $preconsulta = Preconsulta::create([
             'id_hijo'               => $request->hijo,
-            'uso_gaf_lente'         => $request->uso_gafas,
-            'motiv_uso_gaf'         => $request->motivo_gafas,
-            'uso_medicam'           => $request->uso_medic,
-            'motiv_uso_medicam'     => $request->motivo_medic,
+            'uso_gafa_lentes'       => $request->uso_gafas,
+            'motivo_uso_gafas'      => $request->motivo_gafas,
+            'uso_medicamento'       => $request->uso_medic,
+            'motivo_uso_medicam'    => $request->motivo_medic,
             'limit_pantalla'        => $request->limite_panta,
             'motiv_limit_pantalla'  => $request->motivo_panta,
             'activid_air_libre'     => $request->activ_libre,
             'motiv_acti_libre'      => $request->motivo_activ,
             'buena_aliment'         => $request->buen_alimen,
             'motiv_bue_alimen'      => $request->motivo_buen,
-            'solicit_control'       => $request->solict_contr,
+            'solicitar_control'     => $request->solict_contr,
             'motiv_soli_control'    => $request->motivo_contr,
-            'puntua_preconsul'      => $request->punt_precon
+            'puntua_preconsulta'    => $request->punt_precon
         ]);
 
         // aqui validamos si se puedo crear la Preconsulta, en caso de que este vacia, no se deberia haber guardado
@@ -171,19 +171,19 @@ class preconsultaController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'uso_gafas' => 'sometimes|boolean',
-            'motivo_gafas' => 'sometimes',
-            'uso_medic' => 'sometimes|boolean',
-            'motivo_medic' => 'sometimes|email',
-            'limite_panta' => 'sometimes|boolean',
-            'motivo_panta' => 'sometimes',
-            'activ_libre'=> 'sometimes|boolean',
-            'motivo_activ'=> 'sometimes',
-            'buen_alimen'=> 'sometimes|boolean',
-            'motivo_buen'=> 'sometimes',
-            'solict_contr'=> 'sometimes|boolean',
-            'motivo_contr'=> 'sometimes',
-            'punt_precon'=> 'sometimes|digits:1'
+            'uso_gafas'     => 'sometimes|boolean',
+            'motivo_gafas'  => 'sometimes|string',
+            'uso_medic'     => 'sometimes|boolean',
+            'motivo_medic'  => 'sometimes|string',
+            'limite_panta'  => 'sometimes|boolean',
+            'motivo_panta'  => 'sometimes|string',
+            'activ_libre'   => 'sometimes|boolean',
+            'motivo_activ'  => 'sometimes|string',
+            'buen_alimen'   => 'sometimes|boolean',
+            'motivo_buen'   => 'sometimes|string',
+            'solict_contr'  => 'sometimes|boolean',
+            'motivo_contr'  => 'sometimes|string',
+            'punt_precon'   => 'sometimes|digits:1'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -201,19 +201,19 @@ class preconsultaController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'uso_gaf_lente'       => $datosvalidados['uso_gafas'] ?? $preconsulta->uso_gaf_lente,
-            'motiv_uso_gaf'   => $datosvalidados['motivo_gafas'] ?? $preconsulta->motiv_uso_gaf,
-            'uso_medicam' => $datosvalidados['uso_medic'] ?? $preconsulta->uso_medicam,
-            'motiv_uso_medicam'  => $datosvalidados['motivo_medic'] ?? $preconsulta->motiv_uso_medicam,
-            'limit_pantalla'  => $datosvalidados['limite_panta'] ?? $preconsulta->limit_pantalla,
+            'uso_gafa_lentes'       => $datosvalidados['uso_gafas'] ?? $preconsulta->uso_gafa_lentes,
+            'motivo_uso_gafas'      => $datosvalidados['motivo_gafas'] ?? $preconsulta->motivo_uso_gafas,
+            'uso_medicamento'       => $datosvalidados['uso_medic'] ?? $preconsulta->uso_medicamento,
+            'motivo_uso_medicam'    => $datosvalidados['motivo_medic'] ?? $preconsulta->motivo_uso_medicam,
+            'limit_pantalla'        => $datosvalidados['limite_panta'] ?? $preconsulta->limit_pantalla,
             'motiv_limit_pantalla'  => $datosvalidados['motivo_panta'] ?? $preconsulta->motiv_limit_pantalla,
-            'activid_air_libre'  => $datosvalidados['activ_libre'] ?? $preconsulta->activid_air_libre,
-            'motiv_acti_libre'  => $datosvalidados['motivo_activ'] ?? $preconsulta->motiv_acti_libre,
-            'buena_aliment'  => $datosvalidados['buen_alimen'] ?? $preconsulta->buena_aliment,
-            'motiv_bue_alimen'  => $datosvalidados['motivo_buen'] ?? $preconsulta->motiv_bue_alimen,
-            'solicit_control'  => $datosvalidados['solict_contr'] ?? $preconsulta->solicit_control,
-            'motiv_soli_control'  => $datosvalidados['motivo_contr'] ?? $preconsulta->motiv_soli_control,
-            'puntua_preconsul'  => $datosvalidados['punt_precon'] ?? $preconsulta->puntua_preconsul,
+            'activid_air_libre'     => $datosvalidados['activ_libre'] ?? $preconsulta->activid_air_libre,
+            'motiv_acti_libre'      => $datosvalidados['motivo_activ'] ?? $preconsulta->motiv_acti_libre,
+            'buena_aliment'         => $datosvalidados['buen_alimen'] ?? $preconsulta->buena_aliment,
+            'motiv_bue_alimen'      => $datosvalidados['motivo_buen'] ?? $preconsulta->motiv_bue_alimen,
+            'solicitar_control'     => $datosvalidados['solict_contr'] ?? $preconsulta->solicitar_control,
+            'motiv_soli_control'    => $datosvalidados['motivo_contr'] ?? $preconsulta->motiv_soli_control,
+            'puntua_preconsulta'    => $datosvalidados['punt_precon'] ?? $preconsulta->puntua_preconsulta
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos

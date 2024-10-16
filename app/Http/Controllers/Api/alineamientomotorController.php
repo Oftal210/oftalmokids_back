@@ -33,13 +33,13 @@ class alineamientomotorController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' =>'required',
-            'hirschberg' =>'required|string',
-            'bruckner' =>'required|string', 
-            'covet_test_vl' =>'required|string',
-            'covet_test_vp' =>'required|string',
-            'esta_acomo_flex' =>'required|string',
-            'esta_acomo_aa' =>'required|string'
+            'historia_clinica'  =>'required',
+            'hirschberg'        =>'required|string|max:150',
+            'bruckner'          =>'required|string|max:150', 
+            'covet_test_vl'     =>'required|string|max:150',
+            'covet_test_vp'     =>'required|string|max:150',
+            'esta_acomo_flex'   =>'required|string|max:150',
+            'esta_acomo_aa'     =>'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -54,7 +54,7 @@ class alineamientomotorController extends Controller
 
         // aqui intentamos crear un Alineamienot Motor validando que los datos que vamos a agregar existan
         $alineamimotor = Alineamiento_motor::create([
-            'cod_historia'      =>$request->historia_clinica,
+            'id_historia'       =>$request->historia_clinica,
             'test_hirschberg'   =>$request->hirschberg,
             'test_bruckner'     =>$request->bruckner,
             'covet_test_vl'     =>$request->covet_test_vl,
@@ -75,7 +75,7 @@ class alineamientomotorController extends Controller
 
         // aqui colocamos en la variable $data el Alineamiento motor que fue agregado y enviamos un 201 (se creo un registro correctamente)
         $data = [
-            'alineamimotor' => $alineamimotor,
+            'alineamiento_motor' => $alineamimotor,
             'status' => 201
         ];
 
@@ -100,7 +100,7 @@ class alineamientomotorController extends Controller
 
         // si el Alineamiento motor fue encontrado lo colocara dentro de esta variable
         $data = [
-            'alineamimotor' => $alineamimotor,
+            'alineamiento_motor' => $alineamimotor,
             'status' => 200
         ];
         
@@ -153,13 +153,12 @@ class alineamientomotorController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' =>'sometimes',
-            'hirschberg' =>'sometimes|string',
-            'bruckner' =>'sometimes|string', 
-            'covet_test_vl' =>'sometimes|string',
-            'covet_test_vp' =>'sometimes|string',
-            'esta_acomo_flex' =>'sometimes|string',
-            'esta_acomo_aa' =>'sometimes|string'
+            'hirschberg' =>'sometimes|string|max:150',
+            'bruckner' =>'sometimes|string|max:150', 
+            'covet_test_vl' =>'sometimes|string|max:150',
+            'covet_test_vp' =>'sometimes|string|max:150',
+            'esta_acomo_flex' =>'sometimes|string|max:150',
+            'esta_acomo_aa' =>'sometimes|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -177,8 +176,7 @@ class alineamientomotorController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_historia'   => $datosvalidados['historia_clinica'] ?? $alineamimotor->cod_historia,
-            'test_hirschberg'       => $datosvalidados['hirschberg'] ?? $alineamimotor->test_hirschberg,
+            'test_hirschberg' => $datosvalidados['hirschberg'] ?? $alineamimotor->test_hirschberg,
             'test_bruckner'   => $datosvalidados['bruckner'] ?? $alineamimotor->test_bruckner,
             'covet_test_vl'   => $datosvalidados['covet_test_vl'] ?? $alineamimotor->covet_test_vl,
             'covet_test_vp' => $datosvalidados['covet_test_vp'] ?? $alineamimotor->covet_test_vp,
@@ -195,7 +193,7 @@ class alineamientomotorController extends Controller
         // si el Alineamiento motor fue actualizado correctamente, se cargara la siguiente variable con los datos de:
         $data = [
             'mensaje' => 'El Alineamiento motor fue actualizado',
-            'alineamientomotor' => $alineamimotor,
+            'alineamiento_motor' => $alineamimotor,
             'status' => 200
         ];
         

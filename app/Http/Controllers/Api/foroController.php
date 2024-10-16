@@ -36,8 +36,9 @@ class foroController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'subtitulo' => 'required',
-            'contenido' => 'required'
+            'usuario'   => 'required',
+            'subtitulo' => 'required|string',
+            'contenido' => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -52,8 +53,9 @@ class foroController extends Controller
 
         // aqui intentamos crear un foros validando que los datos que vamos a agregar existan
         $foro = Foro::create([
+            'id_usuario'        => $request->usuario,
             'subtitulo_foro'    => $request->subtitulo,
-            'contenido_foro'       => $request->contenido
+            'contenido_foro'    => $request->contenido
         ]);
 
         // aqui validamos si se puedo crear el Foro, en caso de que este vacia, no se deberia haber guardado
@@ -146,8 +148,8 @@ class foroController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'subtitulo' => 'sometimes',
-            'contenido' => 'sometimes'
+            'subtitulo' => 'sometimes|string',
+            'contenido' => 'sometimes|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion

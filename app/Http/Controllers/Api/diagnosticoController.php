@@ -34,8 +34,8 @@ class diagnosticoController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string'
+            'nombre'        => 'required|string',
+            'descripcion'   => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -50,8 +50,8 @@ class diagnosticoController extends Controller
 
         // aqui intentamos crear un Diagnostico validando que los datos que vamos a agregar existan
         $diagnostico = Diagnostico::create([
-            'cod_diagnostico'   => $request->nombre,
-            'descrip_codigo'    => $request->descripcion
+            'codigo'        => $request->nombre,
+            'descripcion'   => $request->descripcion
         ]);
 
         // aqui validamos si se puedo crear el Diagnostico, en caso de que este vacia, no se deberia haber guardado
@@ -144,8 +144,8 @@ class diagnosticoController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'nombre' => 'sometimes|string',
-            'descripcion' => 'sometimes|string'
+            'nombre'        => 'sometimes|string',
+            'descripcion'   => 'sometimes|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -163,8 +163,8 @@ class diagnosticoController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_diagnostico' => $datosvalidados['nombre'] ?? $diagnostico->cod_diagnostico,
-            'descrip_codigo' => $datosvalidados['descripcion'] ?? $diagnostico->descrip_codigo
+            'codigo'        => $datosvalidados['nombre'] ?? $diagnostico->codigo,
+            'descripcion'   => $datosvalidados['descripcion'] ?? $diagnostico->descripcion
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos

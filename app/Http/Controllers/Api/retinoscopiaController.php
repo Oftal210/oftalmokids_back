@@ -33,15 +33,15 @@ class retinoscopiaController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
-            'retino_tecnica' => 'required|string',
-            'retino_ciclople' => 'required|string',
-            'retino_refrac_od' => 'required|string',
-            'retino_subjet_od' => 'required|string',
-            'retino_final_od' => 'required|string',
-            'retino_refrac_os' => 'required|string',
-            'retino_subjet_os' => 'required|string',
-            'retino_final_os' => 'required|string'
+            'historia_clinica'  => 'required',
+            'retino_tecnica'    => 'required|string|max:150',
+            'retino_ciclople'   => 'required|string|max:150',
+            'retino_refrac_od'  => 'required|string|max:150',
+            'retino_subjet_od'  => 'required|string|max:150',
+            'retino_final_od'   => 'required|string|max:150',
+            'retino_refrac_os'  => 'required|string|max:150',
+            'retino_subjet_os'  => 'required|string|max:150',
+            'retino_final_os'   => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -56,15 +56,15 @@ class retinoscopiaController extends Controller
 
         // aqui intentamos crear una Retinoscopia validando que los datos que vamos a agregar existan
         $retinoscopia = Retinoscopia::create([
-            'cod_historia' => $request->historia_clinica,
-            'retino_tecnica' => $request->retino_tecnica,
-            'retino_ciclople' => $request->retino_ciclople,
-            'retino_refrac_od' => $request->retino_refrac_od,
-            'retino_subjet_od' => $request->retino_subjet_od,
-            'retino_final_od' => $request->retino_final_od,
-            'retino_refrac_os' => $request->retino_refrac_os,
-            'retino_subjet_os' => $request->retino_subjet_os,
-            'retino_final_os' => $request->retino_final_os
+            'id_historia'       => $request->historia_clinica,
+            'retino_tecnica'    => $request->retino_tecnica,
+            'retino_ciclople'   => $request->retino_ciclople,
+            'retino_refrac_od'  => $request->retino_refrac_od,
+            'retino_subjet_od'  => $request->retino_subjet_od,
+            'retino_final_od'   => $request->retino_final_od,
+            'retino_refrac_os'  => $request->retino_refrac_os,
+            'retino_subjet_os'  => $request->retino_subjet_os,
+            'retino_final_os'   => $request->retino_final_os
         ]);
 
         // aqui validamos si se puedo crear la Retinoscopia, en caso de que este vacia, no se deberia haber guardado
@@ -157,14 +157,14 @@ class retinoscopiaController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'retino_tecnica' => 'sometimes|string',
-            'retino_ciclople' => 'sometimes|string',
-            'retino_refrac_od' => 'sometimes|string',
-            'retino_subjet_od' => 'sometimes|string',
-            'retino_final_od' => 'sometimes|string',
-            'retino_refrac_os' => 'sometimes|string',
-            'retino_subjet_os' => 'sometimes|string',
-            'retino_final_os' => 'sometimes|string'
+            'retino_tecnica'    => 'sometimes|string|max:150',
+            'retino_ciclople'   => 'sometimes|string|max:150',
+            'retino_refrac_od'  => 'sometimes|string|max:150',
+            'retino_subjet_od'  => 'sometimes|string|max:150',
+            'retino_final_od'   => 'sometimes|string|max:150',
+            'retino_refrac_os'  => 'sometimes|string|max:150',
+            'retino_subjet_os'  => 'sometimes|string|max:150',
+            'retino_final_os'   => 'sometimes|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -182,14 +182,14 @@ class retinoscopiaController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'retino_tecnica' => $datosvalidados['retino_tecnica'] ?? $retinoscopia->retino_tecnica,
-            'retino_ciclople' => $datosvalidados['retino_ciclople'] ?? $retinoscopia->retino_ciclople,
-            'retino_refrac_od' => $datosvalidados['retino_refrac_od'] ?? $retinoscopia->retino_refrac_od,
-            'retino_subjet_od' => $datosvalidados['retino_subjet_od'] ?? $retinoscopia->retino_subjet_od,
-            'retino_final_od' => $datosvalidados['retino_final_od'] ?? $retinoscopia->retino_final_od,
-            'retino_refrac_os' => $datosvalidados['retino_refrac_os'] ?? $retinoscopia->retino_refrac_os,
-            'retino_subjet_os' => $datosvalidados['retino_subjet_os'] ?? $retinoscopia->retino_subjet_os,
-            'retino_final_os' => $datosvalidados['retino_final_os'] ?? $retinoscopia->retino_final_os
+            'retino_tecnica'    => $datosvalidados['retino_tecnica'] ?? $retinoscopia->retino_tecnica,
+            'retino_ciclople'   => $datosvalidados['retino_ciclople'] ?? $retinoscopia->retino_ciclople,
+            'retino_refrac_od'  => $datosvalidados['retino_refrac_od'] ?? $retinoscopia->retino_refrac_od,
+            'retino_subjet_od'  => $datosvalidados['retino_subjet_od'] ?? $retinoscopia->retino_subjet_od,
+            'retino_final_od'   => $datosvalidados['retino_final_od'] ?? $retinoscopia->retino_final_od,
+            'retino_refrac_os'  => $datosvalidados['retino_refrac_os'] ?? $retinoscopia->retino_refrac_os,
+            'retino_subjet_os'  => $datosvalidados['retino_subjet_os'] ?? $retinoscopia->retino_subjet_os,
+            'retino_final_os'   => $datosvalidados['retino_final_os'] ?? $retinoscopia->retino_final_os
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos

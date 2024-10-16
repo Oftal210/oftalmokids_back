@@ -83,4 +83,9 @@ class User extends Authenticatable
     public function hijos(){
         return $this->hasMany(Hijo::class, 'id_hijo');
     }
+
+    // Relacion de los datos en el modelo, un usuario puede tener varios foros
+    public function foros(){
+        return $this->hasMany(Foro::class, 'cod_foro');
+    }
 }

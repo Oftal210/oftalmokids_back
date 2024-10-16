@@ -33,13 +33,13 @@ class duccionController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica'=> 'required',
-            'ducc_normal_od' => 'required|string',
-            'ducc_parecia_od' => 'required|string',
-            'ducc_paralisis_od' => 'required|string',
-            'ducc_normal_os' => 'required|string',
-            'ducc_parecia_os' => 'required|string',
-            'ducc_paralisis_os' => 'required|string'
+            'historia_clinica'  => 'required',
+            'ducc_normal_od'    => 'required|string|max:150',
+            'ducc_parecia_od'   => 'required|string|max:150',
+            'ducc_paralisis_od' => 'required|string|max:150',
+            'ducc_normal_os'    => 'required|string|max:150',
+            'ducc_parecia_os'   => 'required|string|max:150',
+            'ducc_paralisis_os' => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -54,12 +54,12 @@ class duccionController extends Controller
 
         // aqui intentamos crear una Duccion validando que los datos que vamos a agregar existan
         $duccion = Duccion::create([
-            'cod_historia'=> $request->historia_clinica,
-            'ducc_normal_od' => $request->ducc_normal_od,
-            'ducc_parecia_od' => $request->ducc_parecia_od,
+            'id_historia'       => $request->historia_clinica,
+            'ducc_normal_od'    => $request->ducc_normal_od,
+            'ducc_parecia_od'   => $request->ducc_parecia_od,
             'ducc_paralisis_od' => $request->ducc_paralisis_od,
-            'ducc_normal_os' => $request->ducc_normal_os,
-            'ducc_parecia_os' => $request->ducc_parecia_os,
+            'ducc_normal_os'    => $request->ducc_normal_os,
+            'ducc_parecia_os'   => $request->ducc_parecia_os,
             'ducc_paralisis_os' => $request->ducc_paralisis_os,
             
         ]);
@@ -154,13 +154,12 @@ class duccionController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica'=> 'sometimes',
-            'ducc_normal_od' => 'sometimes|string',
-            'ducc_parecia_od' => 'sometimes|string',
-            'ducc_paralisis_od' => 'sometimes|string',
-            'ducc_normal_os' => 'sometimes|string',
-            'ducc_parecia_os' => 'sometimes|string',
-            'ducc_paralisis_os' => 'sometimes|string'
+            'ducc_normal_od'    => 'sometimes|string|max:150',
+            'ducc_parecia_od'   => 'sometimes|string|max:150',
+            'ducc_paralisis_od' => 'sometimes|string|max:150',
+            'ducc_normal_os'    => 'sometimes|string|max:150',
+            'ducc_parecia_os'   => 'sometimes|string|max:150',
+            'ducc_paralisis_os' => 'sometimes|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -178,12 +177,11 @@ class duccionController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_historia' => $datosvalidados['historia_clinica'] ?? $duccion->cod_historia,
-            'ducc_normal_od' => $datosvalidados['ducc_normal_od'] ?? $duccion->ducc_normal_od,
-            'ducc_parecia_od' => $datosvalidados['ducc_parecia_od'] ?? $duccion->ducc_parecia_od,
+            'ducc_normal_od'    => $datosvalidados['ducc_normal_od'] ?? $duccion->ducc_normal_od,
+            'ducc_parecia_od'   => $datosvalidados['ducc_parecia_od'] ?? $duccion->ducc_parecia_od,
             'ducc_paralisis_od' => $datosvalidados['ducc_paralisis_od'] ?? $duccion->ducc_paralisis_od,
-            'ducc_normal_os' => $datosvalidados['ducc_normal_os'] ?? $duccion->ducc_normal_os,
-            'ducc_parecia_os' => $datosvalidados['ducc_parecia_os'] ?? $duccion->ducc_parecia_os,
+            'ducc_normal_os'    => $datosvalidados['ducc_normal_os'] ?? $duccion->ducc_normal_os,
+            'ducc_parecia_os'   => $datosvalidados['ducc_parecia_os'] ?? $duccion->ducc_parecia_os,
             'ducc_paralisis_os' => $datosvalidados['ducc_paralisis_os'] ?? $duccion->ducc_paralisis_os,
         ];
 

@@ -42,7 +42,7 @@ class verificarPreconsultasHijos extends Command
 
             // verificamos si esta semana se inserto un registro con el id indicado
             $verificarpreconsulta = Preconsulta::where('id_hijo', $idspreconsul->id_hijo)
-                                               ->whereBetween('fecha_preconsul', [$diainiciosemana, $diafinsemana])
+                                               ->whereBetween('fecha_preconsulta', [$diainiciosemana, $diafinsemana])
                                                ->first();
 
             // Si la variable de arriba viene vacia o no encontro un registro de esta semana hara la parte falsa del sigueinte if
@@ -54,20 +54,20 @@ class verificarPreconsultasHijos extends Command
 
                 // se inserta un registro con todo en falso si no hizo la preconsulta a tiempo
                 Preconsulta::create([
-                'id_hijo'               => $idspreconsul->id_hijo,
-                'uso_gaf_lente'         => false,
-                'motiv_uso_gaf'         => 'N/A',
-                'uso_medicam'           => false,
-                'motiv_uso_medicam'     => 'N/A',
-                'limit_pantalla'        => false,
-                'motiv_limit_pantalla'  => 'N/A',
-                'activid_air_libre'     => false,
-                'motiv_acti_libre'      => 'N/A',
-                'buena_aliment'         => false,
-                'motiv_bue_alimen'      => 'N/A',
-                'solicit_control'       => false,
-                'motiv_soli_control'    => 'N/A',
-                'puntua_preconsul'      => 0
+                    'id_hijo'               => $idspreconsul->id_hijo,
+                    'uso_gafa_lentes'       => false,
+                    'motivo_uso_gafas'      => 'N/A',
+                    'uso_medicamento'       => false,
+                    'motivo_uso_medicam'    => 'N/A',
+                    'limit_pantalla'        => false,
+                    'motiv_limit_pantalla'  => 'N/A',
+                    'activid_air_libre'     => false,
+                    'motiv_acti_libre'      => 'N/A',
+                    'buena_aliment'         => false,
+                    'motiv_bue_alimen'      => 'N/A',
+                    'solicitar_control'     => false,
+                    'motiv_soli_control'    => 'N/A',
+                    'puntua_preconsulta'    => 0
                 ]);
 
                 // se colocada un mensaje indicando que si se hizo registro

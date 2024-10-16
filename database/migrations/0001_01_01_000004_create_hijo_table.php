@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->id();
             // se espera el numero de la T.I
-            $table->string('documento');
+            $table->string('documento')->nullable(false);
 
             // nombres del hijo
             $table->string('nombre', 70)->nullable(false);
@@ -24,14 +24,14 @@ return new class extends Migration
             // apellidos del hijo
             $table->string('apellido', 70)->nullable(false);
 
-            // tipo de documento del hijo (TRUE = T.I  |  FALSE = C.C)
-            $table->boolean('tipo_documento')->nullable(false);
+            // tipo de documento del hijo
+            $table->string('tipo_documento', 50)->nullable(false);
 
             // fecha de nacimiento del hijo, su formato es AÑO-MES-DIA (YYYY-MM-DD)
             $table->date('fecha_nacimiento')->nullable(false);
 
             // texto con la ruta de la imagen dentro de los archivos del servidor o dominio
-            $table->string('foto', 255)->nullable(false);
+            $table->text('foto')->nullable(false);
 
             // foranea de la tabla padre, identificador del padre
             $table->unsignedBigInteger('id_usuario');

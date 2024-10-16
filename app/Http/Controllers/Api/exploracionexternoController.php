@@ -33,9 +33,9 @@ class exploracionexternoController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
-            'explo_exter_od' => 'required|string',
-            'explo_exter_os' => 'required|string'
+            'historia_clinica'  => 'required',
+            'explo_exter_od'    => 'required|string|max:150',
+            'explo_exter_os'    => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -50,9 +50,9 @@ class exploracionexternoController extends Controller
 
         // aqui intentamos crear un Exploracion de externo validando que los datos que vamos a agregar existan
         $exploexter = Exploracion_externo::create([
-            'cod_historia'     => $request->historia_clinica,
-            'explo_exter_od'   => $request->explo_exter_od,
-            'explo_exter_os'   => $request->explo_exter_os
+            'id_historia'       => $request->historia_clinica,
+            'explo_exter_od'    => $request->explo_exter_od,
+            'explo_exter_os'    => $request->explo_exter_os
             
         ]);
 
@@ -146,9 +146,8 @@ class exploracionexternoController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'sometimes',
-            'explo_exter_od' => 'sometimes|string',
-            'explo_exter_os' => 'sometimes|string'
+            'explo_exter_od' => 'sometimes|string|max:150',
+            'explo_exter_os' => 'sometimes|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -166,7 +165,6 @@ class exploracionexternoController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_historia' => $datosvalidados['historia_clinica'] ?? $exploexter->cod_historia,
             'explo_exter_od' => $datosvalidados['explo_exter_od'] ?? $exploexter->explo_exter_od,
             'explo_exter_os' => $datosvalidados['explo_exter_os'] ?? $exploexter->explo_exter_os
         ];

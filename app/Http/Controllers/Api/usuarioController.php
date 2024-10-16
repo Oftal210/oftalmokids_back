@@ -36,13 +36,13 @@ class usuarioController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|string|max:10',
-            'rol' => 'required|digits:1',
-            'nombre' => 'required|string',
-            'apellido' => 'required|string',
-            'email' => 'required|email',
-            'telefono' => 'required|digits:10',
-            'password' => 'required|string'
+            'documento' => 'required|string',
+            'rol'       => 'required|digits:1',
+            'nombre'    => 'required|string|max:50',
+            'apellido'  => 'required|string|max:50',
+            'email'     => 'required|email|max:50',
+            'telefono'  => 'required|string|max:13',
+            'password'  => 'required|string|max:255'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -57,13 +57,13 @@ class usuarioController extends Controller
 
         // aqui intentamos crear un Usuario validando que los datos que vamos a agregar existan
         $usuario = User::create([
-            'id_usuario'    => $request->documento,
-            'cod_rol'       => $request->rol,
-            'nom_usuario'   => $request->nombre,
-            'ape_usuario'   => $request->apellido,
-            'email_usuario' => $request->email,
-            'tele_usuario'  => $request->telefono,
-            'cont_usuario'  => Hash::make( $request->password)
+            'documento'     => $request->documento,
+            'id_rol'        => $request->rol,
+            'nombre'        => $request->nombre,
+            'apellido'      => $request->apellido,
+            'email'         => $request->email,
+            'telefono'      => $request->telefono,
+            'contrasena'    => Hash::make( $request->password)
         ]);
 
         // aqui validamos si se puedo crear el Usuario, en caso de que este vacia, no se deberia haber guardado
@@ -156,13 +156,11 @@ class usuarioController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'sometimes|numeric|digits_between:8,10',
-            'rol' => 'sometimes|digits:1',
-            'nombre' => 'sometimes',
-            'apellido' => 'sometimes',
-            'email' => 'sometimes|email',
-            'telefono' => 'sometimes|digits:10',
-            'password' => 'sometimes'
+            'nombre'    => 'sometimes|string|max:50',
+            'apellido'  => 'sometimes|string|max:50',
+            'email'     => 'sometimes|email|max:50',
+            'telefono'  => 'sometimes|string|max:13',
+            'password'  => 'sometimes|string|max:255'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -180,13 +178,11 @@ class usuarioController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'doc_usuario' => $datosvalidados['documento'] ?? $usuario->doc_usuario,
-            'cod_rol' => $datosvalidados['rol'] ?? $usuario->cod_rol,
-            'nom_usuario' => $datosvalidados['nombre'] ?? $usuario->nom_usuario,
-            'ape_usuario' => $datosvalidados['apellido'] ?? $usuario->ape_usuario,
-            'email_usuario' => $datosvalidados['email'] ?? $usuario->email_usuario,
-            'tele_usuario' => $datosvalidados['telefono'] ?? $usuario->tele_usuario,
-            'cont_usuario' => $datosvalidados['password'] ?? $usuario->cont_usuario,
+            'nombre'        => $datosvalidados['nombre'] ?? $usuario->nombre,
+            'apellido'      => $datosvalidados['apellido'] ?? $usuario->apellido,
+            'email'         => $datosvalidados['email'] ?? $usuario->email,
+            'telefono'      => $datosvalidados['telefono'] ?? $usuario->telefono,
+            'contrasena'    => $datosvalidados['password'] ?? $usuario->contrasena,
         ];
 
         // Si la password es parte de los campos enviados, se encriptara antes de agregarla al mapeo

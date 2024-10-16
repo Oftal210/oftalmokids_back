@@ -33,14 +33,14 @@ class antecedentevisualController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
-            'correcion_optica' => 'required|boolean',
-            'edad_lente_primera_vez' => 'required',
-            'cuantos_cambio_rx' => 'required',
-            'motivo_cambio_rx' => 'required|string',
-            'material_tratamiento_optico' => 'required|string',
-            'indicaciones_uso' => 'required|string',
-            'fecha_ultimo_examen' => 'required|date'
+            'historia_clinica'              => 'required',
+            'correcion_optica'              => 'required|boolean',
+            'edad_lente_primera_vez'        => 'required|digits_between:1,3',
+            'cuantos_cambio_rx'             => 'required|digits_between:1,3',
+            'motivo_cambio_rx'              => 'required|string',
+            'material_tratamiento_optico'   => 'required|string',
+            'indicaciones_uso'              => 'required|string',
+            'fecha_ultimo_examen'           => 'required|date'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -55,14 +55,14 @@ class antecedentevisualController extends Controller
 
         // aqui intentamos crear un Antecedente visual validando que los datos que vamos a agregar existan
         $antecevisual = Antecedente_visual::create([
-            'cod_historia'    => $request->historia_clinica,
-            'correc_optica'       => $request->correcion_optica,
-            'edad_lente_prim_vez'   => $request->edad_lente_primera_vez,
-            'cuant_cambio_rx'   => $request->cuantos_cambio_rx,
-            'motiv_cambio_rx' => $request->motivo_cambio_rx,
-            'mater_tratam_optic'  => $request->material_tratamiento_optico,
-            'indicaci_uso'  => $request->indicaciones_uso,
-            'fech_ultim_exam'  => $request->fecha_ultimo_examen
+            'id_historia'           => $request->historia_clinica,
+            'correcion_optica'      => $request->correcion_optica,
+            'edad_lentes_prim_vez'  => $request->edad_lente_primera_vez,
+            'cuantos_cambio_rx'     => $request->cuantos_cambio_rx,
+            'motivo_cambio_rx'      => $request->motivo_cambio_rx,
+            'material_tratam_optic' => $request->material_tratamiento_optico,
+            'indicacion_uso'        => $request->indicaciones_uso,
+            'fecha_ultimo_examen'   => $request->fecha_ultimo_examen
         ]);
 
         // aqui validamos si se puedo crear el Antecedente visual, en caso de que este vacia, no se deberia haber guardado
@@ -155,14 +155,13 @@ class antecedentevisualController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'sometimes',
-            'correcion_optica' => 'sometimes|string',
-            'edad_lente_primera_vez' => 'sometimes|string',
-            'cuantos_cambio_rx' => 'sometimes|string',
-            'motivo_cambio_rx' => 'sometimes|string',
-            'material_tratamiento_optico' => 'sometimes|string',
-            'indicaciones_uso' => 'sometimes|string',
-            'fecha_ultimo_examen' => 'sometimes|string'
+            'correcion_optica'              => 'sometimes|boolean',
+            'edad_lente_primera_vez'        => 'sometimes|digits_between:1,3',
+            'cuantos_cambio_rx'             => 'sometimes|digits_between:1,3',
+            'motivo_cambio_rx'              => 'sometimes|string',
+            'material_tratamiento_optico'   => 'sometimes|string',
+            'indicaciones_uso'              => 'sometimes|string',
+            'fecha_ultimo_examen'           => 'sometimes|date'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -180,14 +179,13 @@ class antecedentevisualController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_historia' => $datosvalidados['historia_clinica'] ?? $antecevisual->cod_historia,
-            'correc_optica' => $datosvalidados['correcion_optica'] ?? $antecevisual->correc_optica,
-            'edad_lente_prim_vez' => $datosvalidados['edad_lente_primera_vez'] ?? $antecevisual->edad_lente_prim_vez,
-            'cuant_cambio_rx' => $datosvalidados['cuantos_cambio_rx'] ?? $antecevisual->cuant_cambio_rx,
-            'motiv_cambio_rx' => $datosvalidados['motivo_cambio_rx'] ?? $antecevisual->motiv_cambio_rx,
-            'mater_tratam_optic' => $datosvalidados['material_tratamiento_optico'] ?? $antecevisual->mater_tratam_optic,
-            'indicaci_uso' => $datosvalidados['indicaciones_uso'] ?? $antecevisual->indicaci_uso,
-            'fech_ultim_exam' => $datosvalidados['fecha_ultimo_examen'] ?? $antecevisual->fech_ultim_exam
+            'correcion_optica'      => $datosvalidados['correcion_optica'] ?? $antecevisual->correcion_optica,
+            'edad_lentes_prim_vez'  => $datosvalidados['edad_lente_primera_vez'] ?? $antecevisual->edad_lentes_prim_vez,
+            'cuantos_cambio_rx'     => $datosvalidados['cuantos_cambio_rx'] ?? $antecevisual->cuantos_cambio_rx,
+            'motivo_cambio_rx'      => $datosvalidados['motivo_cambio_rx'] ?? $antecevisual->motivo_cambio_rx,
+            'material_tratam_optic' => $datosvalidados['material_tratamiento_optico'] ?? $antecevisual->material_tratam_optic,
+            'indicacion_uso'        => $datosvalidados['indicaciones_uso'] ?? $antecevisual->indicacion_uso,
+            'fecha_ultimo_examen'   => $datosvalidados['fecha_ultimo_examen'] ?? $antecevisual->fecha_ultimo_examen
         ];
 
         

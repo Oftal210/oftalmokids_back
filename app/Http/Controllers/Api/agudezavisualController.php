@@ -35,22 +35,22 @@ class agudezavisualController extends Controller
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
             'historia_clinica' => 'required',
-            'test' => 'required|string',
-            'distancia' => 'required|string',
-            'od_sc_vl'=> 'required|string',
-            'od_vp' => 'required|string',
-            'od_ph' => 'required|string',
-            'os_sc_vl' => 'required|string',
-            'os_vp' => 'required|string',
-            'os_ph' => 'required|string',
-            'lensome_od' => 'required|string',
-            'lensome_os' => 'required|string',
-            'od_cc_vl' => 'required|string',
-            'od_vp_lenso' => 'required|string',
-            'os_cc_vl' => 'required|string',
-            'os_vp_lenso' => 'required|string',
-            'queratome_od' => 'required|string',
-            'queratome_os' => 'required|string'
+            'test'          => 'required|string|max:150',
+            'distancia'     => 'required|string|max:150',
+            'od_sc_vl'      => 'required|string|max:150',
+            'od_vp'         => 'required|string|max:150',
+            'od_ph'         => 'required|string|max:150',
+            'os_sc_vl'      => 'required|string|max:150',
+            'os_vp'         => 'required|string|max:150',
+            'os_ph'         => 'required|string|max:150',
+            'lensome_od'    => 'required|string|max:150',
+            'lensome_os'    => 'required|string|max:150',
+            'od_cc_vl'      => 'required|string|max:150',
+            'od_vp_lenso'   => 'required|string|max:150',
+            'os_cc_vl'      => 'required|string|max:150',
+            'os_vp_lenso'   => 'required|string|max:150',
+            'queratome_od'  => 'required|string|max:150',
+            'queratome_os'  => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -65,7 +65,7 @@ class agudezavisualController extends Controller
 
         // aqui intentamos crear un Agudeza visual validando que los datos que vamos a agregar existan
         $agudezavisual = Agudeza_visual::create([
-            'cod_historia' => $request->historia_clinica,
+            'id_historia' => $request->historia_clinica,
             'agude_visu_test' => $request->test,
             'agude_visu_distan' => $request->distancia,
             'od_sc_vl' => $request->od_sc_vl,
@@ -121,7 +121,7 @@ class agudezavisualController extends Controller
 
         // si la Agudeza visual fue encontrado lo colocara dentro de esta variable
         $data = [
-            'agudezavisual' => $agudezavisual,
+            'agudeza_visual' => $agudezavisual,
             'status' => 200
         ];
         
@@ -174,7 +174,6 @@ class agudezavisualController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'sometimes',
             'test' => 'sometimes|string',
             'distancia' => 'sometimes|string',
             'od_sc_vl'=> 'sometimes|string',
@@ -191,7 +190,6 @@ class agudezavisualController extends Controller
             'os_vp_lenso' => 'sometimes|string',
             'queratome_od' => 'sometimes|string',
             'queratome_os' => 'sometimes|string'
-
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -209,7 +207,6 @@ class agudezavisualController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_historia'      => $datosvalidados['historia_clinica'] ?? $agudezavisual->cod_historia,
             'agude_visu_test'   => $datosvalidados['test'] ?? $agudezavisual->agude_visu_test,
             'agude_visu_distan' => $datosvalidados['distancia'] ?? $agudezavisual->agude_visu_distan,
             'od_sc_vl'          => $datosvalidados['od_sc_vl'] ?? $agudezavisual->od_sc_vl,

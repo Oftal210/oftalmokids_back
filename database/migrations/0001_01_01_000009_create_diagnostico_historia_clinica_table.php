@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('control')->nullable(false);
 
             // fecha y hora en la cual se realizo 
-            $table->date('fecha');
+            $table->timestamp('fecha')->useCurrent();
 
             // Foraneas
             // foranea de la tabla diagnostico, idenficador del diagnostico que tiene este registro

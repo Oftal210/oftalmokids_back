@@ -34,13 +34,13 @@ class hijoController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|string|max:10',
-            'padre' => 'required|string|max:10',
-            'nombre' => 'required',
-            'apellido' => 'required',
-            'tipodoc' => 'required|string',
-            'nacimiento' => 'required|date',
-            'foto' => 'required'
+            'documento'     => 'required',
+            'padre'         => 'required',
+            'nombre'        => 'required|string|max:70',
+            'apellido'      => 'required|string|max:70',
+            'tipodoc'       => 'required|string|max:50',
+            'nacimiento'    => 'required|date',
+            'foto'          => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -55,13 +55,13 @@ class hijoController extends Controller
 
         // aqui intentamos crear un Hijo validando que los datos que vamos a agregar existan
         $hijo = Hijo::create([
-            'id_hijo'    => $request->documento,
-            'id_usuario'       => $request->padre,
-            'nom_hijo'   => $request->nombre,
-            'ape_hijo'   => $request->apellido,
-            'tip_doc_hijo' => $request->tipodoc,
-            'fech_nac_hijo'  => $request->nacimiento,
-            'foto_hijo' => $request->foto
+            'documento'         => $request->documento,
+            'id_usuario'        => $request->padre,
+            'nombre'            => $request->nombre,
+            'apellido'          => $request->apellido,
+            'tipo_documento'    => $request->tipodoc,
+            'fecha_nacimiento'  => $request->nacimiento,
+            'foto'              => $request->foto
         ]);
 
         // aqui validamos si se puedo crear el Hijo, en caso de que este vacia, no se deberia haber guardado
@@ -154,11 +154,11 @@ class hijoController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'nombre' => 'sometimes',
-            'apellido' => 'sometimes',
-            'tipodoc' => 'sometimes|string',
-            'nacimiento' => 'sometimes|date',
-            'foto' => 'sometimes'
+            'nombre'        => 'sometimes|string|max:70',
+            'apellido'      => 'sometimes|string|max:70',
+            'tipodoc'       => 'sometimes|string|max:50',
+            'nacimiento'    => 'sometimes|date',
+            'foto'          => 'sometimes|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -176,13 +176,11 @@ class hijoController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'id_hijo' => $datosvalidados['documento'] ?? $hijo->id_hijo,
-            'id_padre' => $datosvalidados['padre'] ?? $hijo->id_padre,
-            'nom_hijo' => $datosvalidados['nombre'] ?? $hijo->nom_hijo,
-            'ape_hijo' => $datosvalidados['apellido'] ?? $hijo->ape_hijo,
-            'tipdoc_hijo' => $datosvalidados['tipodoc'] ?? $hijo->tipdoc_hijo,
-            'fechnac_hijo' => $datosvalidados['nacimiento'] ?? $hijo->fechnac_hijo,
-            'foto_hijo' => $datosvalidados['foto'] ?? $hijo->foto_hijo,
+            'nombre'            => $datosvalidados['nombre'] ?? $hijo->nombre,
+            'apellido'          => $datosvalidados['apellido'] ?? $hijo->apellido,
+            'tipo_documento'    => $datosvalidados['tipodoc'] ?? $hijo->tipo_documento,
+            'fecha_nacimiento'  => $datosvalidados['nacimiento'] ?? $hijo->fecha_nacimiento,
+            'foto'              => $datosvalidados['foto'] ?? $hijo->foto,
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos

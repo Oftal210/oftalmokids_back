@@ -20,20 +20,19 @@ class Preconsulta extends Model
 
     protected $fillable = [
         'id_hijo', 
-        'uso_gaf_lente', 
-        'motiv_uso_gaf', 
-        'uso_medicam', 
-        'motiv_uso_medicam',
+        'uso_gafa_lentes', 
+        'motivo_uso_gafas', 
+        'uso_medicamento', 
+        'motivo_uso_medicam',
         'limit_pantalla',
         'motiv_limit_pantalla',
         'activid_air_libre',
         'motiv_acti_libre',
         'buena_aliment',
         'motiv_bue_alimen',
-        'solicit_control',
+        'solicitar_control',
         'motiv_soli_control',
-        'puntua_preconsul',
-        'fecha_preconsul'
+        'puntua_preconsulta'
     ];
 
 

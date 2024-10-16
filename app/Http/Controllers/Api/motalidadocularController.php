@@ -33,13 +33,13 @@ class motalidadocularController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
-            'mo_seguimiento_od' => 'required|string',
-            'mo_sacadicos_od' => 'required|string',
-            'mo_seguimiento_os' => 'required|string',
-            'mo_sacadicos_os' => 'required|string',
-            'mo_seguimiento_ao' => 'required|string', 
-            'mo_sacadicos_ao' => 'required|string'
+            'historia_clinica'  => 'required',
+            'mo_seguimiento_od' => 'required|string|max:150',
+            'mo_sacadicos_od'   => 'required|string|max:150',
+            'mo_seguimiento_os' => 'required|string|max:150',
+            'mo_sacadicos_os'   => 'required|string|max:150',
+            'mo_seguimiento_ao' => 'required|string|max:150', 
+            'mo_sacadicos_ao'   => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -54,13 +54,13 @@ class motalidadocularController extends Controller
 
         // aqui intentamos crear una Motalidad ocular validando que los datos que vamos a agregar existan
         $motaliocular = Motalidad_ocular::create([
-            'cod_historia' => $request->historia_clinica,
+            'id_historia'       => $request->historia_clinica,
             'mo_seguimiento_od' => $request->mo_seguimiento_od,
-            'mo_sacadicos_od' => $request->mo_sacadicos_od,
+            'mo_sacadicos_od'   => $request->mo_sacadicos_od,
             'mo_seguimiento_os' => $request->mo_seguimiento_os,
-            'mo_sacadicos_os' => $request->mo_sacadicos_os,
+            'mo_sacadicos_os'   => $request->mo_sacadicos_os,
             'mo_seguimiento_ao' => $request->mo_seguimiento_ao, 
-            'mo_sacadicos_ao' => $request->mo_sacadicos_ao
+            'mo_sacadicos_ao'   => $request->mo_sacadicos_ao
             
         ]);
 
@@ -154,13 +154,12 @@ class motalidadocularController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'mo_seguimiento_od' => 'sometimes|string',
-            'mo_sacadicos_od' => 'sometimes|string',
-            'mo_seguimiento_os' => 'sometimes|string',
-            'mo_sacadicos_os' => 'sometimes|string',
-            'mo_seguimiento_ao' => 'sometimes|string', 
-            'mo_sacadicos_ao' => 'sometimes|string'
-
+            'mo_seguimiento_od' => 'sometimes|string|max:150',
+            'mo_sacadicos_od'   => 'sometimes|string|max:150',
+            'mo_seguimiento_os' => 'sometimes|string|max:150',
+            'mo_sacadicos_os'   => 'sometimes|string|max:150',
+            'mo_seguimiento_ao' => 'sometimes|string|max:150', 
+            'mo_sacadicos_ao'   => 'sometimes|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion

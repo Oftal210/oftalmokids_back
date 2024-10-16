@@ -33,25 +33,25 @@ class oftalmoscopiaController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
-            'medi_refrin_od' => 'required|string',
-            'refle_fovea_od' => 'required|string',
-            'papila_od' => 'required|string',
-            'excav_fisio_od' => 'required|string',
-            'profundidad_od' => 'required|string',
-            'vasos_od' => 'required|string',
-            'rela_arte_od' => 'required|string',
-            'macula_od' => 'required|string',
-            'reti_perif_od' => 'required|string',
-            'medi_refrin_os' => 'required|string',
-            'refle_fovea_os' => 'required|string',
-            'papila_os' => 'required|string',
-            'excav_fisio_os' => 'required|string',
-            'profundidad_os' => 'required|string',
-            'vasos_os' => 'required|string',
-            'rela_arte_os' => 'required|string',
-            'macula_os' => 'required|string',
-            'reti_perif_os' => 'required|string'
+            'historia_clinica'  => 'required',
+            'medi_refrin_od'    => 'required|string|max:150',
+            'refle_fovea_od'    => 'required|string|max:150',
+            'papila_od'         => 'required|string|max:150',
+            'excav_fisio_od'    => 'required|string|max:150',
+            'profundidad_od'    => 'required|string|max:150',
+            'vasos_od'          => 'required|string|max:150',
+            'rela_arte_od'      => 'required|string|max:150',
+            'macula_od'         => 'required|string|max:150',
+            'reti_perif_od'     => 'required|string|max:150',
+            'medi_refrin_os'    => 'required|string|max:150',
+            'refle_fovea_os'    => 'required|string|max:150',
+            'papila_os'         => 'required|string|max:150',
+            'excav_fisio_os'    => 'required|string|max:150',
+            'profundidad_os'    => 'required|string|max:150',
+            'vasos_os'          => 'required|string|max:150',
+            'rela_arte_os'      => 'required|string|max:150',
+            'macula_os'         => 'required|string|max:150',
+            'reti_perif_os'     => 'required|string|max:150'
 
         ]);
 
@@ -67,28 +67,25 @@ class oftalmoscopiaController extends Controller
 
         // aqui intentamos crear una Oftalmoscopia validando que los datos que vamos a agregar existan
         $oftalmoscopia = Oftalmoscopia::create([
-            
-
-            'cod_historia' => $request->historia_clinica,
-            'medi_refrin_od' => $request->medi_refrin_od,
-            'refle_fovea_od' => $request->refle_fovea_od,
-            'papila_od' => $request->papila_od,
-            'excav_fisio_od' => $request->excav_fisio_od,
-            'profundidad_od' => $request->profundidad_od,
-            'vasos_od' => $request->vasos_od,
-            'rela_arte_od' => $request->rela_arte_od,
-            'macula_od' => $request->macula_od,
-            'reti_perif_od' => $request->reti_perif_od,
-            'medi_refrin_os' => $request->medi_refrin_os,
-            'refle_fovea_os' => $request->refle_fovea_os,
-            'papila_os' => $request->papila_os,
-            'excav_fisio_os' => $request->excav_fisio_os,
-            'profundidad_os' => $request->profundidad_os,
-            'vasos_os' => $request->vasos_os,
-            'rela_arte_os' => $request->rela_arte_os,
-            'macula_os' => $request->macula_os,
-            'reti_perif_os' => $request->reti_perif_os
-            
+            'id_historia'       => $request->historia_clinica,
+            'medi_refrin_od'    => $request->medi_refrin_od,
+            'refle_fovea_od'    => $request->refle_fovea_od,
+            'papila_od'         => $request->papila_od,
+            'excav_fisio_od'    => $request->excav_fisio_od,
+            'profundidad_od'    => $request->profundidad_od,
+            'vasos_od'          => $request->vasos_od,
+            'rela_arte_od'      => $request->rela_arte_od,
+            'macula_od'         => $request->macula_od,
+            'reti_perif_od'     => $request->reti_perif_od,
+            'medi_refrin_os'    => $request->medi_refrin_os,
+            'refle_fovea_os'    => $request->refle_fovea_os,
+            'papila_os'         => $request->papila_os,
+            'excav_fisio_os'    => $request->excav_fisio_os,
+            'profundidad_os'    => $request->profundidad_os,
+            'vasos_os'          => $request->vasos_os,
+            'rela_arte_os'      => $request->rela_arte_os,
+            'macula_os'         => $request->macula_os,
+            'reti_perif_os'     => $request->reti_perif_os
         ]);
 
         // aqui validamos si se puedo crear la Oftalmoscopia, en caso de que este vacia, no se deberia haber guardado
@@ -181,24 +178,24 @@ class oftalmoscopiaController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'medi_refrin_od' => 'sometimes|string',
-            'refle_fovea_od' => 'sometimes|string',
-            'papila_od' => 'sometimes|string',
-            'excav_fisio_od' => 'sometimes|string',
-            'profundidad_od' => 'sometimes|string',
-            'vasos_od' => 'sometimes|string',
-            'rela_arte_od' => 'sometimes|string',
-            'macula_od' => 'sometimes|string',
-            'reti_perif_od' => 'sometimes|string',
-            'medi_refrin_os' => 'sometimes|string',
-            'refle_fovea_os' => 'sometimes|string',
-            'papila_os' => 'sometimes|string',
-            'excav_fisio_os' => 'sometimes|string',
-            'profundidad_os' => 'sometimes|string',
-            'vasos_os' => 'sometimes|string',
-            'rela_arte_os' => 'sometimes|string',
-            'macula_os' => 'sometimes|string',
-            'reti_perif_os' => 'sometimes|string'
+            'medi_refrin_od'    => 'required|string|max:150',
+            'refle_fovea_od'    => 'required|string|max:150',
+            'papila_od'         => 'required|string|max:150',
+            'excav_fisio_od'    => 'required|string|max:150',
+            'profundidad_od'    => 'required|string|max:150',
+            'vasos_od'          => 'required|string|max:150',
+            'rela_arte_od'      => 'required|string|max:150',
+            'macula_od'         => 'required|string|max:150',
+            'reti_perif_od'     => 'required|string|max:150',
+            'medi_refrin_os'    => 'required|string|max:150',
+            'refle_fovea_os'    => 'required|string|max:150',
+            'papila_os'         => 'required|string|max:150',
+            'excav_fisio_os'    => 'required|string|max:150',
+            'profundidad_os'    => 'required|string|max:150',
+            'vasos_os'          => 'required|string|max:150',
+            'rela_arte_os'      => 'required|string|max:150',
+            'macula_os'         => 'required|string|max:150',
+            'reti_perif_os'     => 'required|string|max:150'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion

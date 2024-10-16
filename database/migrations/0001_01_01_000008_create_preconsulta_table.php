@@ -54,6 +54,10 @@ return new class extends Migration
 
             // puntuacion en numero (de 1 a 6) sobre los datos anteriores de esta tabla
             $table->integer('puntua_preconsulta')->nullable(false);
+
+            // fecha en la que se realiza la preconsulta por el padre o el sistema
+            $table->timestamp('fecha_preconsulta')->useCurrent();
+
             // foranea de la tabla hijo, identificador del hijo
             $table->unsignedBigInteger('id_hijo')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a hijo

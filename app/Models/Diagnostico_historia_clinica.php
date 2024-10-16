@@ -22,7 +22,8 @@ class Diagnostico_historia_clinica extends Model
         'tratamiento',
         'pronostico', 
         'control', 
-        'fecha'
+        'fecha',
+        'id_diagnostico'
     ];
 
     // Relacion de los datos en el modelo, una diagnostico x historia clinica tiene un diagnostico

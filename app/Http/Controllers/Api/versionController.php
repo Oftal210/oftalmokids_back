@@ -33,7 +33,7 @@ class versionController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'historia_clinica' => 'required',
+            'historia_clinica'      => 'required',
             'observacion_versiones' => 'required|string'
         ]);
 
@@ -49,8 +49,8 @@ class versionController extends Controller
 
         // aqui intentamos crear una Version validando que los datos que vamos a agregar existan
         $version = Version::create([
-            'cod_historia'    => $request->historia_clinica,
-            'versi_observaci' => $request->observacion_versiones,
+            'id_historia'   => $request->historia_clinica,
+            'observacion'   => $request->observacion_versiones,
         ]);
 
         // aqui validamos si se puedo crear la Version, en caso de que este vacia, no se deberia haber guardado
@@ -161,7 +161,7 @@ class versionController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'versi_observaci' => $datosvalidados['observacion_versiones'] ?? $version->versi_observaci
+            'observacion' => $datosvalidados['observacion_versiones'] ?? $version->observacion
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos

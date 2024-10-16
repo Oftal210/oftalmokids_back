@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('diagnostico', function (Blueprint $table) {
             // identificador del codigo de diagnostico
             $table->id();
-            $table->string('codigo')->nullable();
+
+            // codigo del diagnostico, ej: "H000"
+            $table->string('codigo')->nullable(false);
 
             // descripcion del codigo de diagnostico
             $table->text('descripcion')->nullable(false);

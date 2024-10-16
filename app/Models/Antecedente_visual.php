@@ -18,13 +18,13 @@ class Antecedente_visual extends Model
 
     protected $fillable = [
         'id_historia',
-        'correc_optica',          
-        'edad_lente_prim_vez',                       
-        'cuant_cambio_rx',                       
-        'motiv_cambio_rx',             
-        'mater_tratam_optic',                      
-        'indicaci_uso',                     
-        'fech_ultim_exam'
+        'correcion_optica',          
+        'edad_lentes_prim_vez',                       
+        'cuantos_cambio_rx',                       
+        'motivo_cambio_rx',             
+        'material_tratam_optic',                      
+        'indicacion_uso',                     
+        'fecha_ultimo_examen'
     ];
 
     // Relacion de los datos en el modelo, un antecedente visual solo tiene una historia clinica

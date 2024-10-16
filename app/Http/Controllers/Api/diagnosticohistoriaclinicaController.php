@@ -33,12 +33,12 @@ class diagnosticohistoriaclinicaController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'diagnostico' => 'required|string',
-            'historia_clinica' => 'required',
-            'motivo_consulta' => 'required|string',
-            'tratamiento_diagnostico' => 'required|string',
-            'pronostico_diagnostico' => 'required|string',
-            'control_diagnostico' => 'required|string'
+            'historia_clinica'          => 'required',
+            'diagnostico'               => 'required',
+            'motivo_consulta'           => 'required|string',
+            'tratamiento_diagnostico'   => 'required|string',
+            'pronostico_diagnostico'    => 'required|string',
+            'control_diagnostico'       => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -53,12 +53,12 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // aqui intentamos crear un Diagnostico x historia clinica validando que los datos que vamos a agregar existan
         $diag_his_cli = Diagnostico_historia_clinica::create([
-            'cod_diagnostico'   => $request->diagnostico,
-            'cod_historia'      => $request->historia_clinica,
+            'id_historia'       => $request->historia_clinica,
+            'id_diagnostico'    => $request->diagnostico,
             'motivo_consulta'   => $request->motivo_consulta,
-            'tratam_diag_his'   => $request->tratamiento_diagnostico,
-            'pronos_diag_his'   => $request->pronostico_diagnostico,
-            'control_diag_his'  => $request->control_diagnostico
+            'tratamiento'       => $request->tratamiento_diagnostico,
+            'pronostico'        => $request->pronostico_diagnostico,
+            'control'           => $request->control_diagnostico
         ]);
 
         // aqui validamos si se puedo crear el Diagnostico x historia clinica, en caso de que este vacia, no se deberia haber guardado
@@ -73,7 +73,7 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // aqui colocamos en la variable $data el Diagnostico x historia clinica que fue agregado y enviamos un 201 (se creo un registro correctamente)
         $data = [
-            'Diagnostico_historia_clinica' => $diag_his_cli,
+            'diagnostico_historia_clinica' => $diag_his_cli,
             'status' => 201
         ];
 
@@ -98,7 +98,7 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // si el Diagnostico x historia clinica fue encontrado lo colocara dentro de esta variable
         $data = [
-            'Diagnostico_historia_clinica' => $diag_his_cli,
+            'diagnostico_historia_clinica' => $diag_his_cli,
             'status' => 200
         ];
         
@@ -151,12 +151,10 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'diagnostico' => 'sometimes|string',
-            'historia_clinica' => 'sometimes',
-            'motivo_consulta' => 'sometimes|string',
-            'tratamiento_diagnostico' => 'sometimes|string',
-            'pronostico_diagnostico' => 'sometimes|string',
-            'control_diagnostico' => 'sometimes|string'
+            'motivo_consulta'           => 'sometimes|string',
+            'tratamiento_diagnostico'   => 'sometimes|string',
+            'pronostico_diagnostico'    => 'sometimes|string',
+            'control_diagnostico'       => 'sometimes|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -174,12 +172,10 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'cod_diagnostico'   => $datosvalidados['diagnostico'] ?? $diag_his_cli->cod_diagnostico,
-            'cod_historia'      => $datosvalidados['historia_clinica'] ?? $diag_his_cli->cod_historia,
             'motivo_consulta'   => $datosvalidados['motivo_consulta'] ?? $diag_his_cli->motivo_consulta,
-            'tratam_diag_his'   => $datosvalidados['tratamiento_diagnostico'] ?? $diag_his_cli->tratam_diag_his,
-            'pronos_diag_his'   => $datosvalidados['pronostico_diagnostico'] ?? $diag_his_cli->pronos_diag_his,
-            'control_diag_his'  => $datosvalidados['control_diagnostico'] ?? $diag_his_cli->control_diag_his
+            'tratamiento'       => $datosvalidados['tratamiento_diagnostico'] ?? $diag_his_cli->tratamiento,
+            'pronostico'        => $datosvalidados['pronostico_diagnostico'] ?? $diag_his_cli->pronostico,
+            'control'           => $datosvalidados['control_diagnostico'] ?? $diag_his_cli->control
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
@@ -191,7 +187,7 @@ class diagnosticohistoriaclinicaController extends Controller
         // si el Diagnostico x historia clinica fue actualizado correctamente, se cargara la siguiente variable con los datos de:
         $data = [
             'mensaje' => 'El Diagnostico x historia clinica fue actualizado',
-            'Diagnostico_historia_clinica' => $diag_his_cli,
+            'diagnostico_historia_clinica' => $diag_his_cli,
             'status' => 200
         ];
         

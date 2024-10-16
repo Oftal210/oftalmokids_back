@@ -22,13 +22,13 @@ class Hijo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-
-        'id_usuario', 
+        'documento',
         'nombre', 
         'apellido', 
         'tipo_documento', 
         'fecha_nacimiento',
-        'foto'
+        'foto',
+        'id_usuario'
     ];
 
 
