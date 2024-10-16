@@ -60,7 +60,7 @@ Route::middleware('auth:api')->group(function () {
 
 // ROL 1 ADMIN Y ROL 2 USUARIO NORMAL
 
-//Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
+Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
@@ -112,7 +112,7 @@ Route::middleware('auth:api')->group(function () {
 
     //Ruta API para llamar solamente a las historias clinicas del hijo
     Route::get('/historiasdelhijo/{id_hijo}', [historiaclinicaController::class, 'historiasdelhijo']);
-//});
+});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -303,7 +303,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A USUARIO
     // Ruta API para crear un usuario
     Route::post('/usuario', [usuarioController::class, 'store']);
@@ -319,7 +319,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un usuario
     Route::delete('/usuario/{id_usuario}', [usuarioController::class, 'destroy']);
-//});
+});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -360,7 +360,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PADRE
     // Ruta API para crear un padre
     //Route::post('/padre', [padreController::class, 'store']);
@@ -376,10 +376,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un padre
     //Route::delete('/padre/{id_padre}', [padreController::class, 'destroy']);
-//});
+});
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL HIJO
     // Ruta API para crear un hijo
     // Route::post('/hijo', [hijoController::class, 'store']); PARA AMBBOS ROLES
@@ -395,10 +395,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // // Ruta API para eliminiar a un hijo
     // Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']); PARA AMBBOS ROLES
-//});
+});
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PRECONSULTA
     // Ruta API para crear una preconsulta
     Route::post('/preconsulta', [preconsultaController::class, 'store']); //PARA AMBBOS ROLES
@@ -414,7 +414,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una preconsulta
     Route::delete('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'destroy']);
-//});
+});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
