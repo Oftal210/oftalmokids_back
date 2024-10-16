@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 
-<head>
+{{-- <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código de Verificación</title>
+    <title>Código de Verificación</title> --}}
     {{-- <style>
         body {
             font-family: 'Courier New', monospace;
@@ -48,9 +48,9 @@
             /* Añadido para separar los cuadros del texto */
         }
     </style> --}}
-</head>
+{{-- </head> --}}
 
-<body>
+{{-- <body>
     <div class="container">
         <div class="verification-box">
             <h1>Código de Verificación</h1>
@@ -58,8 +58,24 @@
             <h5>Su código de verificación es:</h5>
             <div class="code-container">
                 @foreach (str_split($verificationCode) as $number)
-                    {{-- <div style="display:inline-block" class="code-box">{{ $number }}</div> --}}
-                    <div>{{ $number }}</div>
+                    <div style="display:inline-block" class="code-box">{{ $number }}</div> --}}
+                    {{-- <div>{{ $number }}</div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</body> --}}
+
+<body>
+    <div>
+        <div>
+            <h1>Código de Verificación</h1>
+            <h5>Estimado/a Usuario/a</h5>
+            <h5>Su código de verificación es:</h5>
+            <div>
+                @foreach (str_split($verificationCode) as $number)
+                    {{-- <div>{{ $number }}</div> --}}
+                    <span style="font-size: 20px;">{{ $number }}</span>
                 @endforeach
             </div>
         </div>
