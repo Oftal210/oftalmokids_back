@@ -361,25 +361,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
-    // RUTAS PARA EL PADRE
-    // Ruta API para crear un padre
-    //Route::post('/padre', [padreController::class, 'store']);
-
-    // Ruta API para llamar a todos los padres
-    //Route::get('/padre', [padreController::class, 'index']);
-
-    // Ruta API para llamar a un padre especifco
-    // Route::get('/padre/{id_padre}', [padreController::class, 'show']); PARA AMBBOS ROLES
-
-    // Ruta API para modificar la informacion de un padre
-    // Route::put('/padre/{id_padre}', [padreController::class, 'update']); PARA AMBBOS ROLES
-
-    // Ruta API para eliminiar a un padre
-    //Route::delete('/padre/{id_padre}', [padreController::class, 'destroy']);
-});
-
-
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL HIJO
     // Ruta API para crear un hijo
     // Route::post('/hijo', [hijoController::class, 'store']); PARA AMBBOS ROLES
