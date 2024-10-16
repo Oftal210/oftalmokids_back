@@ -36,6 +36,7 @@ return new class extends Migration
             // foranea de la tabla padre, identificador del padre
             $table->unsignedBigInteger('id_usuario');
 
+            // Foraneas
             // se define la llave foranea en esta tabla que apunta a padre
             $table->foreign('id_usuario')->references('id')->on('users');
         });

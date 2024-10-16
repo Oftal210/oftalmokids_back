@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 // Importamos el modelo de Preconsulta con la siguiente direccion
@@ -12,6 +13,7 @@ use App\Models\Hijo;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Type\FalseType;
 
 class preconsultaController extends Controller
 {
@@ -35,7 +37,7 @@ class preconsultaController extends Controller
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'hijo' => 'required|numeric|digits_between:8,10',
+            'hijo' => 'required|string|max:10',
             'uso_gafas' => 'required|boolean',
             'motivo_gafas' => 'nullable|string',
             'uso_medic' => 'required|boolean',
@@ -169,7 +171,6 @@ class preconsultaController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'hijo' => 'sometimes|numeric|digits_between:8,10',
             'uso_gafas' => 'sometimes|boolean',
             'motivo_gafas' => 'sometimes',
             'uso_medic' => 'sometimes|boolean',
@@ -200,7 +201,6 @@ class preconsultaController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'id_hijo'   => $datosvalidados['hijo'] ?? $preconsulta->id_hijo,
             'uso_gaf_lente'       => $datosvalidados['uso_gafas'] ?? $preconsulta->uso_gaf_lente,
             'motiv_uso_gaf'   => $datosvalidados['motivo_gafas'] ?? $preconsulta->motiv_uso_gaf,
             'uso_medicam' => $datosvalidados['uso_medic'] ?? $preconsulta->uso_medicam,
@@ -233,6 +233,8 @@ class preconsultaController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Funcion para buscar todos los registros de un hijo especifico
     public function preconsdelhijo ($id){
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
@@ -261,5 +263,51 @@ class preconsultaController extends Controller
 
         // Retornamos los datos obtenidos anteriormente
         return response()->json($hijoprecon, 200);
+    }
+
+
+    // Funcion para realizar un promedio del puntaje de sus preconsultas
+    public function promediomespreconsulta($id){
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensaje' => 'No se encontro al hijo',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Aquí $hijoprecon es una colección que contendra todos los registros encontrados
+        $hijoprecon = Preconsulta::where('id_hijo', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijoprecon){
+            $data = [
+                'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Aquí buscaremos el promedio de puntaje del mes en el que nos encontramos
+        $promeprecon = Preconsulta::where('id_hijo', $id)                       // filtramos por el hijo que se necesita
+                                  ->whereMonth('fecha_preconsul', now()->month) // filtramos el mes actual
+                                  ->whereyear('fecha_preconsul', now()->year)   // filtramos el año actual
+                                  ->avg('puntua_preconsul');                    // realizamos promedio de los registros encontrados
+                                  
+        // Validamos si la variable con la data esta vacia y NO ENCONTRO ABSOLUTA NADA
+        if (!$promeprecon){
+            $data = [
+                'mensaje' => 'No se encontraron preconsultas de este mes',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente, (int) es para quitar los decimales y dejar solo la parte entera, ej: 5,7 lo deja en 5
+        return response()->json((int)$promeprecon, 200);
     }
 }

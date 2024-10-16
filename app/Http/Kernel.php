@@ -63,4 +63,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'rol' => \App\Http\Middleware\RoleMiddleware::class,
     ];
+    // hay que colocar ciertas rutas en vendor/laravel/framework/src/illuminate/foundation/http/kernel.php
+    // rol y auth en caso de que no funcione estando aca
 }
