@@ -27,11 +27,10 @@ return new class extends Migration
             $table->string('apellido', 50)->nullable(false);
 
             // Email del usuario
-            $table->string('email', 50)->unique();
+            $table->string('email', 255)->unique();
 
             // telefono del usuario 
             $table->string('telefono',13)->nullable(false);
-        
 
             // Foranea de la tabla rol, identificador del rol
             $table->unsignedBigInteger('id_rol')->nullable(false);

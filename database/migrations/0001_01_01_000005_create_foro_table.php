@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('foro', function (Blueprint $table) {
 
             // identificador de la preconsulta
-            $table->bigIncrements('cod_foro')->primary();
+            $table->id();
             
             // subtitulo que tendra el foro
             $table->text('subtitulo_foro')->nullable(false);

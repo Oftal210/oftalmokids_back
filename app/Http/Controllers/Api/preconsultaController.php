@@ -294,9 +294,9 @@ class preconsultaController extends Controller
 
         // Aquí buscaremos el promedio de puntaje del mes en el que nos encontramos
         $promeprecon = Preconsulta::where('id_hijo', $id)                       // filtramos por el hijo que se necesita
-                                  ->whereMonth('fecha_preconsul', now()->month) // filtramos el mes actual
-                                  ->whereyear('fecha_preconsul', now()->year)   // filtramos el año actual
-                                  ->avg('puntua_preconsul');                    // realizamos promedio de los registros encontrados
+                                  ->whereMonth('fecha_preconsulta', now()->month) // filtramos el mes actual
+                                  ->whereyear('fecha_preconsulta', now()->year)   // filtramos el año actual
+                                  ->avg('puntua_preconsulta');                    // realizamos promedio de los registros encontrados
                                   
         // Validamos si la variable con la data esta vacia y NO ENCONTRO ABSOLUTA NADA
         if (!$promeprecon){

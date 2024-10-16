@@ -31,7 +31,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento')->nullable(false);
 
             // texto con la ruta de la imagen dentro de los archivos del servidor o dominio
-            $table->text('foto')->nullable(false);
+            $table->text('foto');
 
             // foranea de la tabla padre, identificador del padre
             $table->unsignedBigInteger('id_usuario');
