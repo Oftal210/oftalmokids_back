@@ -43,6 +43,8 @@ Route::group([
 
     Route::post('/login', [loginController::class, 'login']);
     Route::post('/registrarse', [loginController::class, 'registrarse']);
+    Route::post('/validate_email', [loginController::class, 'validate_email']);
+    Route::post('/recuperar_contrasena', [loginController::class, 'enviarRecuperarContrasena']);
 });
 
 

@@ -48,6 +48,7 @@ class User extends Authenticatable
         'contrasena',
         'email',
         'id_rol',
+        'cod_ver'
     ];
 
     public $timestamps = false;
