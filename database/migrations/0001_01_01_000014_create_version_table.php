@@ -19,6 +19,9 @@ return new class extends Migration
             // Versiones
             // observaciones para la seccion de versiones de la historia clinica
             $table->text('observacion')->nullable(false);
+
+            // fechas de creacion y actualizacion
+            $table->timestamps();
             
             // Foraneas
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza

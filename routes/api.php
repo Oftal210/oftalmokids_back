@@ -24,18 +24,6 @@ use App\Http\Controllers\Api\retinoscopiaController;
 use App\Http\Controllers\Api\versionController;
 
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-// Ruta API para llamar a todos los usuarios -- comentado por ahora
-// Route::get('/usuario', function () {
-//     return 'Usuarios del sistema';
-// });
-
-// RUTAS PARA EL REGISTRO E INICIO DE SESION
-
-
 // Ruta iniciar sesion y generar el token
 Route::group([
     'prefix' => 'auth'
@@ -45,9 +33,6 @@ Route::group([
     Route::post('/registrarse', [loginController::class, 'registrarse']);
 });
 
-
-
-Route::get('/promediomespreconsulta/{id_hijo}', [preconsultaController::class, 'promediomespreconsulta']);
 
 Route::get('/prueba', [preconsultaController::class, 'validarrellenarpreconsulta']);
 
@@ -59,20 +44,12 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // ROL 1 ADMIN Y ROL 2 USUARIO NORMAL
-
 Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
 
-
-    // RUTAS PARA EL PADRE
-    // Ruta API para llamar a un padre especifco
-    //Route::get('/padre/{id_padre}', [padreController::class, 'show']);
-
-    // Ruta API para modificar la informacion de un padre
-    //Route::put('/padre/{id_padre}', [padreController::class, 'update']);
-
+    // RUTAS USUARIO
     // Ruta API para llamar solamente a los hijos de un padre
     Route::get('/hijosdepadre/{id_padre}', [padreController::class, 'hijosdepadre']);
     //Route::post('hijosdepadre', [padreController::class, 'hijosdepadre']); ESTE ES IGUAL AL DE ARRIBA, PERO CON POST
@@ -92,18 +69,18 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']);
 
 
-    // // RUTAS PARA EL PRECONSULTA
-    // // Ruta API para crear una preconsulta
-    // Route::post('/preconsulta', [preconsultaController::class, 'store']);
+    // RUTAS PARA EL PRECONSULTA
+    // Ruta API para crear una preconsulta
+    Route::post('/preconsulta', [preconsultaController::class, 'store']);
 
-    // // Ruta API para llamar a una preconsulta especifica
-    // Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']);
+    // Ruta API para llamar a una preconsulta especifica
+    Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']);
 
-    // // Ruta API para modificar la informacion de una preconsulta
-    // Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']);
+    // Ruta API para llamar solamente a las preconsultas de un hijo
+    Route::get('/preconsdelhijo/{id_hijo}', [preconsultaController::class, 'preconsdelhijo']);
 
-    // // Ruta API para llamar solamente a las preconsultas de un hijo
-    // Route::get('/preconsdelhijo/{id_hijo}', [preconsultaController::class, 'preconsdelhijo']);
+    // Ruta API para la funcion que realiza el promedio de puntuacion de las preconsultas para el hijo durante el mes
+    Route::get('/promediomespreconsulta/{id_hijo}', [preconsultaController::class, 'promediomespreconsulta']);
 
 
     // RUTAS A HISTORIA CLINICA
@@ -112,6 +89,105 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
 
     //Ruta API para llamar solamente a las historias clinicas del hijo
     Route::get('/historiasdelhijo/{id_hijo}', [historiaclinicaController::class, 'historiasdelhijo']);
+
+
+    // RUTAS A AGUDEZA VISUAL
+    // Ruta API para llamar a una agudeza visual especifica
+    Route::get('/agudezavisual/{cod_agude_visua}', [agudezavisualController::class, 'show']);
+
+    // Ruta API para traer todos los registros de agudeza visual segun historia clinica
+    Route::get('/agudezasxhistoria/{historia_clinica}', [agudezavisualController::class, 'traeragudezashistoriaclinica']);
+
+    // Ruta API para traer el registro de agudeza visual mas reciente segun historia clinica
+    Route::get('/agudezavisualreciente/{historia_clinica}', [agudezavisualController::class, 'traeragudezasmasreciente']);
+
+
+    // RUTAS A ALINEAMIENTO MOTOR
+    // Ruta API para llamar a un alineamiento motor especifco
+    Route::get('/alineamientomotor/{cod_alinea_motor}', [alineamientomotorController::class, 'show']);
+
+    // Ruta API para traer todos los registros de alineamiento motor segun historia clinica
+    Route::get('/alineamientoxhistoria/{historia_clinica}', [alineamientomotorController::class, 'traeralineamientoshistoriaclinica']);
+
+    // Ruta API para traer el registro de alineamiento motor mas reciente segun historia clinica
+    Route::get('/alineamientoreciente/{historia_clinica}', [alineamientomotorController::class, 'traeralineamientosmasreciente']);
+
+
+    // RUTAS A DIAGNOSTICO X HISTORIA CLINICA
+    // Ruta API para llamar a un Diagnostico x historia clinica especifco
+    Route::get('/diagnosticoxhistoria/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'show']);
+
+    // Ruta API para traer todos los registros de diagnosticos x historia segun historia clinica
+    Route::get('/diagnosticoxhistoriaxhistcli/{historia_clinica}', [diagnosticohistoriaclinicaController::class, 'traerdiagnosticoshistoriaclinica']);
+
+    // Ruta API para traer el registro de diagnostico x historia mas reciente segun historia clinica
+    Route::get('/diagnosticoxhistoriareciente/{historia_clinica}', [diagnosticohistoriaclinicaController::class, 'traerdiagnosticosmasreciente']);
+
+
+    // RUTAS A DUCCIONES
+    // Ruta API para llamar a una Duccion especifca
+    Route::get('/duccion/{cod_ducciones}', [duccionController::class, 'show']);
+
+    // Ruta API para traer todos los registros de ducciones segun historia clinica
+    Route::get('/duccionxhistoria/{historia_clinica}', [duccionController::class, 'traerduccioneshistoriaclinica']);
+
+    // Ruta API para traer el registro de duccion mas reciente segun historia clinica
+    Route::get('/duccionreciente/{historia_clinica}', [duccionController::class, 'traerduccionesmasreciente']);
+
+
+    // RUTAS A EXPLORACION DE EXTERNO
+    // Ruta API para llamar a una Exploracion de externo especifco
+    Route::get('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'show']);
+
+    // Ruta API para traer todos los registros de ducciones segun historia clinica
+    Route::get('/exploracionxhistoria/{historia_clinica}', [exploracionexternoController::class, 'traerexploracioneshistoriaclinica']);
+
+    // Ruta API para traer el registro de duccion mas reciente segun historia clinica
+    Route::get('/exploracionreciente/{historia_clinica}', [exploracionexternoController::class, 'traerexploracionmasreciente']);
+
+
+    // RUTAS A MOTALIDAD OCULAR
+    // Ruta API para llamar a una Motalidad ocular especifca
+    Route::get('/motalidad/{cod_motali_ocular}', [motalidadocularController::class, 'show']);
+
+    // Ruta API para traer todos los registros de motalidades oculares segun historia clinica
+    Route::get('/motalidadxhistoria/{historia_clinica}', [motalidadocularController::class, 'traermotalidadeshistoriaclinica']);
+
+    // Ruta API para traer el registro de motalidad ocular mas reciente segun historia clinica
+    Route::get('/motalidadxreciente/{historia_clinica}', [motalidadocularController::class, 'traermotalidadmasreciente']);
+
+
+    // RUTAS A OFTALMOSCOPIA
+    // Ruta API para llamar a una Oftalmoscopia especifca
+    Route::get('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'show']);
+
+    // Ruta API para traer todos los registros de Oftalmoscopia segun historia clinica
+    Route::get('/oftalmoscopiaxhistoria/{historia_clinica}', [oftalmoscopiaController::class, 'traeroftalmoscopiashistoriaclinica']);
+
+    // Ruta API para traer el registro de oftalmoscopia mas reciente segun historia clinica
+    Route::get('/oftalmoscopiaxreciente/{historia_clinica}', [oftalmoscopiaController::class, 'traeroftalmoscopiamasreciente']);
+
+
+    // RUTAS A RETINOSCOPIA
+    // Ruta API para llamar a una Retinoscopiao especifca
+    Route::get('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'show']);
+
+    // Ruta API para traer todos los registros de Retinoscopias segun historia clinica
+    Route::get('/retinoscopiaxhistoria/{historia_clinica}', [retinoscopiaController::class, 'traerretinoscopiashistoriaclinica']);
+
+    // Ruta API para traer el registro de Retinoscopia mas reciente segun historia clinica
+    Route::get('/retinoscopiareciente/{historia_clinica}', [retinoscopiaController::class, 'traerretinoscopiamasreciente']);
+
+
+    // RUTAS A VERSION
+    // Ruta API para llamar a una Version especifco
+    Route::get('/version/{cod_versiones}', [versionController::class, 'show']);
+
+    // Ruta API para traer todos los registros de Versiones segun historia clinica
+    Route::get('/versionxhistoria/{historia_clinica}', [versionController::class, 'traerversioneshistoriaclinica']);
+
+    // Ruta API para traer el registro de Versiones mas reciente segun historia clinica
+    Route::get('/versionreciente/{historia_clinica}', [versionController::class, 'traerversionmasreciente']);
 });
 
 
@@ -123,15 +199,13 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a todos las agudeza visual
     Route::get('/agudezavisual', [agudezavisualController::class, 'index']);
 
-    // Ruta API para llamar a una agudeza visual especifica
-    Route::get('/agudezavisual/{cod_agude_visua}', [agudezavisualController::class, 'show']);
-
-    // Ruta API para modificar la informacion de un usuario
+    // Ruta API para modificar la informacion de una agudeza visual
     Route::put('/agudezavisual/{cod_agude_visua}', [agudezavisualController::class, 'update']);
 
-    // Ruta API para eliminiar a un usuario
+    // Ruta API para eliminiar a una agudeza visual
     Route::delete('/agudezavisual/{cod_agude_visua}', [agudezavisualController::class, 'destroy']);
-}); 
+});
+
     
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A ALINEAMIENTO MOTOR
@@ -140,9 +214,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para llamar a todos los alineamiento motor
     Route::get('/alineamientomotor', [alineamientomotorController::class, 'index']);
-
-    // Ruta API para llamar a un alineamiento motor especifco
-    Route::get('/alineamientomotor/{cod_alinea_motor}', [alineamientomotorController::class, 'show']);
 
     // Ruta API para modificar la informacion de un alineamiento motor
     Route::put('/alineamientomotor/{cod_alinea_motor}', [alineamientomotorController::class, 'update']);
@@ -173,19 +244,16 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A DIAGNOSTICO X HISTORIA CLINICA
     // Ruta API para crear un Diagnostico x historia clinica
-    Route::post('/diaghistoriaclinica', [diagnosticohistoriaclinicaController::class, 'store']);
+    Route::post('/diagnosticoxhistoria', [diagnosticohistoriaclinicaController::class, 'store']);
 
     // Ruta API para llamar a todos los Diagnostico x historia clinica
-    Route::get('/diaghistoriaclinica', [diagnosticohistoriaclinicaController::class, 'index']);
-
-    // Ruta API para llamar a un Diagnostico x historia clinica especifco
-    Route::get('/diaghistoriaclinica/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'show']);
+    Route::get('/diagnosticoxhistoria', [diagnosticohistoriaclinicaController::class, 'index']);
 
     // Ruta API para modificar la informacion de un Diagnostico x historia clinica
-    Route::put('/diaghistoriaclinica/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'update']);
+    Route::put('/diagnosticoxhistoria/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'update']);
 
     // Ruta API para eliminiar a un Diagnostico x historia clinica
-    Route::delete('/diaghistoriaclinica/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'destroy']);
+    Route::delete('/diagnosticoxhistoria/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'destroy']);
 });
 
 
@@ -196,9 +264,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para llamar a todos las Ducciones
     Route::get('/duccion', [duccionController::class, 'index']);
-
-    // Ruta API para llamar a una Duccion especifca
-    Route::get('/duccion/{cod_ducciones}', [duccionController::class, 'show']);
 
     // Ruta API para modificar la informacion de una Duccion
     Route::put('/duccion/{cod_ducciones}', [duccionController::class, 'update']);
@@ -211,38 +276,32 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A EXPLORACION DE EXTERNO
     // Ruta API para crear una Exploracion de externo
-    Route::post('/exploexterno', [exploracionexternoController::class, 'store']);
+    Route::post('/exploracion', [exploracionexternoController::class, 'store']);
 
     // Ruta API para llamar a todos las Exploracion de externo
-    Route::get('/exploexterno', [exploracionexternoController::class, 'index']);
-
-    // Ruta API para llamar a una Exploracion de externo especifco
-    Route::get('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'show']);
+    Route::get('/exploracion', [exploracionexternoController::class, 'index']);
 
     // Ruta API para modificar la informacion de una Exploracion de externo
-    Route::put('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'update']);
+    Route::put('/exploracion/{cod_explo_exter}', [exploracionexternoController::class, 'update']);
 
     // Ruta API para eliminiar a una Exploracion de externo
-    Route::delete('/exploexterno/{cod_explo_exter}', [exploracionexternoController::class, 'destroy']);
+    Route::delete('/exploracion/{cod_explo_exter}', [exploracionexternoController::class, 'destroy']);
 });
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A MOTALIDAD OCULAR
     // Ruta API para crear una Motalidad ocular
-    Route::post('/motaliocular', [motalidadocularController::class, 'store']);
+    Route::post('/motalidad', [motalidadocularController::class, 'store']);
 
     // Ruta API para llamar a todos las Motalidad ocular
-    Route::get('/motaliocular', [motalidadocularController::class, 'index']);
-
-    // Ruta API para llamar a una Motalidad ocular especifco
-    Route::get('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'show']);
+    Route::get('/motalidad', [motalidadocularController::class, 'index']);
 
     // Ruta API para modificar la informacion de una Motalidad ocular
-    Route::put('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'update']);
+    Route::put('/motalidad/{cod_motali_ocular}', [motalidadocularController::class, 'update']);
 
     // Ruta API para eliminiar a una Motalidad ocular
-    Route::delete('/motaliocular/{cod_motali_ocular}', [motalidadocularController::class, 'destroy']);
+    Route::delete('/motalidad/{cod_motali_ocular}', [motalidadocularController::class, 'destroy']);
 });
 
 
@@ -253,9 +312,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para llamar a todos las Oftalmoscopia
     Route::get('/oftalmoscopia', [oftalmoscopiaController::class, 'index']);
-
-    // Ruta API para llamar a una Oftalmoscopia especifco
-    Route::get('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'show']);
 
     // Ruta API para modificar la informacion de una Oftalmoscopia
     Route::put('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'update']);
@@ -273,9 +329,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a todos las Retinoscopia
     Route::get('/retinoscopia', [retinoscopiaController::class, 'index']);
 
-    // Ruta API para llamar a una Retinoscopiao especifco
-    Route::get('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'show']);
-
     // Ruta API para modificar la informacion de una Retinoscopia
     Route::put('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'update']);
 
@@ -291,9 +344,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para llamar a todos las Version
     Route::get('/version', [versionController::class, 'index']);
-
-    // Ruta API para llamar a una Version especifco
-    Route::get('/version/{cod_versiones}', [versionController::class, 'show']);
 
     // Ruta API para modificar la informacion de una Version
     Route::put('/version/{cod_versiones}', [versionController::class, 'update']);
@@ -346,9 +396,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para crear un foro
     Route::post('/foro', [foroController::class, 'store']);
 
-    // Ruta API para llamar a todos los foros
-    //Route::get('/foro', [foroController::class, 'index']); PARA AMBBOS ROLES
-
     // Ruta API para llamar a un foro especifco
     Route::get('/foro/{cod_foro}', [foroController::class, 'show']);
 
@@ -362,33 +409,15 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL HIJO
-    // Ruta API para crear un hijo
-    // Route::post('/hijo', [hijoController::class, 'store']); PARA AMBBOS ROLES
-
     // Ruta API para llamar a todos los hijos
     Route::get('/hijo', [hijoController::class, 'index']);
-
-    // // Ruta API para llamar a un hijo especifco
-    // Route::get('/hijo/{id_hijo}', [hijoController::class, 'show']); PARA AMBBOS ROLES
-
-    // // Ruta API para modificar la informacion de un hijo
-    // Route::put('/hijo/{id_hijo}', [hijoController::class, 'update']); PARA AMBBOS ROLES
-
-    // // Ruta API para eliminiar a un hijo
-    // Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']); PARA AMBBOS ROLES
 });
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PRECONSULTA
-    // Ruta API para crear una preconsulta
-    Route::post('/preconsulta', [preconsultaController::class, 'store']); //PARA AMBBOS ROLES
-
     // Ruta API para llamar a todos las preconsulta
     Route::get('/preconsulta', [preconsultaController::class, 'index']);
-
-    // Ruta API para llamar a una preconsulta especifco
-    Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']); //PARA AMBBOS ROLES
 
     // Ruta API para modificar la informacion de una preconsulta
     Route::put('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'update']); //PARA AMBBOS ROLES
@@ -405,9 +434,6 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para llamar a todos las historia clinica
     Route::get('/historiaclinica', [historiaclinicaController::class, 'index']);
-
-    // Ruta API para llamar a una Historia Clinica especifica
-    //Route::get('/historiaclinica/{cod_historia}', [historiaclinicaController::class, 'show']);
 
     // Ruta API para modificar la informacion de una historia clinica
     Route::put('/historiaclinica/{cod_historia}', [historiaclinicaController::class, 'update']);

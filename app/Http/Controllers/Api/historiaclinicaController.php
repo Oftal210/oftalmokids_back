@@ -61,9 +61,7 @@ class historiaclinicaController extends Controller
             'especifique_enfer_sistemica'   => 'nullable|string',
             'alergia'                   => 'required|boolean',
             'especifique_alergia'       => 'nullable|string',
-            'cirugia_general_ocular'    => 'required|string',
-
-            
+            'cirugia_general_ocular'    => 'required|boolean'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion

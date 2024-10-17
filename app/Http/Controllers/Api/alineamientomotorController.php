@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Importamos el modelo de alineamiento motor con la siguiente direccion
 use App\Models\Alineamiento_motor;
 
+// Importamos el modelo de alineamiento motor con la siguiente direccion
+use App\Models\Historia_clinica;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -200,4 +203,68 @@ class alineamientomotorController extends Controller
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
     }
+
+    // Funcion para buscar todos los Alineamientos motor x historia clinica
+    public function traeralineamientoshistoriaclinica($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla todos los registros que tengan este id
+        $todosalineamientosxhistoria = Alineamiento_motor::where('id_historia', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$todosalineamientosxhistoria){
+            $data = [
+                'mensaje' => 'no hay registros',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($todosalineamientosxhistoria, 200);
+    }
+
+
+    // funcion para traer los registros de alineamiento motor mas recientes deacuerdo al id de la historia clinica
+    public function traeralineamientosmasreciente($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroreciente = Alineamiento_motor::where('id_historia', $id)
+                                              ->latest('created_at')->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$registroreciente){
+            $data = [
+                'mensaje' => 'no hay registros',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($registroreciente, 200);
+    }
+
+
 }

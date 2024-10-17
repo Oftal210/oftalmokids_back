@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Importamos el modelo de Diagnostico x historia clinica con la siguiente direccion
 use App\Models\Diagnostico_historia_clinica;
 
+// Importamos el modelo de Historia clinica con la siguiente direccion
+use App\Models\Historia_clinica;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -193,5 +196,69 @@ class diagnosticohistoriaclinicaController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+
+    // Funcion para buscar todos los Diagnosticos de historia clinica realizados x historia clinica
+    public function traerdiagnosticoshistoriaclinica($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla todos los registros que tengan este id
+        $todosdiagnosticosxhistoria = Diagnostico_historia_clinica::where('id_historia', $id)->get();
+
+        
+        // Validamos si la variable con la data esta vacia
+        if ($todosdiagnosticosxhistoria->isEmpty()){
+            $data = [
+                'mensaje' => 'no hay registros con esta historia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($todosdiagnosticosxhistoria, 200);
+    }
+
+
+    // funcion para traer los registros de Diagnosticos Historia Clinica mas recientes deacuerdo al id de la historia clinica
+    public function traerdiagnosticosmasreciente($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroreciente = Diagnostico_historia_clinica::where('id_historia', $id)
+                                                        ->latest('fecha')->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$registroreciente){
+            $data = [
+                'mensaje' => 'no hay registros recientes con esta historia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($registroreciente, 200);
     }
 }

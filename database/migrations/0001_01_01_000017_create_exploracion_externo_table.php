@@ -23,6 +23,8 @@ return new class extends Migration
             // resultado de exploracion de externos para el ojo izquierdo
             $table->string('explo_exter_os', 150)->nullable(false);
 
+            // fechas de creacion y actualizacion
+            $table->timestamps();
 
             // Foraneas
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza

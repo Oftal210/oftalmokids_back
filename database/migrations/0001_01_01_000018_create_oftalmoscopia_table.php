@@ -71,6 +71,9 @@ return new class extends Migration
             // resultado de Retina periferica para el ojo izquierdo
             $table->string('reti_perif_os', 150)->nullable(false);
 
+            // fechas de creacion y actualizacion
+            $table->timestamps();
+
             // Foraneas
              // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
              $table->unsignedBigInteger('id_historia')->nullable(false);

@@ -66,6 +66,9 @@ return new class extends Migration
             // resultado de la queratometria del ojo izquierdo
             $table->string('queratome_os', 150)->nullable(false);
 
+            // fechas de creacion y actualizacion
+            $table->timestamps();
+
             // Foraneas
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
             $table->unsignedBigInteger('id_historia')->nullable(false);

@@ -12,10 +12,6 @@ class Motalidad_ocular extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'motalidad_ocular';
 
-
-    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
-    public $timestamps = false;
-
     protected $fillable = [
         'id_historia',
         'mo_seguimiento_od',
