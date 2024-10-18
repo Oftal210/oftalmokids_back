@@ -199,10 +199,13 @@ class loginController extends Controller
 
             // retornamos el id de usuario y el token, si todo sale correcto
             return response()->json([
-                'user' => $user->documento,
-                'rol' => $user->id_rol,
+                'user' => [
+                    'documento' => $user->documento,
+                    'id_rol' => $user->id_rol
+                ],
                 'token' => $token
             ], 200);
+            
         } else {
 
             // retornamos un mensaje de error en las credenciales
