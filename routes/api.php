@@ -34,9 +34,6 @@ Route::group([
 });
 
 
-Route::get('/prueba', [preconsultaController::class, 'validarrellenarpreconsulta']);
-
-
 // Esta ruta Api contiene un grupo de rutas que van a estar protegidas por autenticacion
 Route::middleware('auth:api')->group(function () {
     // Ruta para cerrar la sesión
@@ -48,11 +45,6 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
-
-    // RUTAS USUARIO
-    // Ruta API para llamar solamente a los hijos de un padre
-    Route::get('/hijosdepadre/{id_padre}', [padreController::class, 'hijosdepadre']);
-    //Route::post('hijosdepadre', [padreController::class, 'hijosdepadre']); ESTE ES IGUAL AL DE ARRIBA, PERO CON POST
 
 
     // RUTAS PARA EL HIJO
@@ -67,6 +59,10 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
 
     // Ruta API para eliminiar a un hijo
     Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']);
+
+    // Ruta API para llamar solamente a los hijos de un padre
+    Route::get('/hijosdepadre/{id_padre}', [padreController::class, 'hijosdepadre']);
+    //Route::post('hijosdepadre', [padreController::class, 'hijosdepadre']); ESTE ES IGUAL AL DE ARRIBA, PERO CON POST
 
 
     // RUTAS PARA EL PRECONSULTA
@@ -87,7 +83,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // Ruta API para llamar a una Historia Clinica especifica
     Route::get('/historiaclinica/{cod_historia}', [historiaclinicaController::class, 'show']);
 
-    //Ruta API para llamar solamente a las historias clinicas del hijo
+    //Ruta API para llamar solamente a la historia clinica del hijo
     Route::get('/historiasdelhijo/{id_hijo}', [historiaclinicaController::class, 'historiasdelhijo']);
 
 
