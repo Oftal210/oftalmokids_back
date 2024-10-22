@@ -41,7 +41,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // ROL 1 ADMIN Y ROL 2 USUARIO NORMAL
-Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
@@ -184,7 +184,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
 
     // Ruta API para traer el registro de Versiones mas reciente segun historia clinica
     Route::get('/versionreciente/{historia_clinica}', [versionController::class, 'traerversionmasreciente']);
-});
+//});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -237,7 +237,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     Route::delete('/antecedetevisual/{cod_antece_visua}', [antecedentevisualController::class, 'destroy']);
 });
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A DIAGNOSTICO X HISTORIA CLINICA
     // Ruta API para crear un Diagnostico x historia clinica
     Route::post('/diagnosticoxhistoria', [diagnosticohistoriaclinicaController::class, 'store']);
@@ -250,7 +250,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un Diagnostico x historia clinica
     Route::delete('/diagnosticoxhistoria/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'destroy']);
-});
+
+    // Ruta API para traer registros de diagnosticos por meses
+    Route::get('/diagnosticosxmeses', [diagnosticohistoriaclinicaController::class, 'contarRegistrosPorBimestre']);
+//});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -349,7 +352,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A USUARIO
     // Ruta API para crear un usuario
     Route::post('/usuario', [usuarioController::class, 'store']);
@@ -365,7 +368,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un usuario
     Route::delete('/usuario/{id_usuario}', [usuarioController::class, 'destroy']);
-});
+
+    // Ruta API para traer todos los usuarios padre
+    Route::get('/usuariospadre', [usuarioController::class, 'traerUsuariosPadre']);
+//});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -403,11 +409,14 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:2'])->group(function () {
     // RUTAS PARA EL HIJO
     // Ruta API para llamar a todos los hijos
     Route::get('/hijo', [hijoController::class, 'index']);
-});
+
+    // Ruta API para tomar el registro de los hijos en el sistema 
+    Route::get('/cantidadhijo', [hijoController::class, 'traerCantidadHijos']);
+//});
 
 
 Route::middleware(['auth:api', 'rol:1'])->group(function () {

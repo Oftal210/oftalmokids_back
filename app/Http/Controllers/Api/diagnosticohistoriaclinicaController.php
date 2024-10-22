@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Diagnostico x historia clinica con la siguiente direccion
 use App\Models\Diagnostico_historia_clinica;
@@ -260,5 +261,63 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // Retornamos los datos obtenidos anteriormente
         return response()->json($registroreciente, 200);
+    }
+
+
+    public function traerRegistroXFecha() {
+
+        // Obtener el año actual
+        $yearactual = date('Y');
+
+
+        // definir los rangos de fechas para cada par de meses
+        // Enero - Febrero
+        $inicioEneFeb = Carbon::create($yearactual, 1, 1)->startOfDay();
+        $finEneFeb = Carbon::create($yearactual, 2, 28)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosEneFeb = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioEneFeb, $finEneFeb])->count();
+
+        // Marzo - Abril
+        $inicioMarAbr = Carbon::create($yearactual, 3, 1)->startOfDay();
+        $finMarAbr = Carbon::create($yearactual, 4, 30)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosMarAbr = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioMarAbr, $finMarAbr])->count();
+
+        // Mayo - Junio
+        $inicioMayJun = Carbon::create($yearactual, 5, 1)->startOfDay();
+        $finMayJun = Carbon::create($yearactual, 6, 30)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosMayJun = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioMayJun, $finMayJun])->count();
+
+        // Julio - Agosto
+        $inicioJulAgo = Carbon::create($yearactual, 7, 1)->startOfDay();
+        $finJulAgo = Carbon::create($yearactual, 8, 31)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosJulAgo = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioJulAgo, $finJulAgo])->count();
+
+        // Septiembre - Octubre
+        $inicioSepOct = Carbon::create($yearactual, 9, 1)->startOfDay();
+        $finSepOct = Carbon::create($yearactual, 10, 31)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosSepOct = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioSepOct, $finSepOct])->count();
+
+        // Noviembre - Diciembre
+        $inicioNovDic = Carbon::create($yearactual, 11, 1)->startOfDay();
+        $finNovDic = Carbon::create($yearactual, 12, 31)->endOfDay();
+        // realizamos la consulta con las fechas ya determinadas
+        $registrosNovDic = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioNovDic, $finNovDic])->count();
+
+        // acumulamos el resultado de las consultas
+        $resultados = [
+            'enero_febrero' => $registrosEneFeb,
+            'marzo_abril' => $registrosMarAbr,
+            'mayo_junio' => $registrosMayJun,
+            'julio_agosto' => $registrosJulAgo,
+            'septiembre_octubre' => $registrosSepOct,
+            'noviembre_diciembre' => $registrosNovDic
+        ];
+
+        // retornamos la variable con todas las consultas
+        return response()->json($resultados);
     }
 }
