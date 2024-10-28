@@ -61,9 +61,7 @@ class historiaclinicaController extends Controller
             'especifique_enfer_sistemica'   => 'nullable|string',
             'alergia'                   => 'required|boolean',
             'especifique_alergia'       => 'nullable|string',
-            'cirugia_general_ocular'    => 'required|string',
-
-            
+            'cirugia_general_ocular'    => 'required|boolean'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -230,26 +228,26 @@ class historiaclinicaController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'edad_embarazo' => $datosvalidados['edad_embarazo_madre'] ?? $historiaclinica->edad_embarazo,
-            'alto_riesgo' => $datosvalidados['fue_alto_riesgo'] ?? $historiaclinica->alto_riesgo,
-            'especificar_riesgo' => $datosvalidados['especifique_riesgo'] ?? $historiaclinica->especificar_riesgo,
-            'semanas_gestacion' => $datosvalidados['semanas_gestacion'] ?? $historiaclinica->semanas_gestacion,
-            'tipo_parto' => $datosvalidados['tipo_parto'] ?? $historiaclinica->tipo_parto,
-            'complicacion ' => $datosvalidados['complicaciones_parto'] ?? $historiaclinica->complicacion,
-            'especificar_compli ' => $datosvalidados['especifique_complicaciones'] ?? $historiaclinica->especificar_compli,
-            'uso_incubadora ' => $datosvalidados['uso_incubadora'] ?? $historiaclinica->uso_incubadora,
-            'tiempo_incubadora ' => $datosvalidados['tiempo_incubadora'] ?? $historiaclinica->tiempo_incubadora,
-            'apgar_incubadora ' => $datosvalidados['puntaje_apgar'] ?? $historiaclinica->apgar_incubadora,
-            'respiro_lloro_nacer ' => $datosvalidados['respiro_lloro_alnacer'] ?? $historiaclinica->respiro_lloro_nacer,
-            'enfermedades_embarazo ' => $datosvalidados['emfermedad_en_embarazo'] ?? $historiaclinica->enfermedades_embarazo,
+            'edad_embarazo'             => $datosvalidados['edad_embarazo_madre'] ?? $historiaclinica->edad_embarazo,
+            'alto_riesgo'               => $datosvalidados['fue_alto_riesgo'] ?? $historiaclinica->alto_riesgo,
+            'especificar_riesgo'        => $datosvalidados['especifique_riesgo'] ?? $historiaclinica->especificar_riesgo,
+            'semanas_gestacion'         => $datosvalidados['semanas_gestacion'] ?? $historiaclinica->semanas_gestacion,
+            'tipo_parto'                => $datosvalidados['tipo_parto'] ?? $historiaclinica->tipo_parto,
+            'complicacion '             => $datosvalidados['complicaciones_parto'] ?? $historiaclinica->complicacion,
+            'especificar_compli '       => $datosvalidados['especifique_complicaciones'] ?? $historiaclinica->especificar_compli,
+            'uso_incubadora '           => $datosvalidados['uso_incubadora'] ?? $historiaclinica->uso_incubadora,
+            'tiempo_incubadora '        => $datosvalidados['tiempo_incubadora'] ?? $historiaclinica->tiempo_incubadora,
+            'apgar_incubadora '         => $datosvalidados['puntaje_apgar'] ?? $historiaclinica->apgar_incubadora,
+            'respiro_lloro_nacer '      => $datosvalidados['respiro_lloro_alnacer'] ?? $historiaclinica->respiro_lloro_nacer,
+            'enfermedades_embarazo '    => $datosvalidados['emfermedad_en_embarazo'] ?? $historiaclinica->enfermedades_embarazo,
             'especificar_enfermedades ' => $datosvalidados['especifque_enfermedad_emb'] ?? $historiaclinica->especificar_enfermedades,
-            'medicamento_embarazo ' => $datosvalidados['medicamente_en_embarazo'] ?? $historiaclinica->medicamento_embarazo,
-            'especificar_medicamento ' => $datosvalidados['especifique_medicamento'] ?? $historiaclinica->especificar_medicamento,
-            'enfermedad_sistemica ' => $datosvalidados['emfermedad_sistemica'] ?? $historiaclinica->enfermedad_sistemica,
+            'medicamento_embarazo '     => $datosvalidados['medicamente_en_embarazo'] ?? $historiaclinica->medicamento_embarazo,
+            'especificar_medicamento '  => $datosvalidados['especifique_medicamento'] ?? $historiaclinica->especificar_medicamento,
+            'enfermedad_sistemica '     => $datosvalidados['emfermedad_sistemica'] ?? $historiaclinica->enfermedad_sistemica,
             'especif_enferm_sistemica ' => $datosvalidados['especifique_enfer_sistemica'] ?? $historiaclinica->especif_enferm_sistemica,
-            'alergia ' => $datosvalidados['alergia'] ?? $historiaclinica->alergia,
-            'especificar_alergia ' => $datosvalidados['especifique_alergia'] ?? $historiaclinica->especificar_alergia,
-            'cirugia_ocular ' => $datosvalidados['cirugia_general_ocular'] ?? $historiaclinica->cirugia_ocular
+            'alergia '                  => $datosvalidados['alergia'] ?? $historiaclinica->alergia,
+            'especificar_alergia '      => $datosvalidados['especifique_alergia'] ?? $historiaclinica->especificar_alergia,
+            'cirugia_ocular '           => $datosvalidados['cirugia_general_ocular'] ?? $historiaclinica->cirugia_ocular
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
@@ -269,6 +267,8 @@ class historiaclinicaController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // funcion para traer la historia clinica de un hijo en especifico
     public function historiasdelhijo ($id){
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id

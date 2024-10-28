@@ -12,9 +12,6 @@ class Agudeza_visual extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'agudeza_visual';
 
-    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
-    public $timestamps = false;
-
     protected $fillable = [
         'id_historia',
         'agude_visu_test',

@@ -35,6 +35,8 @@ return new class extends Migration
             // resultado del estado acomodativo para aa
             $table->string('esta_acomo_aa', 150)->nullable(false);
 
+            // fechas de creacion y actualizacion
+            $table->timestamps();
 
             // Foraneas
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza

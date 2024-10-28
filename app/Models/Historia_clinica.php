@@ -12,9 +12,6 @@ class Historia_clinica extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'historia_clinica';
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'cod_historia';
-
     // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
     public $timestamps = false;
 

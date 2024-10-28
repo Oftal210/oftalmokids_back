@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Importamos el modelo de Version con la siguiente direccion
 use App\Models\Version;
 
+// Importamos el modelo de la historia clinica con la siguiente direccion
+use App\Models\Historia_clinica;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -179,5 +182,68 @@ class versionController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+    
+    // Funcion para buscar todas las Versiones x historia clinica
+    public function traerversioneshistoriaclinica($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla todos los registros que tengan este id
+        $todasversionesxhistoria = Version::where('id_historia', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if ($todasversionesxhistoria->isEmpty()){
+            $data = [
+                'mensaje' => 'no hay registros con esta historia 1',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($todasversionesxhistoria, 200);
+    }
+
+
+    // funcion para traer los registros de Versiones mas recientes deacuerdo al id de la historia clinica
+    public function traerversionmasreciente($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroreciente = Version::where('id_historia', $id)
+                                   ->latest('created_at')->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$registroreciente){
+            $data = [
+                'mensaje' => 'no hay registros recientes con esta historia 2',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($registroreciente, 200);
     }
 }

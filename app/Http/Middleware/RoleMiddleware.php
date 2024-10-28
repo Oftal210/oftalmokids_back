@@ -22,7 +22,7 @@ class RoleMiddleware
     //Funcion para validar el rol
     public function handle(Request $request, Closure $next, ...$roles)
     {   
-        if (!$request->user() || !in_array($request->user()->cod_rol, $roles)) {
+        if (!$request->user() || !in_array($request->user()->id_rol, $roles)) {
             return response()->json(['mensaje' => 'No tiene permisos para acceder a esta ruta'], 403);
         }
         

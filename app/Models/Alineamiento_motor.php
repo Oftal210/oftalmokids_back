@@ -12,10 +12,6 @@ class Alineamiento_motor extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'alineamiento_motor';
 
-
-    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
-    public $timestamps = false;
-
     protected $fillable = [
         'id_historia',
         'test_hirschberg',

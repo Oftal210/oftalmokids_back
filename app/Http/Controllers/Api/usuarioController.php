@@ -206,4 +206,19 @@ class usuarioController extends Controller
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
     }
+
+    // funcion para buscar a todos los usuarios de rol 2 (padre)
+    public function traerUsuariosPadre() {
+        // de esta manera buscamos todos los usuarios padre y los pasamos a la variable siguiente
+        $usuariosPadre = User::where('id_rol', 2)->count();
+
+        // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
+        if ($usuariosPadre == 0){
+            return response()->json(['mensaje' => 'no hay usuarios padre registrados']);
+        }
+
+        // este return devuelve todo lo que contiene la variable de $usuarios. El 200 inidica que todo salio bien
+        //return response()->json($usuariosPadre, 200);
+        return response()->json((int)$usuariosPadre, 200); // retornamos el numero de registros que se encontraron
+    }
 }

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 // Importamos el modelo de Duccion con la siguiente direccion
 use App\Models\Duccion;
 
+// Importamos el modelo de la historia clinica con la siguiente direccion
+use App\Models\Historia_clinica;
+
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
 
@@ -200,5 +203,68 @@ class duccionController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+
+    // Funcion para buscar todas las Ducciones x historia clinica
+    public function traerduccioneshistoriaclinica($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla todos los registros que tengan este id
+        $todasduccionesxhistoria = Duccion::where('id_historia', $id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if ($todasduccionesxhistoria->isEmpty()){
+            $data = [
+                'mensaje' => 'no hay registros con esta historia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($todasduccionesxhistoria, 200);
+    }
+
+
+    // funcion para traer los registros de ducciones mas recientes deacuerdo al id de la historia clinica
+    public function traerduccionesmasreciente($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroreciente = Duccion::where('id_historia', $id)
+                                   ->latest('created_at')->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$registroreciente){
+            $data = [
+                'mensaje' => 'no hay registros recientes con esta historia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($registroreciente, 200);
     }
 }

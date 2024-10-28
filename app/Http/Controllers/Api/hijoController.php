@@ -199,4 +199,19 @@ class hijoController extends Controller
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
     }
+
+    // funcion para traer el numero de hijos que tenemos en el sistema
+    public function traerCantidadHijos(){
+
+        // de esta manera buscamos todos los hijos del sistema y los pasamos a la variable siguiente
+        $cantidadHijos = Hijo::count();
+
+        // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
+        if ($cantidadHijos == 0){
+            return response()->json(['mensaje' => 'no hay hijos registrados en la tabla']);
+        }
+
+        // este return devuelve todo lo que contiene la variable de $hijos. El 200 inidica que todo salio bien
+        return response()->json($cantidadHijos, 200); // retornamos el numero de registros que se encontraron
+    }
 }
