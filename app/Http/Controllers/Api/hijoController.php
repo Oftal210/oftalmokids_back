@@ -50,7 +50,7 @@ class hijoController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear un Hijo validando que los datos que vamos a agregar existan
@@ -71,7 +71,7 @@ class hijoController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data el Hijo que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -81,14 +81,14 @@ class hijoController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar un Hijo especifico
     public function show($id){
         
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
-        $hijo = Hijo::find($id);
+        $hijo = Hijo::where('documento', $id)->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijo){
@@ -96,7 +96,7 @@ class hijoController extends Controller
                 'mensaje' => 'No se encontro al Hijo',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si el Hijo fue encontrado lo colocara dentor de esta variable
@@ -121,7 +121,7 @@ class hijoController extends Controller
                 'mensaje' => 'No se encontro al Hijo para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar al Hijo encontrado 
@@ -149,7 +149,7 @@ class hijoController extends Controller
                 'mensaje' => 'No se encontro al Hijo para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -168,7 +168,7 @@ class hijoController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque
@@ -208,7 +208,7 @@ class hijoController extends Controller
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($cantidadHijos == 0){
-            return response()->json(['mensaje' => 'no hay hijos registrados en la tabla']);
+            return response()->json(['mensaje' => 'no hay hijos registrados en la tabla'], 200);
         }
 
         // este return devuelve todo lo que contiene la variable de $hijos. El 200 inidica que todo salio bien

@@ -12,9 +12,6 @@ class Hijo extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'hijo';
 
-    // Definimos el atributo de llave primaria de la tabla por si acaso
-    protected $primaryKey = 'id_hijo';
-
     // Si la clave primaria no es un incremento automático
     public $incrementing = false;
 
