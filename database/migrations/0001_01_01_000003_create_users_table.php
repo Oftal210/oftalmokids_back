@@ -32,6 +32,9 @@ return new class extends Migration
             // telefono del usuario 
             $table->string('telefono',13)->nullable(false);
 
+            // indicador si el usuario esta activo ( TRUE = ACTIVO  |  FALSE = INACTIVO )
+            $table->boolean('activo')->default(true);
+
             // Foranea de la tabla rol, identificador del rol
             $table->unsignedBigInteger('id_rol')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a rol

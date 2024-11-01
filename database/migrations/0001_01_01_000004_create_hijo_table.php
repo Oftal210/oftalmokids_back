@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('hijo', function (Blueprint $table) {
 
-
             $table->id();
+
+            // tipo de documento del hijo
+            $table->string('tipo_documento', 50)->nullable(false);
+
             // se espera el numero de la T.I
-            $table->string('documento')->nullable(false);
+            $table->string('documento')->unique()->nullable(false);
 
             // nombres del hijo
             $table->string('nombre', 70)->nullable(false);
@@ -24,11 +27,14 @@ return new class extends Migration
             // apellidos del hijo
             $table->string('apellido', 70)->nullable(false);
 
-            // tipo de documento del hijo
-            $table->string('tipo_documento', 50)->nullable(false);
+            // genero del hijo
+            $table->string('genero', 15)->nullable(false);
 
             // fecha de nacimiento del hijo, su formato es AÑO-MES-DIA (YYYY-MM-DD)
             $table->date('fecha_nacimiento')->nullable(false);
+
+            // edad del hijo
+            $table->integer('edad')->nullable(false);
 
             // texto con la ruta de la imagen dentro de los archivos del servidor o dominio
             $table->text('foto');

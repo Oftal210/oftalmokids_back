@@ -16,15 +16,17 @@ use Illuminate\Support\Facades\Hash;
 
 class usuarioController extends Controller
 {
-    // Funcion para llamar a todos los Usuarios del sistema 
+    // Funcion para llamar a todos los Usuarios del sistema USUARIOS ADMIN UNICAMENTE
     public function index(){
 
         // de esta manera buscamos todos los usuarios del sistema y los pasamos a la variable siguiente
-        $usuarios = User::all();
+        $usuarios = User::select('documento', 'nombre', 'apellido', 'telefono', 'email', 'activo')
+                        ->where('id_rol', 1)
+                        ->whereNot('id', 1)->get();
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($usuarios->isEmpty()){
-            return response()->json(['mensaje' => 'no hay usuarios registrados en la tabla']);
+            return response()->json(['mensaje' => 'no hay usuarios registrados en la tabla'], 200);
         }
 
         // este return devuelve todo lo que contiene la variable de $usuarios. El 200 inidica que todo salio bien
@@ -37,7 +39,7 @@ class usuarioController extends Controller
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
             'documento' => 'required|string',
-            'rol'       => 'required|digits:1',
+            'rol'       => 'required',
             'nombre'    => 'required|string|max:50',
             'apellido'  => 'required|string|max:50',
             'email'     => 'required|email|max:50',
@@ -52,7 +54,7 @@ class usuarioController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear un Usuario validando que los datos que vamos a agregar existan
@@ -73,7 +75,7 @@ class usuarioController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data el usuario que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -83,14 +85,15 @@ class usuarioController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
-    // Funcion para buscar un Usuario especifico
+    // Funcion para buscar un Usuario especifico PARA EL PADRE
     public function show($id){
         
         // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
-        $usuario = User::find($id);
+        $usuario = User::where('documento', $id)->
+                         where('id_rol', 2)->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$usuario){
@@ -98,7 +101,60 @@ class usuarioController extends Controller
                 'mensaje' => 'No se encontro al Usuario',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
+        }
+
+        // si el usuario fue encontrado lo colocara dentro de esta variable
+        $data = [
+            'usuario' => $usuario,
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+    // Funcion para buscar un Usuario especifico PARA EL ADMIN
+    public function showAdministrador($id){
+        
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::where('documento', $id)->
+                         where('id_rol', 1)->
+                         whereNot('id', 1)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al Usuario',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // si el usuario fue encontrado lo colocara dentro de esta variable
+        $data = [
+            'usuario' => $usuario,
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+    public function buscarSuperAdmin($id){
+        
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::where('documento', $id)->
+                         where('id_rol', 1)->
+                         first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al SuperAdmin',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
         }
 
         // si el usuario fue encontrado lo colocara dentro de esta variable
@@ -123,7 +179,7 @@ class usuarioController extends Controller
                 'mensaje' => 'No se encontro al Usuario para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar al Usuario encontrado 
@@ -139,19 +195,21 @@ class usuarioController extends Controller
         return response()->json($data, 200);
     }
 
-    // Fucion para actualizar un Usuario
+    // Fucion para actualizar un Usuario TANTO PADRE COMO ADMINISTRADOR, pero no el SUPERADMINISTRADOR
     public function update( Request $request, $id) {
 
         // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
-        $usuario = User::find($id);
+        $usuario = User::where('documento', $id)
+                       ->where('id_rol', 1)
+                       ->whereNot('id', 1)->first(); // Evitamos que tome al superadministrador
 
         // Validamos si la variable con la data esta vacia
         if (!$usuario){
             $data = [
-                'mensaje' => 'No se encontro al Usuario para eliminar',
+                'mensaje' => 'No se encontro al Usuario para modificar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -160,7 +218,7 @@ class usuarioController extends Controller
             'apellido'  => 'sometimes|string|max:50',
             'email'     => 'sometimes|email|max:50',
             'telefono'  => 'sometimes|string|max:13',
-            'password'  => 'sometimes|string|max:255'
+            'password'  => 'sometimes|nullable|string|max:255'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -170,10 +228,10 @@ class usuarioController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
-        // Se confirma la validacion de los datos en el anteior bloque
+        // Se confirma la validacion de los datos en el anterior bloque
         $datosvalidados = $validator->validated();
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
@@ -195,11 +253,78 @@ class usuarioController extends Controller
 
         // Despues de tomar y organizar los datos, los guardamos de la siguiente forma
         $usuario->save();
-
+        
         // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
         $data = [
             'mensaje' => 'El Usuario fue actualizado',
-            'usuario' => $usuario,
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+    public function updateSuperAdmin( Request $request, $id) {
+
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::where('documento', $id)
+                       ->where('id_rol', 1)
+                       ->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al Super Administrador para modificar',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // aqui se validan los datos que llegan en la variable $request segunda haga falta
+        $validator = Validator::make($request->all(), [
+            'nombre'    => 'sometimes|string|max:50',
+            'apellido'  => 'sometimes|string|max:50',
+            'email'     => 'sometimes|email|max:50',
+            'telefono'  => 'sometimes|string|max:13',
+            'password'  => 'sometimes|nullable|string|max:255'
+        ]);
+
+        // aqui se mandan los datos que quedaron mal segun la validacion
+        if($validator->fails()) {
+            $data = [
+                'mensaje' => 'Error en la validacion, datos incorrectos usuario edit',
+                'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
+                'status' => 400
+            ];
+            return response()->json($data, 200);
+        }
+
+        // Se confirma la validacion de los datos en el anterior bloque
+        $datosvalidados = $validator->validated();
+
+        // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
+        $mappedData = [
+            'nombre'        => $datosvalidados['nombre'] ?? $usuario->nombre,
+            'apellido'      => $datosvalidados['apellido'] ?? $usuario->apellido,
+            'email'         => $datosvalidados['email'] ?? $usuario->email,
+            'telefono'      => $datosvalidados['telefono'] ?? $usuario->telefono,
+            'contrasena'    => $datosvalidados['password'] ?? $usuario->contrasena,
+        ];
+
+        // Si la password es parte de los campos enviados, se encriptara antes de agregarla al mapeo
+        if (isset($datosvalidados['password'])) {
+            $mappedData['cont_usuario'] = bcrypt($datosvalidados['password']);
+        }
+
+        // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
+        $usuario->fill($mappedData);
+
+        // Despues de tomar y organizar los datos, los guardamos de la siguiente forma
+        $usuario->save();
+        
+        // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
+        $data = [
+            'mensaje' => 'El Usuario fue actualizado',
             'status' => 200
         ];
         
@@ -214,11 +339,54 @@ class usuarioController extends Controller
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($usuariosPadre == 0){
-            return response()->json(['mensaje' => 'no hay usuarios padre registrados']);
+            return response()->json(['mensaje' => 'no hay usuarios padre registrados'], 200);
         }
 
         // este return devuelve todo lo que contiene la variable de $usuarios. El 200 inidica que todo salio bien
         //return response()->json($usuariosPadre, 200);
         return response()->json((int)$usuariosPadre, 200); // retornamos el numero de registros que se encontraron
     }
+
+    public function desactivarAdministrador($id) {
+
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::where('documento', $id)
+                       ->where('id_rol', 1)
+                       ->whereNot('id', 1)->first();
+        
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al Usuario para desactivarlo',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // Validamos si esta activo o inactivo y realizamos 
+        if ($usuario->activo) {
+            // lo desactivamos 
+            $usuario->activo = 0;
+
+            // modificamos el mensaje en base al resultado
+            $data = [
+                'desactivado' => 'el usuario fue desactivado'
+            ];
+        } else {
+            // lo activamos
+            $usuario->activo = 1;
+
+            // modificamos el mensaje en base al resultado
+            $data = [
+                'activado' => 'el usuario fue activado'
+            ];
+        }
+        
+        // guardamos los cambios
+        $usuario->save();
+        return response()->json($data, 200);
+    }
+
+
+
 }

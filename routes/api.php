@@ -237,6 +237,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     Route::delete('/antecedetevisual/{cod_antece_visua}', [antecedentevisualController::class, 'destroy']);
 });
 
+
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A DIAGNOSTICO X HISTORIA CLINICA
     // Ruta API para crear un Diagnostico x historia clinica
@@ -252,7 +253,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     Route::delete('/diagnosticoxhistoria/{cod_diag_his}', [diagnosticohistoriaclinicaController::class, 'destroy']);
 
     // Ruta API para traer registros de diagnosticos por meses
-    Route::get('/diagnosticosxmeses', [diagnosticohistoriaclinicaController::class, 'contarRegistrosPorBimestre']);
+    Route::get('/diagnosticosxmeses', [diagnosticohistoriaclinicaController::class, 'traerRegistroXFecha']);
 //});
 
 
@@ -360,17 +361,30 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a todos los usuarios
     Route::get('/usuario', [usuarioController::class, 'index']);
 
-    // Ruta API para llamar a un Usuario especifco
+    // Ruta API para llamar a un Usuario especifco PARA EL PADRE
     Route::get('/usuario/{id_usuario}', [usuarioController::class, 'show']);
 
-    // Ruta API para modificar la informacion de un usuario
+    // Ruta API para llamar a un Usuario especifco PARA LOS ADMINs
+    Route::get('/usuarioadmin/{id_usuario}', [usuarioController::class, 'showAdministrador']);
+
+    // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
+    Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
+
+    // Ruta API para modificar la informacion de un usuario PADRE Y ADMINISTRADOR, pero no el SUPERADMISTRADOR
     Route::put('/usuario/{id_usuario}', [usuarioController::class, 'update']);
+
+    // Ruta API para modificar la informacion DE SOLO EL SUPERADMINISTRADOR (el que tiene el primer 1)
+    Route::put('/superadmin/{id_usuario}', [usuarioController::class, 'updateSuperAdmin']);
 
     // Ruta API para eliminiar a un usuario
     Route::delete('/usuario/{id_usuario}', [usuarioController::class, 'destroy']);
 
     // Ruta API para traer todos los usuarios padre
     Route::get('/usuariospadre', [usuarioController::class, 'traerUsuariosPadre']);
+
+    // Ruta API para modificar la informacion de un usuario
+    Route::put('/usuariodesactiar/{id_usuario}', [usuarioController::class, 'desactivarAdministrador']);
+    
 //});
 
 
@@ -393,7 +407,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para crear un foro
     Route::post('/foro', [foroController::class, 'store']);
@@ -406,7 +420,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un foro
     Route::delete('/foro/{cod_foro}', [foroController::class, 'destroy']);
-});
+//});
 
 
 //Route::middleware(['auth:api', 'rol:2'])->group(function () {
