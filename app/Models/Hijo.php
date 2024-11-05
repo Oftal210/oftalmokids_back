@@ -25,7 +25,9 @@ class Hijo extends Model
         'tipo_documento', 
         'fecha_nacimiento',
         'foto',
-        'id_usuario'
+        'id_usuario',
+        'genero',
+        'edad'
     ];
 
 
