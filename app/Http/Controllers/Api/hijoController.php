@@ -40,7 +40,9 @@ class hijoController extends Controller
             'apellido'      => 'required|string|max:70',
             'tipodoc'       => 'required|string|max:50',
             'nacimiento'    => 'required|date',
-            'foto'          => 'required|string'
+            'foto'          => 'required|string',
+            'edad'          => 'required|integer',
+            'genero'        => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -61,7 +63,9 @@ class hijoController extends Controller
             'apellido'          => $request->apellido,
             'tipo_documento'    => $request->tipodoc,
             'fecha_nacimiento'  => $request->nacimiento,
-            'foto'              => $request->foto
+            'foto'              => $request->foto,
+            'edad'              => $request->edad,
+            'genero'            => $request->genero,
         ]);
 
         // aqui validamos si se puedo crear el Hijo, en caso de que este vacia, no se deberia haber guardado

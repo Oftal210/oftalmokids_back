@@ -13,6 +13,7 @@ use App\Models\Hijo;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Constraint\IsEmpty;
 use SebastianBergmann\Type\FalseType;
 
 class preconsultaController extends Controller
@@ -193,7 +194,7 @@ class preconsultaController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque
@@ -238,7 +239,7 @@ class preconsultaController extends Controller
     public function preconsdelhijo ($id){
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
-        $hijo = Hijo::find($id);
+        $hijo = Hijo::where('documento', $id)->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijo){
@@ -246,19 +247,22 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontro al hijo',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Aquí $hijoprecon es una colección que contiene todos los registros encontrados
-        $hijoprecon = Preconsulta::where('id_hijo', $id)->get();
+        $hijoprecon = Preconsulta::where('id_hijo', $hijo->id)
+                                 ->whereMonth('fecha_preconsulta', now()->month) // filtramos el mes actual
+                                 ->whereyear('fecha_preconsulta', now()->year)   // filtramos el año actual
+                                 ->get();
 
         // Validamos si la variable con la data esta vacia
-        if (!$hijoprecon){
+        if ($hijoprecon->isEmpty()){
             $data = [
                 'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente
@@ -269,7 +273,7 @@ class preconsultaController extends Controller
     // Funcion para realizar un promedio del puntaje de sus preconsultas
     public function promediomespreconsulta($id){
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
-        $hijo = Hijo::find($id);
+        $hijo = Hijo::where('documento', $id)->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijo){
@@ -277,11 +281,11 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontro al hijo',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Aquí $hijoprecon es una colección que contendra todos los registros encontrados
-        $hijoprecon = Preconsulta::where('id_hijo', $id)->get();
+        $hijoprecon = Preconsulta::where('id_hijo', $hijo->id)->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijoprecon){
@@ -289,22 +293,23 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Aquí buscaremos el promedio de puntaje del mes en el que nos encontramos
-        $promeprecon = Preconsulta::where('id_hijo', $id)                       // filtramos por el hijo que se necesita
-                                  ->whereMonth('fecha_preconsulta', now()->month) // filtramos el mes actual
-                                  ->whereyear('fecha_preconsulta', now()->year)   // filtramos el año actual
-                                  ->avg('puntua_preconsulta');                    // realizamos promedio de los registros encontrados
+        $promeprecon = Preconsulta::where('id_hijo', $hijo->id)                     // filtramos por el hijo que se necesita
+                                  ->whereMonth('fecha_preconsulta', now()->month)   // filtramos el mes actual
+                                  ->whereyear('fecha_preconsulta', now()->year)     // filtramos el año actual
+                                  ->avg('puntua_preconsulta');                      // realizamos promedio de los registros encontrados
                                   
         // Validamos si la variable con la data esta vacia y NO ENCONTRO ABSOLUTA NADA
         if (!$promeprecon){
             $data = [
+                'prom' => $id,
                 'mensaje' => 'No se encontraron preconsultas de este mes',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente, (int) es para quitar los decimales y dejar solo la parte entera, ej: 5,7 lo deja en 5
