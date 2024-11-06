@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // Importamos el modelo de foros con la siguiente direccion
 use App\Models\Foro;
+use App\Models\User;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +41,17 @@ class foroController extends Controller
             'subtitulo' => 'required|string',
             'contenido' => 'required|string'
         ]);
+        
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $usuario = user::where('documento', $request->usuario)->first();
+
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al usuario',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
 
         // aqui se mandan los datos que quedaron mal segun la validacion
         if($validator->fails()) {
@@ -53,7 +65,7 @@ class foroController extends Controller
 
         // aqui intentamos crear un foros validando que los datos que vamos a agregar existan
         $foro = Foro::create([
-            'id_usuario'        => $request->usuario,
+            'id_usuario'        => $usuario->id,
             'subtitulo_foro'    => $request->subtitulo,
             'contenido_foro'    => $request->contenido
         ]);
@@ -62,10 +74,11 @@ class foroController extends Controller
         if(!$foro) {
             $data = [
                 'mensaje' => 'Error al crear el foro',
+                'user' => $usuario,
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data el foro que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -75,7 +88,7 @@ class foroController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar un Foro especifico
