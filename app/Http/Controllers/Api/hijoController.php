@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // Importamos el modelo de hijos con la siguiente direccion
 use App\Models\Hijo;
+use App\Models\User;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -217,5 +218,38 @@ class hijoController extends Controller
 
         // este return devuelve todo lo que contiene la variable de $hijos. El 200 inidica que todo salio bien
         return response()->json($cantidadHijos, 200); // retornamos el numero de registros que se encontraron
+    }
+
+    public function hijosdepadre ($id){
+
+        // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
+        $padre = User::where('documento', $id)
+                     ->where('id_rol', 2)
+                     ->whereNot('id', 1)->first();;
+
+        // Validamos si la variable con la data esta vacia
+        if (!$padre){
+            $data = [
+                'mensaje' => 'No se encontro al Padre',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Aquí $usuarios es una colección que contiene todos los registros encontrados
+        $hijos = Hijo::where('id_usuario', $padre->id)->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijos){
+            $data = [
+                'mensaje' => 'No se encontraron hijos del Padre enviado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($hijos, 200);
+
     }
 }

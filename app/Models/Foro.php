@@ -19,7 +19,8 @@ class Foro extends Model
     protected $fillable = [
         'id_usuario',
         'subtitulo_foro',
-        'contenido_foro'
+        'contenido_foro',
+        'ruta_imagen'
     ];
 
 

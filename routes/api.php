@@ -63,7 +63,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/hijo/{id_hijo}', [hijoController::class, 'destroy']);
 
     // Ruta API para llamar solamente a los hijos de un padre
-    Route::get('/hijosdepadre/{id_padre}', [padreController::class, 'hijosdepadre']);
+    Route::get('/hijosdepadre/{id_padre}', [hijoController::class, 'hijosdepadre']);
     //Route::post('hijosdepadre', [padreController::class, 'hijosdepadre']); ESTE ES IGUAL AL DE ARRIBA, PERO CON POST
 
 
@@ -372,7 +372,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
     Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
 
-    // Ruta API para modificar la informacion de un usuario PADRE Y ADMINISTRADOR, pero no el SUPERADMISTRADOR
+    // Ruta API para modificar la informacion de un usuario PADRE
+    Route::put('/usuariopadre/{id_usuario}', [usuarioController::class, 'updatePadre']);
+
+    // Ruta API para modificar la informacion de un usuario ADMINISTRADOR, pero no el SUPERADMISTRADOR
     Route::put('/usuario/{id_usuario}', [usuarioController::class, 'update']);
 
     // Ruta API para modificar la informacion DE SOLO EL SUPERADMINISTRADOR (el que tiene el primer 1)
@@ -390,7 +393,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 //});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA LOS DIAGNOSTICOS
     // Ruta API para crear un diagnostico
     Route::post('/diagnostico', [diagnosticoController::class, 'store']);
@@ -406,7 +409,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar un diagnostico
     Route::delete('/diagnostico/{cod_diagnostico}', [diagnosticoController::class, 'destroy']);
-});
+//});
 
 
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -448,7 +451,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 });
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA LA HISTORIA CLINICA
     // Ruta API para crear una historia clinica
     Route::post('/historiaclinica', [historiaclinicaController::class, 'store']);
@@ -461,4 +464,4 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar una historia clinica
     Route::delete('/historiaclinica/{cod_historia}', [historiaclinicaController::class, 'destroy']);
-});
+//});

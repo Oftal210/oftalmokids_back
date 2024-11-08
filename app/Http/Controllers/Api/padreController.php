@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 // Importamos el modelo de padres con la siguiente direccion
-use App\Models\Padre;
+use App\Models\User;
 
 // Importamos el modelo de hijos con la siguiente direccion
 use App\Models\Hijo;
@@ -23,7 +23,7 @@ class padreController extends Controller
     public function index(){
 
         // de esta manera buscamos todos los padres del sistema y los pasamos a la variable siguiente
-        $padres = Padre::all();
+        $padres = User::all();
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($padres->isEmpty()){
@@ -60,7 +60,7 @@ class padreController extends Controller
         }
 
         // aqui intentamos crear un Padre validando que los datos que vamos a agregar existan
-        $padre = Padre::create([
+        $padre = User::create([
             'id_padre'    => $request->documento,
             //'cod_rol'       => $request->rol,
             'nom_padre'   => $request->nombre,
@@ -95,7 +95,7 @@ class padreController extends Controller
     public function show($id){
         
         // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
-        $padre = Padre::find($id);
+        $padre = User::find($id);
 
         // Validamos si la variable con la data esta vacia
         if (!$padre){
@@ -120,7 +120,7 @@ class padreController extends Controller
     public function destroy($id){
 
         // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
-        $padre = Padre::find($id);
+        $padre = User::find($id);
         
         // Validamos si la variable con la data esta vacia
         if (!$padre){
@@ -148,7 +148,7 @@ class padreController extends Controller
     public function update( Request $request, $id) {
 
         // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
-        $padre = Padre::find($id);
+        $padre = User::find($id);
 
         // Validamos si la variable con la data esta vacia
         if (!$padre){
@@ -220,7 +220,9 @@ class padreController extends Controller
     public function hijosdepadre ($id){
 
         // Aqui se busca el Padre por la primaria que le estamos mandando como variable $id
-        $padre = Padre::find($id);
+        $padre = User::where('documento', $id)
+                     ->where('id_rol', 2)
+                     ->whereNot('id', 1)->first();;
 
         // Validamos si la variable con la data esta vacia
         if (!$padre){
@@ -232,7 +234,7 @@ class padreController extends Controller
         }
 
         // Aquí $usuarios es una colección que contiene todos los registros encontrados
-        $hijos = Hijo::where('id_padre', $id)->get();
+        $hijos = Hijo::where('id_usuario', $padre->id)->get();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijos){

@@ -39,15 +39,17 @@ class foroController extends Controller
         $validator = Validator::make($request->all(), [
             'usuario'   => 'required',
             'subtitulo' => 'required|string',
-            'contenido' => 'required|string'
+            'contenido' => 'required|string',
+            'imagen'    => 'nullable|image|mimes:jpeg,png,jpg'
         ]);
         
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
         $usuario = user::where('documento', $request->usuario)->first();
-
+        
         if (!$usuario){
             $data = [
                 'mensaje' => 'No se encontro al usuario',
+                'imagen' => $request->file('imagen'),
                 'status' => 404
             ];
             return response()->json($data, 200);
@@ -63,11 +65,21 @@ class foroController extends Controller
             return response()->json($data, 400);
         }
 
+        // Si se recibe una imagen, guardarla
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $path = $imagen->store('public/imagen-foro'); 
+            $path = str_replace('public/', '', $path);
+        } else {
+            $path = null;  // Si no hay imagen, no asignamos ninguna
+        }
+
         // aqui intentamos crear un foros validando que los datos que vamos a agregar existan
         $foro = Foro::create([
             'id_usuario'        => $usuario->id,
             'subtitulo_foro'    => $request->subtitulo,
-            'contenido_foro'    => $request->contenido
+            'contenido_foro'    => $request->contenido,
+            'ruta_imagen'       => $path
         ]);
 
         // aqui validamos si se puedo crear el Foro, en caso de que este vacia, no se deberia haber guardado

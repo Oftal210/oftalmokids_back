@@ -22,6 +22,9 @@ return new class extends Migration
             // contenido que tendra el foro referente al titulo
             $table->text('contenido_foro')->nullable(false);
 
+            // ruta de la imagen dentro del proyecto
+            $table->text('ruta_imagen')->nullable();
+
             // Foraneas
             // se define la llave foranea en esta tabla que apunta a usuario
             $table->unsignedBigInteger('id_usuario');

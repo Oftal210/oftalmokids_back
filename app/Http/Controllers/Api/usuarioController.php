@@ -195,7 +195,76 @@ class usuarioController extends Controller
         return response()->json($data, 200);
     }
 
-    // Fucion para actualizar un Usuario TANTO PADRE COMO ADMINISTRADOR, pero no el SUPERADMINISTRADOR
+    // Fucion para actualizar un Usuario COMO PADRE
+    public function updatePadre( Request $request, $id) {
+
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::where('documento', $id)
+                       ->where('id_rol', 2)
+                       ->whereNot('id', 1)->first(); // Evitamos que tome al superadministrador
+
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensaje' => 'No se encontro al Usuario para modificar',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // aqui se validan los datos que llegan en la variable $request segunda haga falta
+        $validator = Validator::make($request->all(), [
+            'nombre'    => 'sometimes|string|max:50',
+            'apellido'  => 'sometimes|string|max:50',
+            'email'     => 'sometimes|email|max:50',
+            'telefono'  => 'sometimes|string|max:13',
+            'password'  => 'sometimes|nullable|string|max:255'
+        ]);
+
+        // aqui se mandan los datos que quedaron mal segun la validacion
+        if($validator->fails()) {
+            $data = [
+                'mensaje' => 'Error en la validacion, datos incorrectos usuario edit',
+                'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
+                'status' => 400
+            ];
+            return response()->json($data, 200);
+        }
+
+        // Se confirma la validacion de los datos en el anterior bloque
+        $datosvalidados = $validator->validated();
+
+        // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
+        $mappedData = [
+            'nombre'        => $datosvalidados['nombre'] ?? $usuario->nombre,
+            'apellido'      => $datosvalidados['apellido'] ?? $usuario->apellido,
+            'email'         => $datosvalidados['email'] ?? $usuario->email,
+            'telefono'      => $datosvalidados['telefono'] ?? $usuario->telefono,
+            'contrasena'    => $datosvalidados['password'] ?? $usuario->contrasena,
+        ];
+
+        // Si la password es parte de los campos enviados, se encriptara antes de agregarla al mapeo
+        if (isset($datosvalidados['password'])) {
+            $mappedData['cont_usuario'] = bcrypt($datosvalidados['password']);
+        }
+
+        // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
+        $usuario->fill($mappedData);
+
+        // Despues de tomar y organizar los datos, los guardamos de la siguiente forma
+        $usuario->save();
+        
+        // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
+        $data = [
+            'mensaje' => 'El Usuario fue actualizado',
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+    // Fucion para actualizar un Usuario COMO ADMINISTRADOR, pero no el SUPERADMINISTRADOR
     public function update( Request $request, $id) {
 
         // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id

@@ -10,6 +10,7 @@ use App\Models\Historia_clinica;
 
 // Importamos el modelo del Hijo con la siguiente direccion
 use App\Models\Hijo;
+use App\Models\User;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -74,9 +75,33 @@ class historiaclinicaController extends Controller
             return response()->json($data, 400);
         }
 
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::where('documento', $request->hijo)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensajehijo' => 'No se encontro al Hijo',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // Aqui se busca el Usuario por la primaria que le estamos mandando como variable $id
+        $usuario = User::find($request->padre); // Evitamos que tome al superadministrador
+
+        // Validamos si la variable con la data esta vacia
+        if (!$usuario){
+            $data = [
+                'mensajepadre' => 'No se encontro al Usuario para modificar',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
         // aqui intentamos crear una Historia Clinica validando que los datos que vamos a agregar existan
         $historiaclinica = Historia_clinica::create([
-            'id_hijo'                   => $request->hijo,
+            'id_hijo'                   => $hijo->id,
             'id_usuario'                => $request->padre,
             'edad_embarazo'             => $request->edad_embarazo_madre,
             'alto_riesgo'               => $request->fue_alto_riesgo,
