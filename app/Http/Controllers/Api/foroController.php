@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 // Importamos el modelo de foros con la siguiente direccion
 use App\Models\Foro;
@@ -65,10 +66,15 @@ class foroController extends Controller
             return response()->json($data, 400);
         }
 
+        $storagePath = storage_path('app/public/imagen-foro');
+        if (!File::exists($storagePath)) {
+            File::makeDirectory($storagePath, 0755, true); 
+        }
+
         // Si se recibe una imagen, guardarla
         if ($request->hasFile('imagen')) {
             $imagen = $request->file('imagen');
-            $path = $imagen->store('public/imagen-foro'); 
+            $path = $imagen->store('imagen-foro', 'public');
             $path = str_replace('public/', '', $path);
         } else {
             $path = null;  // Si no hay imagen, no asignamos ninguna
