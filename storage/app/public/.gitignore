@@ -1,3 +1,4 @@
 *
-!imagen-foro
+!imagen-foro/
+!*/.gitignore
 !.gitignore
