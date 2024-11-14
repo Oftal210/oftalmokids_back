@@ -52,7 +52,7 @@ class motalidadocularController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear una Motalidad ocular validando que los datos que vamos a agregar existan
@@ -74,7 +74,7 @@ class motalidadocularController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data la Motalidad ocular que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -84,7 +84,7 @@ class motalidadocularController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar una Motalidad ocular especifico
@@ -99,7 +99,7 @@ class motalidadocularController extends Controller
                 'mensaje' => 'No se encontro la Motalidad ocular',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si la Motalidad ocular fue encontrado lo colocara dentro de esta variable
@@ -124,7 +124,7 @@ class motalidadocularController extends Controller
                 'mensaje' => 'No se encontro la Motalidad ocular para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar la Motalidad ocular encontrado 
@@ -152,7 +152,7 @@ class motalidadocularController extends Controller
                 'mensaje' => 'No se encontro la Motalidad ocular para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -172,7 +172,7 @@ class motalidadocularController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque

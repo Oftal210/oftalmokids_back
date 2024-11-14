@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 // Importamos el modelo de Antecedente visual con la siguiente direccion
 use App\Models\Antecedente_visual;
+use App\Models\Historia_clinica;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -40,7 +41,7 @@ class antecedentevisualController extends Controller
             'motivo_cambio_rx'              => 'required|string',
             'material_tratamiento_optico'   => 'required|string',
             'indicaciones_uso'              => 'required|string',
-            'fecha_ultimo_examen'           => 'required|date'
+            'fecha_ultimo_examen'           => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -204,5 +205,36 @@ class antecedentevisualController extends Controller
         
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
+    }
+
+    // funcion para traer los registros de Diagnosticos Historia Clinica mas recientes deacuerdo al id de la historia clinica
+    public function traerantevisualmasreciente($id){
+        // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
+        $historiaclinica = Historia_clinica::find($id);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$historiaclinica){
+            $data = [
+                'mensaje' => 'No se encontro la historia clinica',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroreciente = Antecedente_visual::where('id_historia', $id)
+                                              ->latest('created_at')->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$registroreciente){
+            $data = [
+                'mensaje' => 'no hay registros recientes con esta historia',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($registroreciente, 200);
     }
 }

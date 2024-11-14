@@ -52,7 +52,7 @@ class alineamientomotorController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear un Alineamienot Motor validando que los datos que vamos a agregar existan
@@ -73,7 +73,7 @@ class alineamientomotorController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data el Alineamiento motor que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -83,7 +83,7 @@ class alineamientomotorController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar un Alineamiento motor especifico
@@ -98,7 +98,7 @@ class alineamientomotorController extends Controller
                 'mensaje' => 'No se encontro al Alineamiento motor',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si el Alineamiento motor fue encontrado lo colocara dentro de esta variable
@@ -123,7 +123,7 @@ class alineamientomotorController extends Controller
                 'mensaje' => 'No se encontro al Alineamiento motor para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar al Alineamiento motor encontrado 
@@ -151,7 +151,7 @@ class alineamientomotorController extends Controller
                 'mensaje' => 'No se encontro al Alineamiento motor para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -171,7 +171,7 @@ class alineamientomotorController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque

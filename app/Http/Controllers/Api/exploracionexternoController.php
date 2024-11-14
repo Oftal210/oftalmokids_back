@@ -48,7 +48,7 @@ class exploracionexternoController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear un Exploracion de externo validando que los datos que vamos a agregar existan
@@ -66,7 +66,7 @@ class exploracionexternoController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data, el Exploracion de externo que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -76,7 +76,7 @@ class exploracionexternoController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar un Exploracion de externo especifico
@@ -91,7 +91,7 @@ class exploracionexternoController extends Controller
                 'mensaje' => 'No se encontro Exploracion de externo',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si la Exploracion de externo fue encontrado lo colocara dentro de esta variable
@@ -116,7 +116,7 @@ class exploracionexternoController extends Controller
                 'mensaje' => 'No se encontro la Exploracion de externo para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar la Exploracion de externo encontrado 
@@ -144,7 +144,7 @@ class exploracionexternoController extends Controller
                 'mensaje' => 'No se encontro la Exploracion de externo para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -160,7 +160,7 @@ class exploracionexternoController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque

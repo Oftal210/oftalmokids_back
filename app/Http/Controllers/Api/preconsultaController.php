@@ -61,7 +61,7 @@ class preconsultaController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear una Preconsulta validando que los datos que vamos a agregar existan
@@ -89,7 +89,7 @@ class preconsultaController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data la Preconsulta que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -99,7 +99,7 @@ class preconsultaController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar una Preconsulta especifico

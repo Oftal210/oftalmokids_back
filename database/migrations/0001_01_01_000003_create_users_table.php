@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('email', 255)->unique();
 
             // telefono del usuario 
-            $table->string('telefono',13)->nullable(false);
+            $table->string('telefono', 13)->nullable(false);
 
             // indicador si el usuario esta activo ( TRUE = ACTIVO  |  FALSE = INACTIVO )
             $table->boolean('activo')->default(true);

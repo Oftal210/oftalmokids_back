@@ -215,7 +215,6 @@ class loginController extends Controller
 
     public function logout(Request $request)
     {
-
         // Obtiene el usuario autenticado
         $user = $request->user();
 

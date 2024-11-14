@@ -189,7 +189,7 @@ Route::middleware('auth:api')->group(function () {
 //});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A AGUDEZA VISUAL
     // Ruta API para crear una agudeza visual
     Route::post('/agudezavisual', [agudezavisualController::class, 'store']);
@@ -202,10 +202,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una agudeza visual
     Route::delete('/agudezavisual/{cod_agude_visua}', [agudezavisualController::class, 'destroy']);
-});
+//});
 
     
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A ALINEAMIENTO MOTOR
     // Ruta API para crear un alineamiento motor
     Route::post('/alineamientomotor', [alineamientomotorController::class, 'store']);
@@ -218,10 +218,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a un alineamiento motor
     Route::delete('/alineamientomotor/{cod_alinea_motor}', [alineamientomotorController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A ANTECEDENTE VISUAL
     // Ruta API para crear un Antecedente visual
     Route::post('/antecedetevisual', [antecedentevisualController::class, 'store']);
@@ -232,12 +232,15 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a un Antecedente visual especifco
     Route::get('/antecedetevisual/{cod_antece_visua}', [antecedentevisualController::class, 'show']);
 
+    // Ruta API para llamar a un Antecedente visual especifco de una historia especifica
+    Route::get('/antevisureciente/{cod_historia}', [antecedentevisualController::class, 'traerantevisualmasreciente']);
+
     // Ruta API para modificar la informacion de un Antecedente visual
     Route::put('/antecedetevisual/{cod_antece_visua}', [antecedentevisualController::class, 'update']);
 
     // Ruta API para eliminiar a un Antecedente visual
     Route::delete('/antecedetevisual/{cod_antece_visua}', [antecedentevisualController::class, 'destroy']);
-});
+//});
 
 
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
@@ -259,7 +262,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 //});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A DUCCIONES
     // Ruta API para crear una Duccion
     Route::post('/duccion', [duccionController::class, 'store']);
@@ -272,10 +275,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Duccion
     Route::delete('/duccion/{cod_ducciones}', [duccionController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A EXPLORACION DE EXTERNO
     // Ruta API para crear una Exploracion de externo
     Route::post('/exploracion', [exploracionexternoController::class, 'store']);
@@ -288,10 +291,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Exploracion de externo
     Route::delete('/exploracion/{cod_explo_exter}', [exploracionexternoController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A MOTALIDAD OCULAR
     // Ruta API para crear una Motalidad ocular
     Route::post('/motalidad', [motalidadocularController::class, 'store']);
@@ -304,10 +307,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Motalidad ocular
     Route::delete('/motalidad/{cod_motali_ocular}', [motalidadocularController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A OFTALMOSCOPIA
     // Ruta API para crear una Oftalmoscopia
     Route::post('/oftalmoscopia', [oftalmoscopiaController::class, 'store']);
@@ -320,10 +323,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Oftalmoscopia
     Route::delete('/oftalmoscopia/{cod_oftalmoscopia}', [oftalmoscopiaController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A RETINOSCOPIA
     // Ruta API para crear una Retinoscopia
     Route::post('/retinoscopia', [retinoscopiaController::class, 'store']);
@@ -336,10 +339,10 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Retinoscopia
     Route::delete('/retinoscopia/{cod_retinoscopia}', [retinoscopiaController::class, 'destroy']);
-});
+//});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS A VERSION
     // Ruta API para crear una Version
     Route::post('/version', [versionController::class, 'store']);
@@ -352,28 +355,24 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una Version
     Route::delete('/version/{cod_versiones}', [versionController::class, 'destroy']);
-});
+//});
 
 
-//Route::middleware(['auth:api', 'rol:1'])->group(function () {
-    // RUTAS A USUARIO
-    // Ruta API para crear un usuario
-    Route::post('/usuario', [usuarioController::class, 'store']);
+
+// RUTAS A USUARIO
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
+    
+    // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
+    Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
 
     // Ruta API para llamar a todos los usuarios
     Route::get('/usuario', [usuarioController::class, 'index']);
 
-    // Ruta API para llamar a un Usuario especifco PARA EL PADRE
-    Route::get('/usuario/{id_usuario}', [usuarioController::class, 'show']);
-
     // Ruta API para llamar a un Usuario especifco PARA LOS ADMINs
     Route::get('/usuarioadmin/{id_usuario}', [usuarioController::class, 'showAdministrador']);
 
-    // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
-    Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
-
-    // Ruta API para modificar la informacion de un usuario PADRE
-    Route::put('/usuariopadre/{id_usuario}', [usuarioController::class, 'updatePadre']);
+    // Ruta API para crear un usuario
+    Route::post('/usuario', [usuarioController::class, 'store']);
 
     // Ruta API para modificar la informacion de un usuario ADMINISTRADOR, pero no el SUPERADMISTRADOR
     Route::put('/usuario/{id_usuario}', [usuarioController::class, 'update']);
@@ -387,12 +386,23 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para traer todos los usuarios padre
     Route::get('/usuariospadre', [usuarioController::class, 'traerUsuariosPadre']);
 
-    // Ruta API para modificar la informacion de un usuario
+    // Ruta API para activar o desactivar a un usuario
     Route::put('/usuariodesactiar/{id_usuario}', [usuarioController::class, 'desactivarAdministrador']);
+});
+
+
+    // Ruta API para insetar la informacion de un usuario PADRE
+    Route::post('/usuariopadre', [usuarioController::class, 'insertarPadre']);
+
+    // Ruta API para llamar a un Usuario especifco PARA EL PADRE
+    Route::get('/usuario/{id_usuario}', [usuarioController::class, 'show']);
+
+
+    // Ruta API para modificar la informacion de un usuario PADRE
+    Route::put('/usuariopadre/{id_usuario}', [usuarioController::class, 'updatePadre']);
+
+
     
-//});
-
-
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA LOS DIAGNOSTICOS
     // Ruta API para crear un diagnostico

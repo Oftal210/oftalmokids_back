@@ -146,7 +146,7 @@ class foroController extends Controller
                 'mensaje' => 'No se encontro al foro para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar al foro encontrado 
@@ -171,7 +171,7 @@ class foroController extends Controller
         // Validamos si la variable con la data esta vacia
         if (!$foro){
             $data = [
-                'mensaje' => 'No se encontro al Foro para eliminar',
+                'mensaje' => 'No se encontro al Foro para actualizar',
                 'status' => 404
             ];
             return response()->json($data, 404);

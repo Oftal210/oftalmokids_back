@@ -88,6 +88,61 @@ class usuarioController extends Controller
         return response()->json($data, 200);
     }
 
+    // Funcion para almacenar los Usuarios dentro de la base de datos SOLO PARA PADRE
+    public function insertarPadre(Request $request){
+        
+        // aqui se validan los datos que llegan en la variable $request segunda haga falta
+        $validator = Validator::make($request->all(), [
+            'documento' => 'required|string',
+            'rol'       => 'required',
+            'nombre'    => 'required|string|max:50',
+            'apellido'  => 'required|string|max:50',
+            'email'     => 'required|email|max:50',
+            'telefono'  => 'required|string|max:13',
+            'password'  => 'required|string|max:255'
+        ]);
+
+        // aqui se mandan los datos que quedaron mal segun la validacion
+        if($validator->fails()) {
+            $data = [
+                'mensaje' => 'Error en la validacion, datos incorrectos usuario',
+                'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
+                'status' => 400
+            ];
+            return response()->json($data, 200);
+        }
+
+        // aqui intentamos crear un Usuario validando que los datos que vamos a agregar existan
+        $usuario = User::create([
+            'documento'     => $request->documento,
+            'id_rol'        => 2,
+            'nombre'        => $request->nombre,
+            'apellido'      => $request->apellido,
+            'email'         => $request->email,
+            'telefono'      => $request->telefono,
+            'contrasena'    => Hash::make( $request->password)
+        ]);
+
+        // aqui validamos si se puedo crear el Usuario, en caso de que este vacia, no se deberia haber guardado
+        if(!$usuario) {
+            $data = [
+                'mensaje' => 'Error al crear el Usuario',
+                'errors' => $validator->errors(),
+                'status' => 500
+            ];
+            return response()->json($data, 200);
+        }
+
+        // aqui colocamos en la variable $data el usuario que fue agregado y enviamos un 201 (se creo un registro correctamente)
+        $data = [
+            'usuario' => $usuario,
+            'status' => 201
+        ];
+
+        // retornamos el resultado de anterior bloque
+        return response()->json($data, 200);
+    }
+
     // Funcion para buscar un Usuario especifico PARA EL PADRE
     public function show($id){
         
@@ -97,11 +152,15 @@ class usuarioController extends Controller
 
         // Validamos si la variable con la data esta vacia
         if (!$usuario){
-            $data = [
-                'mensaje' => 'No se encontro al Usuario',
-                'status' => 404
-            ];
-            return response()->json($data, 200);
+            $usuario = User::where('id', $id)->
+                             where('id_rol', 2)->first();
+            if (!$usuario){
+                $data = [
+                    'mensaje' => 'No se encontro al Usuario',
+                    'status' => 404
+                ];
+                return response()->json($data, 200);
+            }
         }
 
         // si el usuario fue encontrado lo colocara dentro de esta variable

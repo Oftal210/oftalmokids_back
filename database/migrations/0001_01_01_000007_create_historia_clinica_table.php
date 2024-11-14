@@ -37,6 +37,11 @@ return new class extends Migration
             $table->boolean('alergia')->nullable(false);
             $table->text('especificar_alergia')->nullable();
             $table->boolean('cirugia_ocular')->nullable(false);
+            $table->date('fecha')->nullable(false);
+            $table->string('hora')->nullable(false);
+
+            // direccion del usuario 
+            $table->string('direccion', 255)->nullable();
 
             // Datos que refieren al padre
             $table->unsignedBigInteger('id_usuario');

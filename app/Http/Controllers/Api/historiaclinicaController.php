@@ -35,6 +35,17 @@ class historiaclinicaController extends Controller
 
     // Funcion para almacenar las Historias Clinicas dentro de la base de datos 
     public function store(Request $request){
+
+        // buscamos si existe un registro en historia clinica con el dato del hijo
+        $existehistoria = Historia_clinica::where('id_hijo', $request->hijo)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if ($existehistoria){
+            $data = [
+                'existe' => 'El Hijo cuenta con historia',
+            ];
+            return response()->json($data, 200);
+        }
         
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
@@ -62,7 +73,10 @@ class historiaclinicaController extends Controller
             'especifique_enfer_sistemica'   => 'nullable|string',
             'alergia'                   => 'required|boolean',
             'especifique_alergia'       => 'nullable|string',
-            'cirugia_general_ocular'    => 'required|boolean'
+            'cirugia_general_ocular'    => 'required|boolean',
+            'fecha'                     => 'required|date',
+            'hora'                      => 'required|string',
+            'direccion'                 => 'required|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -72,16 +86,17 @@ class historiaclinicaController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
-        $hijo = Hijo::where('documento', $request->hijo)->first();
+        $hijo = Hijo::find($request->hijo);
 
         // Validamos si la variable con la data esta vacia
         if (!$hijo){
             $data = [
                 'mensajehijo' => 'No se encontro al Hijo',
+                'hijo' => $request->hijo,
                 'status' => 404
             ];
             return response()->json($data, 200);
@@ -101,7 +116,7 @@ class historiaclinicaController extends Controller
 
         // aqui intentamos crear una Historia Clinica validando que los datos que vamos a agregar existan
         $historiaclinica = Historia_clinica::create([
-            'id_hijo'                   => $hijo->id,
+            'id_hijo'                   => $request->hijo,
             'id_usuario'                => $request->padre,
             'edad_embarazo'             => $request->edad_embarazo_madre,
             'alto_riesgo'               => $request->fue_alto_riesgo,
@@ -123,6 +138,9 @@ class historiaclinicaController extends Controller
             'alergia'                   => $request->alergia,
             'especificar_alergia'       => $request->especifique_alergia,
             'cirugia_ocular'            => $request->cirugia_general_ocular,
+            'fecha'                     => $request->fecha,
+            'hora'                      => $request->hora,
+            'direccion'                 => $request->direccion
         ]);
 
         // aqui validamos si se puedo crear la Historia Clinica, en caso de que este vacia, no se deberia haber guardado
@@ -132,7 +150,7 @@ class historiaclinicaController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data la Historia Clinica que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -142,7 +160,7 @@ class historiaclinicaController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar una Historia Clinica especifica
@@ -309,7 +327,8 @@ class historiaclinicaController extends Controller
         }
 
         // Aquí $hijohistorias es una colección que contiene todos los registros encontrados
-        $hijohistorias = Historia_clinica::where('id_hijo', $id)->get();
+        $hijohistorias = Historia_clinica::where('id_hijo', $id)
+                                         ->latest('fecha')->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$hijohistorias){

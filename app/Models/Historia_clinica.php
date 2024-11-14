@@ -38,7 +38,9 @@ class Historia_clinica extends Model
         'especif_enferm_sistemica',
         'alergia',
         'especificar_alergia',
-        'cirugia_ocular'
+        'cirugia_ocular',
+        'fecha',
+        'hora'
     ];
 
 

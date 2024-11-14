@@ -47,7 +47,7 @@ class versionController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // aqui intentamos crear una Version validando que los datos que vamos a agregar existan
@@ -63,7 +63,7 @@ class versionController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data, la Version que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -73,7 +73,7 @@ class versionController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar una Version especifico
@@ -88,7 +88,7 @@ class versionController extends Controller
                 'mensaje' => 'No se encontro la Version',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si la Version fue encontrado lo colocara dentro de esta variable
@@ -113,7 +113,7 @@ class versionController extends Controller
                 'mensaje' => 'No se encontro la Version para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar la Version encontrado 
@@ -141,7 +141,7 @@ class versionController extends Controller
                 'mensaje' => 'No se encontro la Version para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -156,7 +156,7 @@ class versionController extends Controller
                 'errors' => $validator->errors(), // enviamos en donde o que fue lo que quedo mal
                 'status' => 400
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         }
 
         // Se confirma la validacion de los datos en el anteior bloque
@@ -196,7 +196,7 @@ class versionController extends Controller
                 'mensaje' => 'No se encontro la historia clinica',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Buscamos dentro de la tabla todos los registros que tengan este id
