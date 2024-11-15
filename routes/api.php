@@ -360,7 +360,7 @@ Route::middleware('auth:api')->group(function () {
 
 
 // RUTAS A USUARIO
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     
     // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
     Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
@@ -388,7 +388,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para activar o desactivar a un usuario
     Route::put('/usuariodesactiar/{id_usuario}', [usuarioController::class, 'desactivarAdministrador']);
-});
+//});
 
 
     // Ruta API para insetar la informacion de un usuario PADRE

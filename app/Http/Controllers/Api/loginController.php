@@ -200,6 +200,7 @@ class loginController extends Controller
             // retornamos el id de usuario y el token, si todo sale correcto
             return response()->json([
                 'user' => [
+                    'user'=>$user,
                     'documento' => $user->documento,
                     'id_rol' => $user->id_rol
                 ],
