@@ -75,10 +75,15 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'show']);
 
     // Ruta API para llamar solamente a las preconsultas de un hijo
-    Route::get('/preconsdelhijo/{id_hijo}', [preconsultaController::class, 'preconsdelhijo']);
+    Route::post('/preconsultafechas/{id_hijo}', [preconsultaController::class, 'preconsultafiltrofechas']);
 
     // Ruta API para la funcion que realiza el promedio de puntuacion de las preconsultas para el hijo durante el mes
     Route::get('/promediomespreconsulta/{id_hijo}', [preconsultaController::class, 'promediomespreconsulta']);
+
+    // Ruta API para traer el registro de preconsulta mas reciente segun el hijo
+    Route::get('/preconsultareciente/{id_hijo}', [preconsultaController::class, 'preconsultareciente']);
+
+    
 
 
     // RUTAS A HISTORIA CLINICA

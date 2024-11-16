@@ -76,7 +76,7 @@ class historiaclinicaController extends Controller
             'cirugia_general_ocular'    => 'required|boolean',
             'fecha'                     => 'required|date',
             'hora'                      => 'required|string',
-            'direccion'                 => 'required|string'
+            
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -140,7 +140,7 @@ class historiaclinicaController extends Controller
             'cirugia_ocular'            => $request->cirugia_general_ocular,
             'fecha'                     => $request->fecha,
             'hora'                      => $request->hora,
-            'direccion'                 => $request->direccion
+            
         ]);
 
         // aqui validamos si se puedo crear la Historia Clinica, en caso de que este vacia, no se deberia haber guardado

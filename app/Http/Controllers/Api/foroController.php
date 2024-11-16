@@ -41,7 +41,7 @@ class foroController extends Controller
             'usuario'   => 'required',
             'subtitulo' => 'required|string',
             'contenido' => 'required|string',
-            'imagen'    => 'nullable|image|mimes:jpeg,png,jpg'
+            'imagen'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
         
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
@@ -92,7 +92,6 @@ class foroController extends Controller
         if(!$foro) {
             $data = [
                 'mensaje' => 'Error al crear el foro',
-                'user' => $usuario,
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
