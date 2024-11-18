@@ -43,7 +43,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 // ROL 1 ADMIN Y ROL 2 USUARIO NORMAL
-//Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
+Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // RUTAS PARA EL FORO
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
@@ -186,7 +186,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Ruta API para traer el registro de Versiones mas reciente segun historia clinica
     Route::get('/versionreciente/{historia_clinica}', [versionController::class, 'traerversionmasreciente']);
-//});
+});
 
 
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
