@@ -33,11 +33,14 @@ return new class extends Migration
             // fecha de nacimiento del hijo, su formato es AÑO-MES-DIA (YYYY-MM-DD)
             $table->date('fecha_nacimiento')->nullable(false);
 
+            // direccion del usuario 
+            $table->string('direccion', 255)->nullable();
+
             // edad del hijo
             $table->integer('edad')->nullable(false);
 
             // texto con la ruta de la imagen dentro de los archivos del servidor o dominio
-            $table->text('foto');
+            $table->text('foto')->nullable();
 
             // foranea de la tabla padre, identificador del padre
             $table->unsignedBigInteger('id_usuario');

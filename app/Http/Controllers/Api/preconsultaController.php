@@ -114,7 +114,7 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontro al Preconsulta',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // si la preconsulta fue encontrado lo colocara dentor de esta variable
@@ -139,7 +139,7 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontro al Preconsulta para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Procedemos a eliminar la Preconsulta encontrado 
@@ -167,7 +167,7 @@ class preconsultaController extends Controller
                 'mensaje' => 'No se encontro la Preconsulta para eliminar',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
@@ -236,7 +236,63 @@ class preconsultaController extends Controller
 
 
     // Funcion para buscar todos los registros de un hijo especifico
-    public function preconsdelhijo ($id){
+    public function preconsultafiltrofechas (Request $request, $id){
+
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::where('documento', $id)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensaje' => 'No se encontro al hijo',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        $fechaInicio = $request->input('fechaInicio'); 
+        $fechaFin = $request->input('fechaFin');
+
+        $query = Preconsulta::where('id_hijo', $hijo->id);
+
+        if ($fechaInicio && $fechaFin) { 
+            // Filtrar por el rango de fechas 
+            $query->whereBetween('fecha_preconsulta', [$fechaInicio, $fechaFin]); 
+        } elseif ($fechaInicio) { 
+            // Filtrar por la fecha de inicio 
+            $query->whereDate('fecha_preconsulta', $fechaInicio); 
+        } elseif ($fechaFin) { 
+            // Filtrar por la fecha de fin 
+            $query->whereDate('fecha_preconsulta', $fechaFin); 
+        } else { 
+            // No se proporcionaron fechas, manejar según sea necesario 
+            return response()->json([ 'mensaje' => 'No se proporcionaron fechas válidas', 
+                                      'status' => 400 
+                                    ], 200);
+        } 
+        
+        $hijoprecon = $query->orderBy('fecha_preconsulta', 'desc')->get();
+
+        // Validamos si la variable con la data esta vacia
+        if ($hijoprecon->isEmpty()){
+            $data = [
+                'mensaje' => 'No se encontraron preconsultas con la(s) fecha(s) seleccionada(s)',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        $data = [
+            'consultas' => $hijoprecon,
+            'status' => 200
+        ];
+
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+    // Funcion para buscar todos los registros de un hijo especifico
+    public function preconsultareciente ($id){
 
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
         $hijo = Hijo::where('documento', $id)->first();
@@ -252,12 +308,11 @@ class preconsultaController extends Controller
 
         // Aquí $hijoprecon es una colección que contiene todos los registros encontrados
         $hijoprecon = Preconsulta::where('id_hijo', $hijo->id)
-                                 ->whereMonth('fecha_preconsulta', now()->month) // filtramos el mes actual
-                                 ->whereyear('fecha_preconsulta', now()->year)   // filtramos el año actual
-                                 ->get();
+                                 ->latest('fecha_preconsulta')
+                                 ->first();
 
         // Validamos si la variable con la data esta vacia
-        if ($hijoprecon->isEmpty()){
+        if (!$hijoprecon){
             $data = [
                 'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
                 'status' => 404
@@ -265,10 +320,14 @@ class preconsultaController extends Controller
             return response()->json($data, 200);
         }
 
-        // Retornamos los datos obtenidos anteriormente
-        return response()->json($hijoprecon, 200);
-    }
+        $data = [
+            'consultas' => $hijoprecon,
+            'status' => 200
+        ];
 
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
 
     // Funcion para realizar un promedio del puntaje de sus preconsultas
     public function promediomespreconsulta($id){
@@ -290,7 +349,7 @@ class preconsultaController extends Controller
         // Validamos si la variable con la data esta vacia
         if (!$hijoprecon){
             $data = [
-                'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
+                'mensaje' => 'No se encontraron preconsultas para realizar el promedio',
                 'status' => 404
             ];
             return response()->json($data, 200);
@@ -306,13 +365,18 @@ class preconsultaController extends Controller
         if (!$promeprecon){
             $data = [
                 'prom' => $id,
-                'mensaje' => 'No se encontraron preconsultas de este mes',
+                'mensaje' => 'No se encontraron preconsultas para el promedio de este mes',
                 'status' => 404
             ];
             return response()->json($data, 200);
         }
 
+        $data = [
+            'promedio' => $promeprecon,
+            'status' => 200
+        ];
+
         // Retornamos los datos obtenidos anteriormente, (int) es para quitar los decimales y dejar solo la parte entera, ej: 5,7 lo deja en 5
-        return response()->json((int)$promeprecon, 200);
+        return response()->json($data, 200);
     }
 }

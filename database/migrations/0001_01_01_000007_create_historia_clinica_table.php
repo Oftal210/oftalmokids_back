@@ -40,9 +40,6 @@ return new class extends Migration
             $table->date('fecha')->nullable(false);
             $table->string('hora')->nullable(false);
 
-            // direccion del usuario 
-            $table->string('direccion', 255)->nullable();
-
             // Datos que refieren al padre
             $table->unsignedBigInteger('id_usuario');
             $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
