@@ -56,6 +56,9 @@ Route::middleware('auth:api')->group(function () {
     // Ruta API para llamar a un hijo especifco
     Route::get('/hijo/{id_hijo}', [hijoController::class, 'show']);
 
+    // Ruta API para buscar los pacientes que se parezcan en el documeno
+    Route::get('/pacientescoincidan/{id_hijo}', [hijoController::class, 'buscardocumentoparecido']);
+
     // Ruta API para modificar la informacion de un hijo
     Route::put('/hijo/{id_hijo}', [hijoController::class, 'update']);
 

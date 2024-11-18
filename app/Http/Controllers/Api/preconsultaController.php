@@ -276,7 +276,7 @@ class preconsultaController extends Controller
         // Validamos si la variable con la data esta vacia
         if ($hijoprecon->isEmpty()){
             $data = [
-                'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
+                'mensaje' => 'No se encontraron preconsultas con la(s) fecha(s) seleccionada(s)',
                 'status' => 404
             ];
             return response()->json($data, 200);
@@ -349,7 +349,7 @@ class preconsultaController extends Controller
         // Validamos si la variable con la data esta vacia
         if (!$hijoprecon){
             $data = [
-                'mensaje' => 'No se encontraron preconsultas del Hijo enviado',
+                'mensaje' => 'No se encontraron preconsultas para realizar el promedio',
                 'status' => 404
             ];
             return response()->json($data, 200);

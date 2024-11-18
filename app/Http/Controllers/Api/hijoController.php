@@ -131,6 +131,31 @@ class hijoController extends Controller
         return response()->json($data, 200);
     }
 
+    // Funcion para buscar un Pacientes cuyo documento sean parecidos
+    public function buscardocumentoparecido($id){
+        
+        // Aqui se busca los Pacientes por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::where('documento', 'like', '%' . $id . '%')->get();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensaje' => 'No se encontraron Hijo(s) con ese documento',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // si el Hijo fue encontrado lo colocara dentor de esta variable
+        $data = [
+            'hijo' => $hijo,
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
     // Fucion para elimizar un Hijo
     public function destroy($id){
 
@@ -161,7 +186,7 @@ class hijoController extends Controller
 
     // Fucion para actualizar un Hijo
     public function update(Request $request, $id) {
-
+    
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
         $hijo = Hijo::find($id);
 
@@ -180,7 +205,7 @@ class hijoController extends Controller
             'apellido'          => 'sometimes|string|max:70',
             'tipo_documento'    => 'sometimes|string|max:50',
             'direccion'         => 'sometimes|string|max:70',
-            'foto'              => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'foto'              => 'nullable|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -193,24 +218,57 @@ class hijoController extends Controller
             return response()->json($data, 200);
         }
 
-        // Guardar nueva imagen 
-        if ($request->hasFile('foto')) {
+        // // Guardar nueva imagen 
+        // if ($request->hasFile('foto')) {
             
-            // revisamos si tiene imagen
+        //     // revisamos si tiene imagen
+        //     if($hijo->foto){
+        //         $oldImagePath = storage_path('app/public/' . $hijo->foto); 
+        //         if (File::exists($oldImagePath)) {
+        //             File::delete($oldImagePath); 
+        //         }
+        //     }
+
+        //     // guardar la nueva imagen
+        //     $imagen = $request->file('foto');
+        //     $path = $imagen->store('imagen-hijo', 'public');
+        //     $path = str_replace('public/', '', $path);
+        // } else {
+        //     $path = $hijo->foto; // Mantener la imagen antigua si no se proporciona una nueva
+        // }
+
+
+        // Verificar si se ha recibido la foto
+        if ($request->has('foto')) {
+            // Obtener la imagen en Base64
+            $base64Image = $request->foto;
+
+            // Eliminar la parte de la cadena Base64 que indica el tipo de imagen (data:image/jpeg;base64,)
+            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+
+            // Generar un nombre único para la imagen
+            $imageName = uniqid() . '.png'; // Puedes cambiar el tipo de archivo según la extensión
+
+            // Guardar la imagen en el almacenamiento público
+            $path = storage_path('app/public/imagen-hijo/' . $imageName);
+
+            // Guardar el archivo en el disco
+            file_put_contents($path, $imageData);
+
+            // Si es necesario, actualizar la ruta de la imagen en la base de datos
+            $path = 'imagen-hijo/' . $imageName;
+
             if($hijo->foto){
                 $oldImagePath = storage_path('app/public/' . $hijo->foto); 
                 if (File::exists($oldImagePath)) {
                     File::delete($oldImagePath); 
                 }
             }
-
-            // guardar la nueva imagen
-            $imagen = $request->file('foto');
-            $path = $imagen->store('imagen-hijo', 'public');
-            $path = str_replace('public/', '', $path);
         } else {
-            $path = $hijo->foto; // Mantener la imagen antigua si no se proporciona una nueva
+            // Mantener la imagen anterior si no se proporciona una nueva
+            $path = $hijo->foto;
         }
+
 
         // Se confirma la validacion de los datos en el anteior bloque
         $datosvalidados = $validator->validated();
@@ -234,6 +292,8 @@ class hijoController extends Controller
         $data = [
             'mensaje' => 'El Hijo fue actualizado',
             'foto' => $request->foto,
+            'nombre' => $request->nombre,
+            '$req' => $request,
             'path' => $path,
             'hijo' => $hijo,
             'status' => 200
