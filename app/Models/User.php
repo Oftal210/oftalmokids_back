@@ -90,4 +90,10 @@ class User extends Authenticatable
     public function foros(){
         return $this->hasMany(Foro::class, 'cod_foro');
     }
+
+    // Relacion de los datos en el modelo, un usuario puedo tener dat muchos likes
+    public function likes()
+    {
+        return $this->hasMany(Foro_like::class, 'id_usuario');
+    }
 }

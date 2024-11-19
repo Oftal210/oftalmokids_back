@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\loginController;
 use App\Http\Controllers\Api\diagnosticoController;
 use App\Http\Controllers\Api\foroController;
+use App\Http\Controllers\Api\forolikeController;
 use App\Http\Controllers\Api\padreController;
 use App\Http\Controllers\Api\hijoController;
 use App\Http\Controllers\Api\preconsultaController;
@@ -368,7 +369,7 @@ Route::middleware('auth:api')->group(function () {
 
 
 // RUTAS A USUARIO
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     
     // Ruta API para llamar a un Usuario especifco PARA EL SUPER ADMIN
     Route::get('/usuariosuperadmin/{id_usuario}', [usuarioController::class, 'buscarSuperAdmin']);
@@ -396,8 +397,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para activar o desactivar a un usuario
     Route::put('/usuariodesactiar/{id_usuario}', [usuarioController::class, 'desactivarAdministrador']);
-});
-
+//});
 
     // Ruta API para insetar la informacion de un usuario PADRE
     Route::post('/usuariopadre', [usuarioController::class, 'insertarPadre']);
@@ -438,11 +438,17 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para llamar a un foro especifco
     Route::get('/foro/{cod_foro}', [foroController::class, 'show']);
 
+    // Ruta API para buscar FOROS por titulo
+    Route::post('/forobuscartitulo', [foroController::class, 'buscarforostitulo']);
+
     // Ruta API para modificar la informacion de un foro
-    Route::put('/foro/{cod_foro}', [foroController::class, 'update']);
+    Route::post('/foro/{cod_foro}', [foroController::class, 'update']);
 
     // Ruta API para eliminiar a un foro
     Route::delete('/foro/{cod_foro}', [foroController::class, 'destroy']);
+
+    // Ruta API para calificar el foro con un like
+    Route::post('/forolike', [forolikeController::class, 'manejarlikes']);
 //});
 
 
@@ -456,7 +462,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 //});
 
 
-Route::middleware(['auth:api', 'rol:1'])->group(function () {
+//Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL PRECONSULTA
     // Ruta API para llamar a todos las preconsulta
     Route::get('/preconsulta', [preconsultaController::class, 'index']);
@@ -466,7 +472,7 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para eliminiar a una preconsulta
     Route::delete('/preconsulta/{cod_preconsul}', [preconsultaController::class, 'destroy']);
-});
+//});
 
 
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {

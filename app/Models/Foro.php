@@ -12,20 +12,23 @@ class Foro extends Model
     // Definimos el nombre de la tabla como aparece en la base de datos
     protected $table = 'foro';
 
-    // Desactivar los timestamps automáticos, es decir atributos para controlar cuando se inserto o actualizo un dato
-    public $timestamps = false;
-
-
     protected $fillable = [
         'id_usuario',
         'subtitulo_foro',
         'contenido_foro',
-        'ruta_imagen'
+        'ruta_imagen',
+        'fecha_vencimiento'
     ];
 
 
     // Relacion de los datos en el modelo, un foro tiene un usuario
     public function rol(){
         return $this->belongsTo(User::class, 'id');
+    }
+
+    // Relacion de los datos en el modelo, un foro puede tener varios likes
+    public function likes()
+    {
+        return $this->hasMany(Foro_like::class, 'id_foro');
     }
 }

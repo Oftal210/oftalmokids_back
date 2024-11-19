@@ -64,9 +64,21 @@ class preconsultaController extends Controller
             return response()->json($data, 200);
         }
 
+        // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
+        $hijo = Hijo::where('documento', $request->hijo)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$hijo){
+            $data = [
+                'mensaje' => 'No se encontro al hijo',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
         // aqui intentamos crear una Preconsulta validando que los datos que vamos a agregar existan
         $preconsulta = Preconsulta::create([
-            'id_hijo'               => $request->hijo,
+            'id_hijo'               => $hijo->id,
             'uso_gafa_lentes'       => $request->uso_gafas,
             'motivo_uso_gafas'      => $request->motivo_gafas,
             'uso_medicamento'       => $request->uso_medic,

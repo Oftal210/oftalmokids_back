@@ -29,8 +29,13 @@ class usuarioController extends Controller
             return response()->json(['mensaje' => 'no hay usuarios registrados en la tabla'], 200);
         }
 
+        $data = [
+            'usuarios' => $usuarios,
+            'status' => 200
+        ];
+
         // este return devuelve todo lo que contiene la variable de $usuarios. El 200 inidica que todo salio bien
-        return response()->json($usuarios, 200);
+        return response()->json($data, 200);
     }
 
     // Funcion para almacenar los Usuarios dentro de la base de datos 
