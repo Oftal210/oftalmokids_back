@@ -224,7 +224,7 @@ class diagnosticohistoriaclinicaController extends Controller
                 'mensaje' => 'no hay registros con esta historia',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         
         // Retornamos los datos obtenidos anteriormente
@@ -269,7 +269,6 @@ class diagnosticohistoriaclinicaController extends Controller
         // Obtener el año actual
         $yearactual = date('Y');
 
-
         // definir los rangos de fechas para cada par de meses
         // Enero - Febrero
         $inicioEneFeb = Carbon::create($yearactual, 1, 1)->startOfDay();
@@ -309,12 +308,12 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // acumulamos el resultado de las consultas
         $resultados = [
-            'enero_febrero' => $registrosEneFeb,
-            'marzo_abril' => $registrosMarAbr,
-            'mayo_junio' => $registrosMayJun,
-            'julio_agosto' => $registrosJulAgo,
-            'septiembre_octubre' => $registrosSepOct,
-            'noviembre_diciembre' => $registrosNovDic
+            'Ene_Feb' => $registrosEneFeb,
+            'Mar_Abr' => $registrosMarAbr,
+            'May_Jun' => $registrosMayJun,
+            'Jul_Ago' => $registrosJulAgo,
+            'Sep_Oct' => $registrosSepOct,
+            'Nov_Dic' => $registrosNovDic
         ];
 
         // retornamos la variable con todas las consultas

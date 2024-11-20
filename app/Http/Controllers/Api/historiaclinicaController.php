@@ -336,7 +336,7 @@ class historiaclinicaController extends Controller
                 'mensaje' => 'No se encontraron historias clinicas del Hijo enviado',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente
