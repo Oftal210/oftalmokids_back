@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Diagnostico;
 use Illuminate\Http\Request;
 
 // Importamos el modelo de diagnostico con la siguiente direccion
-use App\Models\Diagnostico;
+use App\Models\Diagnostico_historia_clinica;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -183,4 +184,50 @@ class diagnosticoController extends Controller
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
     }
+
+    // funcion para contar los registros de miopia, astigmatismo e hipermetropia
+    public function contardiagnosticos(){
+
+        // buscamos el registros de miopia
+        $miopia = Diagnostico::where('codigo', 'H52.1')->first();
+
+        // verificamos que el registro exista y realizamos el conteo con el id
+        if ($miopia){
+            $miopiacount = Diagnostico_historia_clinica::where('id_diagnostico', $miopia->id)->count();
+        } else {
+            $miopiacount = 0;
+        }
+
+        // buscamos el registros de astigmatismo
+        $astig = Diagnostico::where('codigo', 'H52.2')->first();
+
+        // verificamos que el registro exista y realizamos el conteo con el id
+        if($astig){
+            $astigcount = Diagnostico_historia_clinica::where('id_diagnostico', $astig->id)->count();
+        } else {
+            $astigcount = 0;
+        }
+
+        // buscamos el registros de hipermetropia
+        $hiper = Diagnostico::where('codigo', 'H52.0')->first();
+        
+        // verificamos que el registro exista y realizamos el conteo con el id
+        if($hiper) {
+            $hipercount = Diagnostico_historia_clinica::where('id_diagnostico', $hiper->id)->count();
+        } else {
+            $hipercount = 0;
+        }
+        
+        // almacenamos todos los datos contados
+        $data = [
+            'miopias' => $miopiacount,
+            'astigs' => $astigcount,
+            'hiper' => $hipercount,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+
+
 }

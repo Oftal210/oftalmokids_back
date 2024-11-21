@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 // Importamos el modelo de Diagnostico x historia clinica con la siguiente direccion
 use App\Models\Diagnostico_historia_clinica;
@@ -42,7 +43,8 @@ class diagnosticohistoriaclinicaController extends Controller
             'motivo_consulta'           => 'required|string',
             'tratamiento_diagnostico'   => 'required|string',
             'pronostico_diagnostico'    => 'required|string',
-            'control_diagnostico'       => 'required|string'
+            'control_diagnostico'       => 'required|string',
+            'edad'                      => 'required'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -62,7 +64,8 @@ class diagnosticohistoriaclinicaController extends Controller
             'motivo_consulta'   => $request->motivo_consulta,
             'tratamiento'       => $request->tratamiento_diagnostico,
             'pronostico'        => $request->pronostico_diagnostico,
-            'control'           => $request->control_diagnostico
+            'control'           => $request->control_diagnostico,
+            'edadPaciente'      => $request->edad
         ]);
 
         // aqui validamos si se puedo crear el Diagnostico x historia clinica, en caso de que este vacia, no se deberia haber guardado
@@ -264,6 +267,24 @@ class diagnosticohistoriaclinicaController extends Controller
     }
 
 
+    // funcion para traer los registros de Diagnosticos Historia Clinica de este mes
+    public function diagnosticosxmes(){
+
+        $primerDiaMes = Carbon::now()->startOfMonth();  // Primer día del mes actual
+        $ultimoDiaMes = Carbon::now()->endOfMonth();    // Último día del mes actual
+        
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroxmes = Diagnostico_historia_clinica::whereBetween('fecha', [$primerDiaMes, $ultimoDiaMes])->count();
+
+        $data = [
+            'mensual' => $registroxmes,
+            'status' => 200
+        ];
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+
     public function traerRegistroXFecha() {
 
         // Obtener el año actual
@@ -319,4 +340,31 @@ class diagnosticohistoriaclinicaController extends Controller
         // retornamos la variable con todas las consultas
         return response()->json($resultados);
     }
+
+    public function sacarEdadesDiagnosticos(){
+
+        $diagnosticos = DB::table('diagnostico_historia_clinica')
+        ->join('diagnostico', 'diagnostico_historia_clinica.id_diagnostico', '=', 'diagnostico.id')
+        ->select(
+            'diagnostico_historia_clinica.id_diagnostico',
+            'diagnostico.codigo as codigo_diagnostico',
+            'diagnostico.descripcion as nombre_diagnostico', // Campo nombre del diagnóstico
+            DB::raw('COUNT(*) as frecuencia'),
+            DB::raw('MIN(edadpaciente) as edad_minima'),
+            DB::raw('MAX(edadpaciente) as edad_maxima')
+        )
+        ->groupBy('diagnostico_historia_clinica.id_diagnostico', 'diagnostico.id')
+        ->orderByDesc('frecuencia')
+        ->limit(3)
+        ->get();
+        
+        // almacenamos todos los datos contados
+        $data = [
+            'diag' => $diagnosticos,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+    
 }

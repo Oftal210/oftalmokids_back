@@ -30,6 +30,9 @@ return new class extends Migration
             // resultado de los controles o fechas
             $table->text('control')->nullable(false);
 
+            // edad del paciente
+            $table->integer('edadPaciente')->nullable(false);
+
             // fecha y hora en la cual se realizo 
             $table->timestamp('fecha')->useCurrent();
 

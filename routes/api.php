@@ -410,6 +410,16 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/usuariopadre/{id_usuario}', [usuarioController::class, 'updatePadre']);
 
 
+    // Ruta API para contar los registros de ciertos codigos de diagnosticos
+    Route::get('/contardiag', [diagnosticoController::class, 'contardiagnosticos']);
+
+    // Ruta API para contar los registros de ciertos diagnsoticos mensual
+    Route::get('/diagmensual', [diagnosticohistoriaclinicaController::class, 'diagnosticosxmes']);
+
+    // Ruta API para traer estadistica de datos de diagnostico y edad
+    Route::get('/diagxedad', [diagnosticohistoriaclinicaController::class, 'sacarEdadesDiagnosticos']);
+
+
     
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA LOS DIAGNOSTICOS
