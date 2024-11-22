@@ -61,7 +61,7 @@ return new class extends Migration
             // foranea de la tabla hijo, identificador del hijo
             $table->unsignedBigInteger('id_hijo')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a hijo
-            $table->foreign('id_hijo')->references('id')->on('hijo');
+            $table->foreign('id_hijo')->references('id')->on('hijo')->onDelete('cascade');
         });
     }
 

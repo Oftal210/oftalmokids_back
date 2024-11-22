@@ -30,7 +30,7 @@ return new class extends Migration
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
             $table->unsignedBigInteger('id_historia')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('id_historia')->references('id')->on('historia_clinica');
+            $table->foreign('id_historia')->references('id')->on('historia_clinica')->onDelete('cascade');
         });
     }
 

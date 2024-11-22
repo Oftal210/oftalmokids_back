@@ -28,10 +28,7 @@ return new class extends Migration
             $table->text('pronostico')->nullable(false);
 
             // resultado de los controles o fechas
-            $table->text('control')->nullable(false);
-
-            // edad del paciente
-            $table->integer('edadPaciente')->nullable(false);
+            $table->timestamp('control')->nullable(false);
 
             // fecha y hora en la cual se realizo 
             $table->timestamp('fecha')->useCurrent();
@@ -40,12 +37,16 @@ return new class extends Migration
             // foranea de la tabla diagnostico, idenficador del diagnostico que tiene este registro
             $table->unsignedBigInteger('id_diagnostico')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('id_diagnostico')->references('id')->on('diagnostico');
+            $table->foreign('id_diagnostico')->references('id')->on('diagnostico')->onDelete('cascade');
+
+            // Clave foránea que apunta a `hijo`
+            $table->unsignedBigInteger('id_hijo');
+            $table->foreign('id_hijo')->references('id')->on('hijo')->onDelete('cascade');
             
             // foranea de la tabla historia_clinica, idenficador de la historia clinica a la que se enlaza
             $table->unsignedBigInteger('id_historia')->nullable(false);
             // se define la llave foranea en esta tabla que apunta a historia clinica
-            $table->foreign('id_historia')->references('id')->on('historia_clinica');
+            $table->foreign('id_historia')->references('id')->on('historia_clinica')->onDelete('cascade');
         });
     }
 

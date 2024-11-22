@@ -419,6 +419,9 @@ Route::middleware('auth:api')->group(function () {
     // Ruta API para traer estadistica de datos de diagnostico y edad
     Route::get('/diagxedad', [diagnosticohistoriaclinicaController::class, 'sacarEdadesDiagnosticos']);
 
+    // Ruta API para traer tiempo de control de los hijos del padre
+    Route::get('/tiempocontrol/{id_usuario}', [diagnosticohistoriaclinicaController::class, 'calcularTiempoControl']);
+
 
     
 //Route::middleware(['auth:api', 'rol:1'])->group(function () {

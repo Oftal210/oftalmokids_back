@@ -47,7 +47,7 @@ return new class extends Migration
 
             // Foraneas
             // se define la llave foranea en esta tabla que apunta a padre
-            $table->foreign('id_usuario')->references('id')->on('users');
+            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

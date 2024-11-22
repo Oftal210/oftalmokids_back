@@ -12,6 +12,8 @@ use App\Models\Diagnostico_historia_clinica;
 
 // Importamos el modelo de Historia clinica con la siguiente direccion
 use App\Models\Historia_clinica;
+use App\Models\User;
+use App\Models\Hijo;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -43,7 +45,7 @@ class diagnosticohistoriaclinicaController extends Controller
             'motivo_consulta'           => 'required|string',
             'tratamiento_diagnostico'   => 'required|string',
             'pronostico_diagnostico'    => 'required|string',
-            'control_diagnostico'       => 'required|string',
+            'control_diagnostico'       => 'required',
             'edad'                      => 'required'
         ]);
 
@@ -345,13 +347,14 @@ class diagnosticohistoriaclinicaController extends Controller
 
         $diagnosticos = DB::table('diagnostico_historia_clinica')
         ->join('diagnostico', 'diagnostico_historia_clinica.id_diagnostico', '=', 'diagnostico.id')
+        ->join('hijo', 'diagnostico_historia_clinica.id_hijo', '=', 'hijo.id')
         ->select(
             'diagnostico_historia_clinica.id_diagnostico',
             'diagnostico.codigo as codigo_diagnostico',
             'diagnostico.descripcion as nombre_diagnostico', // Campo nombre del diagnóstico
             DB::raw('COUNT(*) as frecuencia'),
-            DB::raw('MIN(edadpaciente) as edad_minima'),
-            DB::raw('MAX(edadpaciente) as edad_maxima')
+            DB::raw('MIN(hijo.edad) as edad_minima'),
+            DB::raw('MAX(hijo.edad) as edad_maxima')
         )
         ->groupBy('diagnostico_historia_clinica.id_diagnostico', 'diagnostico.id')
         ->orderByDesc('frecuencia')
@@ -367,4 +370,56 @@ class diagnosticohistoriaclinicaController extends Controller
         return response()->json($data, 200);
     }
     
+
+    public function calcularTiempoControl($id){
+
+        //
+        $padre = User::where('documento', $id)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$padre){
+            $data = [
+                'mensaje' => 'No se encontro al Padre',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        //
+        $hijos = Hijo::where('id_usuario', $padre->id)->get(); 
+        
+
+        // Validamos si la variable con la data esta vacia
+        if ($hijos->isEmpty()){
+            $data = [
+                'mensaje' => 'Este padre no cuenta con hijos',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        //
+        $hijoIds = $hijos->pluck('id')->toArray();
+
+        // Historia_clinica::whereIn('id_hijo', $hijoIds)->pluck('id')->toArray()
+        $historiaClinicaIds = [47, 50];
+
+        $resultados = Diagnostico_historia_clinica::select('control')
+        ->whereIn('id_historia', $historiaClinicaIds)
+        ->whereIn(DB::raw('(id_historia, fecha)'), function($query) {
+            $query->select(DB::raw('id_historia, MAX(fecha)'))
+            ->from('diagnostico')
+            ->groupBy('id_historia');
+        })->get();
+
+        // almacenamos todos los datos contados
+        $data = [
+            'datos' => $resultados,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+
+    }
+
 }
