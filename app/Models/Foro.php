@@ -31,4 +31,9 @@ class Foro extends Model
     {
         return $this->hasMany(Foro_like::class, 'id_foro');
     }
+
+    public function notificaciones()
+    {
+        return $this->hasMany(Foro_like::class, 'id_foro');
+    }
 }

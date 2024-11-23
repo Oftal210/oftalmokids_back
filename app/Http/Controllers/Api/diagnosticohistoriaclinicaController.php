@@ -373,7 +373,6 @@ class diagnosticohistoriaclinicaController extends Controller
 
     public function calcularTiempoControl($id){
 
-        //
         $padre = User::where('documento', $id)->first();
 
         // Validamos si la variable con la data esta vacia
@@ -398,27 +397,34 @@ class diagnosticohistoriaclinicaController extends Controller
             return response()->json($data, 200);
         }
 
-        //
-        $hijoIds = $hijos->pluck('id')->toArray();
+        // array con todos los id de los hijos del padre
+        $hijosIds = $hijos->pluck('id')->toArray();
 
-        // Historia_clinica::whereIn('id_hijo', $hijoIds)->pluck('id')->toArray()
-        $historiaClinicaIds = [47, 50];
-
-        $resultados = Diagnostico_historia_clinica::select('control')
-        ->whereIn('id_historia', $historiaClinicaIds)
-        ->whereIn(DB::raw('(id_historia, fecha)'), function($query) {
-            $query->select(DB::raw('id_historia, MAX(fecha)'))
-            ->from('diagnostico')
-            ->groupBy('id_historia');
-        })->get();
+        // buscamoslos diagnosticos mas recientes de los hijos por su id y traemos el controlde estos
+        $diagnosticos = DB::table('diagnostico_historia_clinica as d')
+        // Primer join con la subconsulta para obtener el último diagnóstico
+        ->join(
+            DB::raw('(SELECT id_hijo, MAX(fecha) as ultima_fecha FROM diagnostico_historia_clinica WHERE id_hijo IN (' . implode(',', $hijosIds) . ') GROUP BY id_hijo) as ultimos_diagnosticos'), 
+            function($join) {
+                $join->on('d.id_hijo', '=', 'ultimos_diagnosticos.id_hijo')
+                    ->on('d.fecha', '=', 'ultimos_diagnosticos.ultima_fecha');
+            }
+        )
+        // Segundo join con la tabla hijo para obtener el nombre y apellido
+        ->join('hijo as h', 'd.id_hijo', '=', 'h.id') 
+        // Selección de campos
+        ->select('d.id_hijo', 'd.control', 'd.fecha', 'h.nombre', 'h.apellido')  // Seleccionamos los campos deseados
+        // Filtramos por los id_hijo de la lista proporcionada
+        ->whereIn('d.id_hijo', $hijosIds)  
+        ->get();
 
         // almacenamos todos los datos contados
         $data = [
-            'datos' => $resultados,
+            'datos' => $diagnosticos,
             'status' => 200
         ];
 
-        return response()->json($data, 200);
+        return response()->json($data, 200); 
 
     }
 

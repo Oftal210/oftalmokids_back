@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 // Importamos el modelo de foros con la siguiente direccion
 use App\Models\Foro;
-use App\Notifications\ForoCreado;
+use App\Models\Notificaciones;
 use App\Models\User;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
@@ -104,11 +104,10 @@ class foroController extends Controller
             return response()->json($data, 200);
         }
 
-        // Obtener todos los usuarios no administradores y notificarles
-        $usuarios = User::where('id_rol', 2)->get();
-        foreach ($usuarios as $usuario) {
-            $usuario->notify(new ForoCreado($foro, $usuario->documento));
-        }
+        Notificaciones::create([
+            'id_foro' => $foro->id,
+            'mensaje' => $request->subtitulo
+        ]);
 
         // aqui colocamos en la variable $data el foro que fue agregado y enviamos un 201 (se creo un registro correctamente)
         $data = [
