@@ -50,6 +50,9 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     // Ruta API para llamar a todos los foros
     Route::get('/foro', [foroController::class, 'index']);
 
+    // Ruta API para calificar el foro con un like
+    Route::post('/forolike', [forolikeController::class, 'manejarlikes']);
+
 
     // RUTAS DE PADRE
     // Ruta API para insetar la informacion de un usuario PADRE
@@ -425,6 +428,9 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para activar o desactivar a un usuario
     Route::put('/usuariodesactiar/{id_usuario}', [usuarioController::class, 'desactivarAdministrador']);
 
+    // Ruta API para contar los diagnosticos de ciertos codigos especificos
+    Route::get('/contardiag', [diagnosticoController::class, 'contardiagnosticos']);
+
     // Ruta API para contar los registros de ciertos diagnsoticos mensual
     Route::get('/diagmensual', [diagnosticohistoriaclinicaController::class, 'diagnosticosxmes']);
 
@@ -466,12 +472,11 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // Ruta API para eliminiar a un foro
     Route::delete('/foro/{cod_foro}', [foroController::class, 'destroy']);
 
-    // Ruta API para calificar el foro con un like
-    Route::post('/forolike', [forolikeController::class, 'manejarlikes']);
+    
 });
 
 
-Route::middleware(['auth:api', 'rol:2'])->group(function () {
+Route::middleware(['auth:api', 'rol:1'])->group(function () {
     // RUTAS PARA EL HIJO
     // Ruta API para llamar a todos los hijos
     Route::get('/hijo', [hijoController::class, 'index']);
