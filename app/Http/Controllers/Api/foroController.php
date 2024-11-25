@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 // Importamos el modelo de foros con la siguiente direccion
 use App\Models\Foro;
+use App\Models\Notificaciones;
 use App\Models\User;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
@@ -22,7 +25,7 @@ class foroController extends Controller
     public function index(){
 
         // de esta manera buscamos todos los foros del sistema y los pasamos a la variable siguiente
-        $foros = Foro::all();
+        $foros = Foro::withCount('likes')->orderBy('created_at', 'desc')->get();
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($foros->isEmpty()){
@@ -45,12 +48,12 @@ class foroController extends Controller
         ]);
         
         // Aqui se busca el Hijo por la primaria que le estamos mandando como variable $id
-        $usuario = user::where('documento', $request->usuario)->first();
+        $usuario = User::where('documento', $request->usuario)->first();
         
         if (!$usuario){
             $data = [
                 'mensaje' => 'No se encontro al usuario',
-                'imagen' => $request->file('imagen'),
+                'use' => $request->usuario,
                 'status' => 404
             ];
             return response()->json($data, 200);
@@ -80,12 +83,15 @@ class foroController extends Controller
             $path = null;  // Si no hay imagen, no asignamos ninguna
         }
 
+        $fechaVencimiento = Carbon::now()->addMonth();
+
         // aqui intentamos crear un foros validando que los datos que vamos a agregar existan
         $foro = Foro::create([
             'id_usuario'        => $usuario->id,
             'subtitulo_foro'    => $request->subtitulo,
             'contenido_foro'    => $request->contenido,
-            'ruta_imagen'       => $path
+            'ruta_imagen'       => $path,
+            'fecha_vencimiento' => $fechaVencimiento
         ]);
 
         // aqui validamos si se puedo crear el Foro, en caso de que este vacia, no se deberia haber guardado
@@ -97,6 +103,11 @@ class foroController extends Controller
             ];
             return response()->json($data, 200);
         }
+
+        Notificaciones::create([
+            'id_foro' => $foro->id,
+            'mensaje' => $request->subtitulo
+        ]);
 
         // aqui colocamos en la variable $data el foro que fue agregado y enviamos un 201 (se creo un registro correctamente)
         $data = [
@@ -132,6 +143,33 @@ class foroController extends Controller
         // Retornamos los datos obtenidos anteriormente
         return response()->json($data, 200);
     }
+
+
+    // Funcion para buscar un varios foros por el tiulo
+    public function buscarforostitulo( Request $request){
+        
+        // Aqui se busca el Foro por la primaria que le estamos mandando como variable $id
+        $foro = Foro::where('', $request);
+
+        // Validamos si la variable con la data esta vacia
+        if (!$foro){
+            $data = [
+                'mensaje' => 'No se encontro al foro',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        // si el foro fue encontrado lo colocara dentor de esta variable
+        $data = [
+            'foro' => $foro,
+            'status' => 200
+        ];
+        
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
 
     // Fucion para elimizar un foro
     public function destroy($id){
@@ -179,7 +217,8 @@ class foroController extends Controller
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
             'subtitulo' => 'sometimes|string',
-            'contenido' => 'sometimes|string'
+            'contenido' => 'sometimes|string',
+            'imagen'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -192,13 +231,33 @@ class foroController extends Controller
             return response()->json($data, 400);
         }
 
+        // Guardar nueva imagen 
+        if ($request->hasFile('imagen')) {
+            
+            // revisamos si tiene imagen
+            if($foro->ruta_imagen){
+                $oldImagePath = storage_path('app/public/' . $foro->ruta_imagen); 
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath); 
+                }
+            }
+
+            // guardar la nueva imagen
+            $imagen = $request->file('imagen');
+            $path = $imagen->store('imagen-foro', 'public');
+            $path = str_replace('public/', '', $path);
+        } else {
+            $path = $foro->ruta_imagen; // Mantener la imagen antigua si no se proporciona una nueva
+        }
+
         // Se confirma la validacion de los datos en el anteior bloque
         $datosvalidados = $validator->validated();
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
             'subtitulo_foro' => $datosvalidados['subtitulo'] ?? $foro->subtitulo_foro,
-            'contenido_foro' => $datosvalidados['contenido'] ?? $foro->contenido_foro
+            'contenido_foro' => $datosvalidados['contenido'] ?? $foro->contenido_foro,
+            'ruta_imagen'    => $path ?? $foro->ruta_imagen
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
@@ -211,6 +270,7 @@ class foroController extends Controller
         $data = [
             'mensaje' => 'El Foro fue actualizado',
             'foro' => $foro,
+            'imagen' => $request->imagen,
             'status' => 200
         ];
         

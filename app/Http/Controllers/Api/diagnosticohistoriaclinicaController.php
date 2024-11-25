@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 // Importamos el modelo de Diagnostico x historia clinica con la siguiente direccion
 use App\Models\Diagnostico_historia_clinica;
 
 // Importamos el modelo de Historia clinica con la siguiente direccion
 use App\Models\Historia_clinica;
+use App\Models\User;
+use App\Models\Hijo;
 
 // Importamos el un paquete para hacer validacion o verificacion de datos
 use Illuminate\Support\Facades\Validator;
@@ -42,7 +45,8 @@ class diagnosticohistoriaclinicaController extends Controller
             'motivo_consulta'           => 'required|string',
             'tratamiento_diagnostico'   => 'required|string',
             'pronostico_diagnostico'    => 'required|string',
-            'control_diagnostico'       => 'required|string'
+            'control_diagnostico'       => 'required',
+            'edad'                      => 'required'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -62,7 +66,8 @@ class diagnosticohistoriaclinicaController extends Controller
             'motivo_consulta'   => $request->motivo_consulta,
             'tratamiento'       => $request->tratamiento_diagnostico,
             'pronostico'        => $request->pronostico_diagnostico,
-            'control'           => $request->control_diagnostico
+            'control'           => $request->control_diagnostico,
+            'edadPaciente'      => $request->edad
         ]);
 
         // aqui validamos si se puedo crear el Diagnostico x historia clinica, en caso de que este vacia, no se deberia haber guardado
@@ -224,7 +229,7 @@ class diagnosticohistoriaclinicaController extends Controller
                 'mensaje' => 'no hay registros con esta historia',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         
         // Retornamos los datos obtenidos anteriormente
@@ -264,11 +269,28 @@ class diagnosticohistoriaclinicaController extends Controller
     }
 
 
+    // funcion para traer los registros de Diagnosticos Historia Clinica de este mes
+    public function diagnosticosxmes(){
+
+        $primerDiaMes = Carbon::now()->startOfMonth();  // Primer día del mes actual
+        $ultimoDiaMes = Carbon::now()->endOfMonth();    // Último día del mes actual
+        
+        // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
+        $registroxmes = Diagnostico_historia_clinica::whereBetween('fecha', [$primerDiaMes, $ultimoDiaMes])->count();
+
+        $data = [
+            'mensual' => $registroxmes,
+            'status' => 200
+        ];
+        // Retornamos los datos obtenidos anteriormente
+        return response()->json($data, 200);
+    }
+
+
     public function traerRegistroXFecha() {
 
         // Obtener el año actual
         $yearactual = date('Y');
-
 
         // definir los rangos de fechas para cada par de meses
         // Enero - Febrero
@@ -309,15 +331,101 @@ class diagnosticohistoriaclinicaController extends Controller
 
         // acumulamos el resultado de las consultas
         $resultados = [
-            'enero_febrero' => $registrosEneFeb,
-            'marzo_abril' => $registrosMarAbr,
-            'mayo_junio' => $registrosMayJun,
-            'julio_agosto' => $registrosJulAgo,
-            'septiembre_octubre' => $registrosSepOct,
-            'noviembre_diciembre' => $registrosNovDic
+            'Ene_Feb' => $registrosEneFeb,
+            'Mar_Abr' => $registrosMarAbr,
+            'May_Jun' => $registrosMayJun,
+            'Jul_Ago' => $registrosJulAgo,
+            'Sep_Oct' => $registrosSepOct,
+            'Nov_Dic' => $registrosNovDic
         ];
 
         // retornamos la variable con todas las consultas
         return response()->json($resultados);
     }
+
+    public function sacarEdadesDiagnosticos(){
+
+        $diagnosticos = DB::table('diagnostico_historia_clinica')
+        ->join('diagnostico', 'diagnostico_historia_clinica.id_diagnostico', '=', 'diagnostico.id')
+        ->join('hijo', 'diagnostico_historia_clinica.id_hijo', '=', 'hijo.id')
+        ->select(
+            'diagnostico_historia_clinica.id_diagnostico',
+            'diagnostico.codigo as codigo_diagnostico',
+            'diagnostico.descripcion as nombre_diagnostico', // Campo nombre del diagnóstico
+            DB::raw('COUNT(*) as frecuencia'),
+            DB::raw('MIN(hijo.edad) as edad_minima'),
+            DB::raw('MAX(hijo.edad) as edad_maxima')
+        )
+        ->groupBy('diagnostico_historia_clinica.id_diagnostico', 'diagnostico.id')
+        ->orderByDesc('frecuencia')
+        ->limit(3)
+        ->get();
+        
+        // almacenamos todos los datos contados
+        $data = [
+            'diag' => $diagnosticos,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+    
+
+    public function calcularTiempoControl($id){
+
+        $padre = User::where('documento', $id)->first();
+
+        // Validamos si la variable con la data esta vacia
+        if (!$padre){
+            $data = [
+                'mensaje' => 'No se encontro al Padre',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        //
+        $hijos = Hijo::where('id_usuario', $padre->id)->get(); 
+        
+
+        // Validamos si la variable con la data esta vacia
+        if ($hijos->isEmpty()){
+            $data = [
+                'mensaje' => 'Este padre no cuenta con hijos',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // array con todos los id de los hijos del padre
+        $hijosIds = $hijos->pluck('id')->toArray();
+
+        // buscamoslos diagnosticos mas recientes de los hijos por su id y traemos el controlde estos
+        $diagnosticos = DB::table('diagnostico_historia_clinica as d')
+        // Primer join con la subconsulta para obtener el último diagnóstico
+        ->join(
+            DB::raw('(SELECT id_hijo, MAX(fecha) as ultima_fecha FROM diagnostico_historia_clinica WHERE id_hijo IN (' . implode(',', $hijosIds) . ') GROUP BY id_hijo) as ultimos_diagnosticos'), 
+            function($join) {
+                $join->on('d.id_hijo', '=', 'ultimos_diagnosticos.id_hijo')
+                    ->on('d.fecha', '=', 'ultimos_diagnosticos.ultima_fecha');
+            }
+        )
+        // Segundo join con la tabla hijo para obtener el nombre y apellido
+        ->join('hijo as h', 'd.id_hijo', '=', 'h.id') 
+        // Selección de campos
+        ->select('d.id_hijo', 'd.control', 'd.fecha', 'h.nombre', 'h.apellido')  // Seleccionamos los campos deseados
+        // Filtramos por los id_hijo de la lista proporcionada
+        ->whereIn('d.id_hijo', $hijosIds)  
+        ->get();
+
+        // almacenamos todos los datos contados
+        $data = [
+            'datos' => $diagnosticos,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200); 
+
+    }
+
 }

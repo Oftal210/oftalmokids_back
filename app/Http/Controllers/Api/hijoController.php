@@ -27,8 +27,13 @@ class hijoController extends Controller
             return response()->json(['mensaje' => 'no hay hijos registrados en la tabla']);
         }
 
+        $data = [
+            'hijo' => $hijos,
+            'status' => 200
+        ];
+
         // este return devuelve todo lo que contiene la variable de $hijos. El 200 inidica que todo salio bien
-        return response()->json($hijos, 200);
+        return response()->json($data, 200);
     }
 
     // Funcion para almacenar los hijos dentro de la base de datos 
@@ -44,7 +49,7 @@ class hijoController extends Controller
             'nacimiento'    => 'required|date',
             'edad'          => 'required|integer',
             'genero'        => 'required|string',
-            'direccion'     => 'required|string',
+            'direccion'     => 'nullable|string',
             'foto'          => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -138,7 +143,7 @@ class hijoController extends Controller
         $hijo = Hijo::where('documento', 'like', '%' . $id . '%')->get();
 
         // Validamos si la variable con la data esta vacia
-        if (!$hijo){
+        if ($hijo->isEmpty()){
             $data = [
                 'mensaje' => 'No se encontraron Hijo(s) con ese documento',
                 'status' => 404
@@ -331,7 +336,7 @@ class hijoController extends Controller
                 'mensaje' => 'No se encontro al Padre',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Aquí $usuarios es una colección que contiene todos los registros encontrados
@@ -340,10 +345,10 @@ class hijoController extends Controller
         // Validamos si la variable con la data esta vacia
         if (!$hijos){
             $data = [
-                'mensaje' => 'No se encontraron hijos del Padre enviado',
+                'mensaje' => 'No se encontraron hijos del Padre',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

@@ -194,19 +194,28 @@ class loginController extends Controller
         // verificamos que la contrasea sea correcta
         if ($user && Hash::check($request->contrasena, $user->contrasena)) {
 
-            // si la contraseña y el usuario esta correctos se genera el token asi:
-            $token = $user->createToken('Token')->accessToken;
+            if ($user->activo == 1) {
+                // si la contraseña y el usuario esta correctos se genera el token asi:
+                $token = $user->createToken('Token')->accessToken;
 
-            // retornamos el id de usuario y el token, si todo sale correcto
+                // retornamos el id de usuario y el token, si todo sale correcto
+                return response()->json([
+                    'user' => [
+                        'documento' => $user->documento,
+                        'id_rol' => $user->id_rol,
+                        'estado' => $user->activo
+                    ],
+                    'token' => $token
+                ], 200);
+            }
+
             return response()->json([
                 'user' => [
-                    'user'=>$user,
-                    'documento' => $user->documento,
-                    'id_rol' => $user->id_rol
+                    'usuario' => 'Usuario desactivado',
+                    'estado' => $user->activo
                 ],
-                'token' => $token
             ], 200);
-            
+
         } else {
 
             // retornamos un mensaje de error en las credenciales

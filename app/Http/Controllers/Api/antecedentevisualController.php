@@ -36,12 +36,12 @@ class antecedentevisualController extends Controller
         $validator = Validator::make($request->all(), [
             'historia_clinica'              => 'required',
             'correcion_optica'              => 'required|boolean',
-            'edad_lente_primera_vez'        => 'required|digits_between:1,3',
-            'cuantos_cambio_rx'             => 'required|digits_between:1,3',
+            'edad_lente_primera_vez'        => 'nullable|digits_between:1,3',
+            'cuantos_cambio_rx'             => 'nullable|digits_between:1,3',
             'motivo_cambio_rx'              => 'required|string',
-            'material_tratamiento_optico'   => 'required|string',
-            'indicaciones_uso'              => 'required|string',
-            'fecha_ultimo_examen'           => 'required|string'
+            'material_tratamiento_optico'   => 'nullable|string',
+            'indicaciones_uso'              => 'nullable|string',
+            'fecha_ultimo_examen'           => 'nullable|string'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion

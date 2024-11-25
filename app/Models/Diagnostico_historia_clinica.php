@@ -23,13 +23,14 @@ class Diagnostico_historia_clinica extends Model
         'pronostico', 
         'control', 
         'fecha',
-        'id_diagnostico'
+        'id_diagnostico',
+        'edadPaciente'
     ];
 
     // Relacion de los datos en el modelo, una diagnostico x historia clinica tiene un diagnostico
     public function diagnostico()
     {
-        return $this->belongsTo(Diagnostico::class, 'id_diagnostico');
+        return $this->belongsTo(Diagnostico::class, 'id_diagnostico', 'codigo');
     }
 
     // Relacion de los datos en el modelo, una diagnostico x historia clinica tiene una historia clinica

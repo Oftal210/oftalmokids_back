@@ -24,6 +24,8 @@ class Kernel extends ConsoleKernel
         // Aquí puedes definir las tareas programadas
         // Ejemplo: Ejecutar un comando cada domingo a las 11:00 p.m.
         $schedule->command('verificar-preconsultas-hijos')->weeklyOn(0, '23:00');
+
+        $schedule->command('eliminar-foros-vencidos')->dailyAt('23:00'); 
     }
 
     /**

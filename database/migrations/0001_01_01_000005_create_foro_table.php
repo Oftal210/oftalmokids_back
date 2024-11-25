@@ -25,6 +25,12 @@ return new class extends Migration
             // ruta de la imagen dentro del proyecto
             $table->text('ruta_imagen')->nullable();
 
+            // fecha de vencimiento del foro, generalmente un mes despues de su creación
+            $table->timestamp('fecha_vencimiento')->nullable(false);
+
+            // fechas de creacion y actualizacion
+            $table->timestamps();
+
             // Foraneas
             // se define la llave foranea en esta tabla que apunta a usuario
             $table->unsignedBigInteger('id_usuario');
