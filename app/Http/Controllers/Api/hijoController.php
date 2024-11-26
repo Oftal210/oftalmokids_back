@@ -316,11 +316,21 @@ class hijoController extends Controller
 
         // si la tabla esta vacia o no se encontro nada dentro hara lo siguiente
         if ($cantidadHijos == 0){
-            return response()->json(['mensaje' => 'no hay hijos registrados en la tabla'], 200);
+            $data = [
+                'mensaje' => 'no hay hijos registrados',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
         }
 
+        // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
+        $data = [
+            'cantidad' => $cantidadHijos,
+            'status' => 200
+        ];
+
         // este return devuelve todo lo que contiene la variable de $hijos. El 200 inidica que todo salio bien
-        return response()->json($cantidadHijos, 200); // retornamos el numero de registros que se encontraron
+        return response()->json($data, 200); // retornamos el numero de registros que se encontraron
     }
 
     public function hijosdepadre ($id){

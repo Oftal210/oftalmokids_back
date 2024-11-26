@@ -201,6 +201,7 @@ class loginController extends Controller
                 // retornamos el id de usuario y el token, si todo sale correcto
                 return response()->json([
                     'user' => [
+                        'user' => $user, 
                         'documento' => $user->documento,
                         'id_rol' => $user->id_rol,
                         'estado' => $user->activo
@@ -231,6 +232,11 @@ class loginController extends Controller
         // Revoca el token del usuario
         $user->token()->revoke();
 
-        return response()->json(['mensaje' => 'Se cerró la sesión del usuario'], 200);
+        $data = [
+            'mensaje' => 'Se cerró la sesión del usuario',
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
     }
 }

@@ -474,16 +474,23 @@ class usuarioController extends Controller
     {
         $usuariosPadre = User::where('id_rol', 2)->count();
 
-        if ($usuariosPadre == 0) {
-            return response()->json(['mensaje' => 'no hay usuarios padre registrados'], 200);
+        if ($usuariosPadre <= 0) {
+            // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
+            $data = [
+                'mensaje' => 'no hay usuarios padre registrados',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
         }
 
-        // Agrega estos registros
-        error_log('Valor de $usuariosPadre: ' . $usuariosPadre);
-        error_log('Respuesta JSON que se enviará: ' . json_encode(['count' => $usuariosPadre]));
-
-        return response()->json(['count' => $usuariosPadre], 200);
+        // si el Usuario fue actualizado correctamente, se cargara la siguiente variable con los datos de:
+        $data = [
+            'cantidad' => $usuariosPadre,
+            'status' => 200
+        ];
+        return response()->json($data, 200);
     }
+    
     public function desactivarAdministrador($id)
     {
 

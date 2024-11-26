@@ -330,17 +330,21 @@ class diagnosticohistoriaclinicaController extends Controller
         $registrosNovDic = Diagnostico_historia_clinica::whereBetween('fecha', [$inicioNovDic, $finNovDic])->count();
 
         // acumulamos el resultado de las consultas
-        $resultados = [
-            'Ene_Feb' => $registrosEneFeb,
-            'Mar_Abr' => $registrosMarAbr,
-            'May_Jun' => $registrosMayJun,
-            'Jul_Ago' => $registrosJulAgo,
-            'Sep_Oct' => $registrosSepOct,
-            'Nov_Dic' => $registrosNovDic
-        ];
 
+        $data = [
+            'registros' => [
+                'Ene_Feb' => $registrosEneFeb,
+                'Mar_Abr' => $registrosMarAbr,
+                'May_Jun' => $registrosMayJun,
+                'Jul_Ago' => $registrosJulAgo,
+                'Sep_Oct' => $registrosSepOct,
+                'Nov_Dic' => $registrosNovDic
+            ],
+            'status' => 200
+        ];
+        
         // retornamos la variable con todas las consultas
-        return response()->json($resultados);
+        return response()->json($data, 200);
     }
 
     public function sacarEdadesDiagnosticos(){
