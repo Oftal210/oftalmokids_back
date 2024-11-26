@@ -42,11 +42,11 @@ class diagnosticohistoriaclinicaController extends Controller
         $validator = Validator::make($request->all(), [
             'historia_clinica'          => 'required',
             'diagnostico'               => 'required',
+            'hijo'                      => 'required',
             'motivo_consulta'           => 'required|string',
             'tratamiento_diagnostico'   => 'required|string',
             'pronostico_diagnostico'    => 'required|string',
             'control_diagnostico'       => 'required',
-            'edad'                      => 'required'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -63,6 +63,7 @@ class diagnosticohistoriaclinicaController extends Controller
         $diag_his_cli = Diagnostico_historia_clinica::create([
             'id_historia'       => $request->historia_clinica,
             'id_diagnostico'    => $request->diagnostico,
+            'id_hijo'           => $request->hijo,
             'motivo_consulta'   => $request->motivo_consulta,
             'tratamiento'       => $request->tratamiento_diagnostico,
             'pronostico'        => $request->pronostico_diagnostico,
@@ -77,7 +78,7 @@ class diagnosticohistoriaclinicaController extends Controller
                 'errors' => $validator->errors(),
                 'status' => 500
             ];
-            return response()->json($data, 500);
+            return response()->json($data, 200);
         }
 
         // aqui colocamos en la variable $data el Diagnostico x historia clinica que fue agregado y enviamos un 201 (se creo un registro correctamente)
@@ -87,7 +88,7 @@ class diagnosticohistoriaclinicaController extends Controller
         ];
 
         // retornamos el resultado de anterior bloque
-        return response()->json($data, 201);
+        return response()->json($data, 200);
     }
 
     // Funcion para buscar un Diagnostico x historia clinica especifico
