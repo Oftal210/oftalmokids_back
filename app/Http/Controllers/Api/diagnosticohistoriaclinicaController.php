@@ -360,7 +360,10 @@ class diagnosticohistoriaclinicaController extends Controller
             DB::raw('MIN(hijo.edad) as edad_minima'),
             DB::raw('MAX(hijo.edad) as edad_maxima')
         )
+        //localmente
         ->groupBy('diagnostico_historia_clinica.id_diagnostico', 'diagnostico.id')
+        // para el servidor
+        //->groupBy('diagnostico_historia_clinica.id_diagnostico', 'diagnostico.id', 'diagnostico.codigo', 'diagnostico.descripcion')
         ->orderByDesc('frecuencia')
         ->limit(3)
         ->get();
