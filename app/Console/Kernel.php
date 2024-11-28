@@ -21,11 +21,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Aquí puedes definir las tareas programadas
-        // Ejemplo: Ejecutar un comando cada domingo a las 11:00 p.m.
-        $schedule->command('verificar-preconsultas-hijos')->weeklyOn(0, '23:00');
-
-        $schedule->command('eliminar-foros-vencidos')->dailyAt('23:00'); 
+        // especificamos el comando para ejecutar las funciones que se van a realizar
     }
 
     /**

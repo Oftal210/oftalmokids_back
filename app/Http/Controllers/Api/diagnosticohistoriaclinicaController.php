@@ -68,7 +68,6 @@ class diagnosticohistoriaclinicaController extends Controller
             'tratamiento'       => $request->tratamiento_diagnostico,
             'pronostico'        => $request->pronostico_diagnostico,
             'control'           => $request->control_diagnostico,
-            'edadPaciente'      => $request->edad
         ]);
 
         // aqui validamos si se puedo crear el Diagnostico x historia clinica, en caso de que este vacia, no se deberia haber guardado
