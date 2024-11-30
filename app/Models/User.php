@@ -49,7 +49,7 @@ class User extends Authenticatable
         'email',
         'id_rol',
         'activo',
-        'cod_ver'
+        'cod_ver',
     ];
 
     public $timestamps = false;

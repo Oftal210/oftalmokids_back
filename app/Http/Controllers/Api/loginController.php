@@ -188,7 +188,12 @@ class loginController extends Controller
         $user = User::where('documento', $request->documento)->first();
 
         if (!$user) {
-            return response()->json(['message' => 'Tu usuario no existe en el sistema'], 400);
+            return response()->json([
+                'incorrecto' => [
+                    'mensaje' => 'Datos Ingresados Incorrectos',
+                    'status' => 404,
+                ],
+            ], 200);
         }
 
         // verificamos que la contrasea sea correcta
@@ -219,8 +224,12 @@ class loginController extends Controller
 
         } else {
 
-            // retornamos un mensaje de error en las credenciales
-            return response()->json(['mensaje' => 'Tu constraseña es incorrecta'], 401);
+            return response()->json([
+                'incorrecto' => [
+                    'mensaje' => 'Datos Ingresados Incorrectos',
+                    'status' => 404,
+                ],
+            ], 200);
         }
     }
 

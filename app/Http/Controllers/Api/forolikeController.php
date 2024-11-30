@@ -62,7 +62,7 @@ class forolikeController extends Controller
         // si la hay hara esto
         if ($likeExists) {
             $data = [
-                'mensaje' => 'Ya has dado like a este foro',
+                'mensaje' => 'Ya has Dado Me Gusta a este Foro',
                 'status' => 200
             ];
             return response()->json($data, 200);
@@ -77,7 +77,7 @@ class forolikeController extends Controller
         // si no se pudo agregar hara esto
         if(!$like) {
             $data = [
-                'mensaje' => 'No se puedo agrgar el like',
+                'mensaje' => 'No se puedo agregar el like',
                 'status' => 500
             ];
             return response()->json($data, 200);
