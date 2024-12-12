@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('apellido', 50)->nullable(false);
 
             // Email del usuario
-            $table->string('email', 255)->unique();
+            $table->string('email')->unique();
 
             // telefono del usuario 
             $table->string('telefono', 13)->nullable(false);
