@@ -14,7 +14,13 @@ class Version extends Model
 
     protected $fillable = [
         'id_historia',
-        'observacion'
+        'observacion',
+        'rsd_oii',
+        'rld_rmi',
+        'rid_osi',
+        'oid_rsi',
+        'rmd_rli',
+        'osd_rii',
     ];
 
     // Relacion de los datos en el modelo, una version tiene una historia clinica

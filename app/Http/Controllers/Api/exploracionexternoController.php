@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Exploracion de externo con la siguiente direccion
 use App\Models\Exploracion_externo;
@@ -222,7 +223,7 @@ class exploracionexternoController extends Controller
 
 
     // funcion para traer los registros de exploracion externo mas reciente deacuerdo al id de la historia clinica
-    public function traerexploracionmasreciente($id){
+    public function traerexploracionmasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -235,9 +236,14 @@ class exploracionexternoController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Exploracion_externo::where('id_historia', $id)
-                                               ->latest('created_at')->first();
+                                              ->whereDate('created_at', $fechaReset)
+                                              ->orderBy('created_at', 'desc')
+                                              ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -245,7 +251,7 @@ class exploracionexternoController extends Controller
                 'mensaje' => 'no hay registros recientes con esta historia 2',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

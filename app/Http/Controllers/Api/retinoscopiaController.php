@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Retinoscopia con la siguiente direccion
 use App\Models\Retinoscopia;
@@ -245,7 +246,7 @@ class retinoscopiaController extends Controller
 
 
     // funcion para traer los registros de Retinoscopias mas recientes deacuerdo al id de la historia clinica
-    public function traerretinoscopiamasreciente($id){
+    public function traerretinoscopiamasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -258,9 +259,14 @@ class retinoscopiaController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Retinoscopia::where('id_historia', $id)
-                                        ->latest('created_at')->first();
+                                              ->whereDate('created_at', $fechaReset)
+                                              ->orderBy('created_at', 'desc')
+                                              ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -268,7 +274,7 @@ class retinoscopiaController extends Controller
                 'mensaje' => 'no hay registros recientes con esta historia',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

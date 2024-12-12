@@ -189,7 +189,7 @@ class diagnosticoController extends Controller
     public function contardiagnosticos(){
 
         // buscamos el registros de miopia
-        $miopia = Diagnostico::where('codigo', 'H52.1')->first();
+        $miopia = Diagnostico::where('codigo', 'H521')->first();
 
         // verificamos que el registro exista y realizamos el conteo con el id
         if ($miopia){
@@ -199,7 +199,7 @@ class diagnosticoController extends Controller
         }
 
         // buscamos el registros de astigmatismo
-        $astig = Diagnostico::where('codigo', 'H52.2')->first();
+        $astig = Diagnostico::where('codigo', 'H522')->first();
 
         // verificamos que el registro exista y realizamos el conteo con el id
         if($astig){
@@ -209,7 +209,7 @@ class diagnosticoController extends Controller
         }
 
         // buscamos el registros de hipermetropia
-        $hiper = Diagnostico::where('codigo', 'H52.0')->first();
+        $hiper = Diagnostico::where('codigo', 'H520')->first();
         
         // verificamos que el registro exista y realizamos el conteo con el id
         if($hiper) {

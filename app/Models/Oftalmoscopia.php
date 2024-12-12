@@ -18,19 +18,19 @@ class Oftalmoscopia extends Model
         'refle_fovea_od',
         'papila_od',
         'excav_fisio_od',
-        'profundidad_od',
+        
         'vasos_od',
         'rela_arte_od',
-        'macula_od',
+        
         'reti_perif_od',
         'medi_refrin_os',
         'refle_fovea_os',
         'papila_os',
         'excav_fisio_os',
-        'profundidad_os',
+        
         'vasos_os',
         'rela_arte_os',
-        'macula_os',
+        
         'reti_perif_os'
     ];
 

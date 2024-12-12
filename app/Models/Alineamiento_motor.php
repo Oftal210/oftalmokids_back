@@ -14,12 +14,15 @@ class Alineamiento_motor extends Model
 
     protected $fillable = [
         'id_historia',
+        'angulo_kapa',
         'test_hirschberg',
         'test_bruckner',
         'covet_test_vl',
         'covet_test_vp',
-        'esta_acomo_flex',
-        'esta_acomo_aa'
+        'esta_acomo_flex_od',
+        'esta_acomo_flex_os',
+        'esta_acomo_aa_od',
+        'esta_acomo_aa_os',
     ];
 
     // Relacion de los datos en el modelo, un alineamiento motor tiene una historia clinica

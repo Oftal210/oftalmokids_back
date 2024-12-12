@@ -268,14 +268,17 @@ class preconsultaController extends Controller
         $query = Preconsulta::where('id_hijo', $hijo->id);
 
         if ($fechaInicio && $fechaFin) { 
-            // Filtrar por el rango de fechas 
-            $query->whereBetween('fecha_preconsulta', [$fechaInicio, $fechaFin]); 
+            // Filtrar por el rango de fechas, asegurando que incluya todo el día final
+            $query->whereBetween('fecha_preconsulta', [
+                $fechaInicio, 
+                Carbon::parse($fechaFin)->endOfDay()
+            ]); 
         } elseif ($fechaInicio) { 
-            // Filtrar por la fecha de inicio 
+            // Filtrar por la fecha de inicio
             $query->whereDate('fecha_preconsulta', $fechaInicio); 
         } elseif ($fechaFin) { 
-            // Filtrar por la fecha de fin 
-            $query->whereDate('fecha_preconsulta', $fechaFin); 
+            // Filtrar por la fecha de fin, asegurando que incluya todo el día final
+            $query->where('fecha_preconsulta', '<=', Carbon::parse($fechaFin)->endOfDay());
         } else { 
             // No se proporcionaron fechas, manejar según sea necesario 
             return response()->json([ 'mensaje' => 'No se proporcionaron fechas válidas', 

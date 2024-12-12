@@ -434,4 +434,34 @@ class diagnosticohistoriaclinicaController extends Controller
         return response()->json($data, 200);
     }
 
+
+    public function sacarFechaControlHijos(){
+        
+        // funcion con las fechas de los diagnosticos de los hijos
+        $subquery = Diagnostico_historia_clinica::select('id_hijo', DB::raw('MAX(fecha) as max_fecha')) 
+        ->groupBy('id_hijo'); 
+        $diagnosticos = Diagnostico_historia_clinica::joinSub($subquery, 'sub', function ($join) { $join->on('diagnostico_historia_clinica.id_hijo', '=', 'sub.id_hijo') 
+            ->on('diagnostico_historia_clinica.fecha', '=', 'sub.max_fecha'); 
+        })->select('diagnostico_historia_clinica.id_hijo', 'diagnostico_historia_clinica.control', 'diagnostico_historia_clinica.fecha')
+        ->orderBy('fecha', 'desc') 
+        ->get();
+
+        // Validamos si la variable con la data esta vacia
+        if ($diagnosticos->isEmpty()){
+            $data = [
+                'mensaje' => 'no hay controles',
+                'status' => 404
+            ];
+            return response()->json($data, 200);
+        }
+
+        // almacenamos todos los datos contados
+        $data = [
+            'datos' => $diagnosticos,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+    }
+
 }

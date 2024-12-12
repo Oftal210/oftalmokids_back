@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Version con la siguiente direccion
 use App\Models\Version;
@@ -37,7 +38,13 @@ class versionController extends Controller
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
             'historia_clinica'      => 'required',
-            'observacion_versiones' => 'required|string'
+            'observacion_versiones' => 'required|string',
+            'rsd_oii'               => 'string',
+            'rld_rmi'               => 'string',
+            'rid_osi'               => 'string',
+            'oid_rsi'               => 'string',
+            'rmd_rli'               => 'string',
+            'osd_rii'               => 'string',
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -54,6 +61,12 @@ class versionController extends Controller
         $version = Version::create([
             'id_historia'   => $request->historia_clinica,
             'observacion'   => $request->observacion_versiones,
+            'rsd_oii'       => $request->rsd_oii,
+            'rld_rmi'       => $request->rld_rmi,
+            'rid_osi'       => $request->rid_osi,
+            'oid_rsi'       => $request->oid_rsi,
+            'rmd_rli'       => $request->rmd_rli,
+            'osd_rii'       => $request->osd_rii,
         ]);
 
         // aqui validamos si se puedo crear la Version, en caso de que este vacia, no se deberia haber guardado
@@ -146,7 +159,13 @@ class versionController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'observacion_versiones' => 'sometimes|string'
+            'observacion_versiones' => 'sometimes|string',
+            'rsd_oii'               => 'sometimes|string',
+            'rld_rmi'               => 'sometimes|string',
+            'rid_osi'               => 'sometimes|string',
+            'oid_rsi'               => 'sometimes|string',
+            'rmd_rli'               => 'sometimes|string',
+            'osd_rii'               => 'sometimes|string',
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -217,7 +236,7 @@ class versionController extends Controller
 
 
     // funcion para traer los registros de Versiones mas recientes deacuerdo al id de la historia clinica
-    public function traerversionmasreciente($id){
+    public function traerversionmasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -230,9 +249,14 @@ class versionController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Version::where('id_historia', $id)
-                                   ->latest('created_at')->first();
+                                              ->whereDate('created_at', $fechaReset)
+                                              ->orderBy('created_at', 'desc')
+                                              ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -240,7 +264,7 @@ class versionController extends Controller
                 'mensaje' => 'no hay registros recientes con esta historia 2',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

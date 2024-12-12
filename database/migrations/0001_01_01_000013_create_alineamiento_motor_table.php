@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
 
             // Alineamiento motor
+            // resultado del test angulo kappa
+            $table->string('angulo_kapa', 150)->nullable(false);
+
             // resultado del test de hirschberg
             $table->string('test_hirschberg', 150)->nullable(false);
 
@@ -29,11 +32,17 @@ return new class extends Migration
             // resultado del covet test para vp (vision proxima)
             $table->string('covet_test_vp', 150)->nullable(false);
 
-            // resultado del estado acomodativo para flex
-            $table->string('esta_acomo_flex', 150)->nullable(false);
+            // resultado del estado acomodativo para flex OD
+            $table->string('esta_acomo_flex_od', 150)->nullable(false);
 
-            // resultado del estado acomodativo para aa
-            $table->string('esta_acomo_aa', 150)->nullable(false);
+            // resultado del estado acomodativo para flex OS
+            $table->string('esta_acomo_flex_os', 150)->nullable(false);
+
+            // resultado del estado acomodativo para aa OD
+            $table->string('esta_acomo_aa_od', 150)->nullable(false);
+
+            // resultado del estado acomodativo para aa OS
+            $table->string('esta_acomo_aa_os', 150)->nullable(false);
 
             // fechas de creacion y actualizacion
             $table->timestamps();

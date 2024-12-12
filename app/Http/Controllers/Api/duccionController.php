@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Duccion con la siguiente direccion
 use App\Models\Duccion;
@@ -238,7 +239,7 @@ class duccionController extends Controller
 
 
     // funcion para traer los registros de ducciones mas recientes deacuerdo al id de la historia clinica
-    public function traerduccionesmasreciente($id){
+    public function traerduccionesmasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -251,9 +252,14 @@ class duccionController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Duccion::where('id_historia', $id)
-                                   ->latest('created_at')->first();
+                                    ->whereDate('created_at', $fechaReset)
+                                    ->orderBy('created_at', 'desc')
+                                    ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -261,7 +267,7 @@ class duccionController extends Controller
                 'mensaje' => 'no hay registros recientes con esta historia',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

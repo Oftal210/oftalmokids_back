@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de alineamiento motor con la siguiente direccion
 use App\Models\Alineamiento_motor;
@@ -38,11 +39,14 @@ class alineamientomotorController extends Controller
         $validator = Validator::make($request->all(), [
             'historia_clinica'  =>'required',
             'hirschberg'        =>'required|string|max:150',
-            'bruckner'          =>'required|string|max:150', 
+            'bruckner'          =>'required|string|max:150',
+            'angulo_kapa'       =>'required|string|max:150',
             'covet_test_vl'     =>'required|string|max:150',
             'covet_test_vp'     =>'required|string|max:150',
-            'esta_acomo_flex'   =>'required|string|max:150',
-            'esta_acomo_aa'     =>'required|string|max:150'
+            'esta_acomo_flex_od'    =>'required|string|max:150',
+            'esta_acomo_flex_os'    =>'required|string|max:150',
+            'esta_acomo_aa_od'  =>'required|string|max:150',
+            'esta_acomo_aa_os'  =>'required|string|max:150',
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -60,10 +64,15 @@ class alineamientomotorController extends Controller
             'id_historia'       =>$request->historia_clinica,
             'test_hirschberg'   =>$request->hirschberg,
             'test_bruckner'     =>$request->bruckner,
+            'angulo_kapa'       =>$request->angulo_kapa,
             'covet_test_vl'     =>$request->covet_test_vl,
             'covet_test_vp'     =>$request->covet_test_vp,
-            'esta_acomo_flex'   =>$request->esta_acomo_flex,
-            'esta_acomo_aa'     =>$request->esta_acomo_aa
+              
+            'esta_acomo_flex_od'    =>$request->esta_acomo_flex_od,
+            'esta_acomo_flex_os'    =>$request->esta_acomo_flex_os,
+
+            'esta_acomo_aa_od'  =>$request->esta_acomo_aa_od,
+            'esta_acomo_aa_os'  =>$request->esta_acomo_aa_os,
         ]);
 
         // aqui validamos si se puedo crear el Alineamiento motor, en caso de que este vacia, no se deberia haber guardado
@@ -156,12 +165,15 @@ class alineamientomotorController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'hirschberg' =>'sometimes|string|max:150',
-            'bruckner' =>'sometimes|string|max:150', 
-            'covet_test_vl' =>'sometimes|string|max:150',
-            'covet_test_vp' =>'sometimes|string|max:150',
-            'esta_acomo_flex' =>'sometimes|string|max:150',
-            'esta_acomo_aa' =>'sometimes|string|max:150'
+            'hirschberg'        =>'sometimes|string|max:150',
+            'bruckner'          =>'sometimes|string|max:150',
+            'angulo_kapa'       =>'sometimes|string|max:150',
+            'covet_test_vl'     =>'sometimes|string|max:150',
+            'covet_test_vp'     =>'sometimes|string|max:150',
+            'esta_acomo_flex_od'    =>'sometimes|string|max:150',
+            'esta_acomo_flex_os'    =>'sometimes|string|max:150',
+            'esta_acomo_aa_od'  =>'sometimes|string|max:150',
+            'esta_acomo_aa_os'  =>'sometimes|string|max:150',
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -179,12 +191,15 @@ class alineamientomotorController extends Controller
 
         // Se Mapean los campos validados a los nombres correctos de la base de datos para que se coloquen donde deben
         $mappedData = [
-            'test_hirschberg' => $datosvalidados['hirschberg'] ?? $alineamimotor->test_hirschberg,
-            'test_bruckner'   => $datosvalidados['bruckner'] ?? $alineamimotor->test_bruckner,
-            'covet_test_vl'   => $datosvalidados['covet_test_vl'] ?? $alineamimotor->covet_test_vl,
-            'covet_test_vp' => $datosvalidados['covet_test_vp'] ?? $alineamimotor->covet_test_vp,
-            'esta_acomo_flex'  => $datosvalidados['esta_acomo_flex'] ?? $alineamimotor->esta_acomo_flex,
-            'esta_acomo_aa'  => $datosvalidados['esta_acomo_aa'] ?? $alineamimotor->esta_acomo_aa,
+            'test_hirschberg'   => $datosvalidados['hirschberg'] ?? $alineamimotor->test_hirschberg,
+            'test_bruckner'     => $datosvalidados['bruckner'] ?? $alineamimotor->test_bruckner,
+            'angulo_kapa'       => $datosvalidados['angulo_kapa'] ?? $alineamimotor->angulo_kapa,
+            'covet_test_vl'     => $datosvalidados['covet_test_vl'] ?? $alineamimotor->covet_test_vl,
+            'covet_test_vp'     => $datosvalidados['covet_test_vp'] ?? $alineamimotor->covet_test_vp,
+            'esta_acomo_flex_od'   => $datosvalidados['esta_acomo_flex_od'] ?? $alineamimotor->esta_acomo_flex_od,
+            'esta_acomo_flex_os'   => $datosvalidados['esta_acomo_flex_os'] ?? $alineamimotor->esta_acomo_flex_os,
+            'esta_acomo_aa_od'     => $datosvalidados['esta_acomo_aa_od'] ?? $alineamimotor->esta_acomo_aa_od,
+            'esta_acomo_aa_os'     => $datosvalidados['esta_acomo_aa_os'] ?? $alineamimotor->esta_acomo_aa_os,
         ];
 
         // Actualiza solo los campos proporcionados en la solicitud del mapeo para que contenga los nombres correctos de los atributos
@@ -236,7 +251,7 @@ class alineamientomotorController extends Controller
 
 
     // funcion para traer los registros de alineamiento motor mas recientes deacuerdo al id de la historia clinica
-    public function traeralineamientosmasreciente($id){
+    public function traeralineamientosmasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -249,9 +264,14 @@ class alineamientomotorController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Alineamiento_motor::where('id_historia', $id)
-                                              ->latest('created_at')->first();
+        ->whereDate('created_at', $fechaReset)
+        ->orderBy('created_at', 'desc')
+        ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -259,7 +279,7 @@ class alineamientomotorController extends Controller
                 'mensaje' => 'no hay registros',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

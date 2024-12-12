@@ -20,7 +20,7 @@ return new class extends Migration
             // resultado de Medios Refringentes para el ojo derecho
             $table->string('medi_refrin_od', 150)->nullable(false);
 
-            // resultado de Reflejo fovea para el ojo derecho
+            // resultado de Reflejo fovea para el ojo derecho (ESTE ATRIBUTO SE UNIO CON EL ANTIGUO "macula_od")
             $table->string('refle_fovea_od', 150)->nullable(false);
 
             // resultado de Papila para el ojo derecho
@@ -29,25 +29,21 @@ return new class extends Migration
             // resultado de Excavacion fisiologica para el ojo derecho
             $table->string('excav_fisio_od', 150)->nullable(false);
 
-            // resultado de Profundidad para el ojo derecho
-            $table->string('profundidad_od', 150)->nullable(false);
-
             // resultado de Vasos para el ojo derecho
             $table->string('vasos_od', 150)->nullable(false);
 
             // resultado de Relacion arteria-vena para el ojo derecho
             $table->string('rela_arte_od', 150)->nullable(false);
 
-            // resultado de Macula para el ojo derecho
-            $table->string('macula_od', 150)->nullable(false);
-
             // resultado de Retina periferica para el ojo derecho
             $table->string('reti_perif_od', 150)->nullable(false);
+
+
 
             // resultado de Medios Refringentes para el ojo izquierdo
             $table->string('medi_refrin_os', 150)->nullable(false);
 
-            // resultado de Reflejo fovea para el ojo izquierdo
+            // resultado de Reflejo fovea para el ojo izquierdo (ESTE ATRIBUTO SE UNIO CON EL ANTIGUO "macula_os")
             $table->string('refle_fovea_os', 150)->nullable(false);
 
             // resultado de Papila para el ojo izquierdo
@@ -56,17 +52,11 @@ return new class extends Migration
             // resultado de Excavacion fisiologica para el ojo izquierdo
             $table->string('excav_fisio_os', 150)->nullable(false);
 
-            // resultado de Profundidad para el ojo izquierdo
-            $table->string('profundidad_os', 150)->nullable(false);
-
             // resultado de Vasos para el ojo izquierdo
             $table->string('vasos_os', 150)->nullable(false);
 
             // resultado de Relacion arteria-vena para el ojo izquierdo
             $table->string('rela_arte_os', 150)->nullable(false);
-
-            // resultado de Macula para el ojo izquierdo
-            $table->string('macula_os', 150)->nullable(false);
 
             // resultado de Retina periferica para el ojo izquierdo
             $table->string('reti_perif_os', 150)->nullable(false);

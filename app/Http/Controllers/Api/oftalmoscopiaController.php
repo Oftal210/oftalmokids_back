@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 // Importamos el modelo de Oftalmoscopia con la siguiente direccion
 use App\Models\Oftalmoscopia;
@@ -41,19 +42,19 @@ class oftalmoscopiaController extends Controller
             'refle_fovea_od'    => 'required|string|max:150',
             'papila_od'         => 'required|string|max:150',
             'excav_fisio_od'    => 'required|string|max:150',
-            'profundidad_od'    => 'required|string|max:150',
+            
             'vasos_od'          => 'required|string|max:150',
             'rela_arte_od'      => 'required|string|max:150',
-            'macula_od'         => 'required|string|max:150',
+            
             'reti_perif_od'     => 'required|string|max:150',
             'medi_refrin_os'    => 'required|string|max:150',
             'refle_fovea_os'    => 'required|string|max:150',
             'papila_os'         => 'required|string|max:150',
             'excav_fisio_os'    => 'required|string|max:150',
-            'profundidad_os'    => 'required|string|max:150',
+            
             'vasos_os'          => 'required|string|max:150',
             'rela_arte_os'      => 'required|string|max:150',
-            'macula_os'         => 'required|string|max:150',
+            
             'reti_perif_os'     => 'required|string|max:150'
 
         ]);
@@ -75,19 +76,19 @@ class oftalmoscopiaController extends Controller
             'refle_fovea_od'    => $request->refle_fovea_od,
             'papila_od'         => $request->papila_od,
             'excav_fisio_od'    => $request->excav_fisio_od,
-            'profundidad_od'    => $request->profundidad_od,
+            
             'vasos_od'          => $request->vasos_od,
             'rela_arte_od'      => $request->rela_arte_od,
-            'macula_od'         => $request->macula_od,
+            
             'reti_perif_od'     => $request->reti_perif_od,
             'medi_refrin_os'    => $request->medi_refrin_os,
             'refle_fovea_os'    => $request->refle_fovea_os,
             'papila_os'         => $request->papila_os,
             'excav_fisio_os'    => $request->excav_fisio_os,
-            'profundidad_os'    => $request->profundidad_os,
+            
             'vasos_os'          => $request->vasos_os,
             'rela_arte_os'      => $request->rela_arte_os,
-            'macula_os'         => $request->macula_os,
+            
             'reti_perif_os'     => $request->reti_perif_os
         ]);
 
@@ -185,19 +186,19 @@ class oftalmoscopiaController extends Controller
             'refle_fovea_od'    => 'required|string|max:150',
             'papila_od'         => 'required|string|max:150',
             'excav_fisio_od'    => 'required|string|max:150',
-            'profundidad_od'    => 'required|string|max:150',
+            
             'vasos_od'          => 'required|string|max:150',
             'rela_arte_od'      => 'required|string|max:150',
-            'macula_od'         => 'required|string|max:150',
+            
             'reti_perif_od'     => 'required|string|max:150',
             'medi_refrin_os'    => 'required|string|max:150',
             'refle_fovea_os'    => 'required|string|max:150',
             'papila_os'         => 'required|string|max:150',
             'excav_fisio_os'    => 'required|string|max:150',
-            'profundidad_os'    => 'required|string|max:150',
+            
             'vasos_os'          => 'required|string|max:150',
             'rela_arte_os'      => 'required|string|max:150',
-            'macula_os'         => 'required|string|max:150',
+            
             'reti_perif_os'     => 'required|string|max:150'
         ]);
 
@@ -220,19 +221,19 @@ class oftalmoscopiaController extends Controller
             'refle_fovea_od'    => $datosvalidados['refle_fovea_od'] ?? $oftalmoscopia->refle_fovea_od,
             'papila_od'         => $datosvalidados['papila_od'] ?? $oftalmoscopia->papila_od,
             'excav_fisio_od'    => $datosvalidados['excav_fisio_od'] ?? $oftalmoscopia->excav_fisio_od,
-            'profundidad_od'    => $datosvalidados['profundidad_od'] ?? $oftalmoscopia->profundidad_od,
+            
             'vasos_od'          => $datosvalidados['vasos_od'] ?? $oftalmoscopia->vasos_od,
             'rela_arte_od'      => $datosvalidados['rela_arte_od'] ?? $oftalmoscopia->rela_arte_od,
-            'macula_od'         => $datosvalidados['macula_od'] ?? $oftalmoscopia->macula_od,
+            
             'reti_perif_od'     => $datosvalidados['reti_perif_od'] ?? $oftalmoscopia->reti_perif_od,
             'medi_refrin_os'    => $datosvalidados['medi_refrin_os'] ?? $oftalmoscopia->medi_refrin_os,
             'refle_fovea_os'    => $datosvalidados['refle_fovea_os'] ?? $oftalmoscopia->refle_fovea_os,
             'papila_os'         => $datosvalidados['papila_os'] ?? $oftalmoscopia->papila_os,
             'excav_fisio_os'    => $datosvalidados['excav_fisio_os'] ?? $oftalmoscopia->excav_fisio_os,
-            'profundidad_os'    => $datosvalidados['profundidad_os'] ?? $oftalmoscopia->profundidad_os,
+            
             'vasos_os'          => $datosvalidados['vasos_os'] ?? $oftalmoscopia->vasos_os,
             'rela_arte_os'      => $datosvalidados['rela_arte_os'] ?? $oftalmoscopia->rela_arte_os,
-            'macula_os'         => $datosvalidados['macula_os'] ?? $oftalmoscopia->macula_os,
+            
             'reti_perif_os'     => $datosvalidados['reti_perif_os'] ?? $oftalmoscopia->reti_perif_os,
         ];
 
@@ -286,7 +287,7 @@ class oftalmoscopiaController extends Controller
 
 
     // funcion para traer los registros de Oftalmoscopia mas recientes deacuerdo al id de la historia clinica
-    public function traeroftalmoscopiamasreciente($id){
+    public function traeroftalmoscopiamasreciente($id, $fecha){
         // Aqui se busca la historia clinica por la primaria que le estamos mandando como variable $id
         $historiaclinica = Historia_clinica::find($id);
 
@@ -299,9 +300,14 @@ class oftalmoscopiaController extends Controller
             return response()->json($data, 404);
         }
 
+        // formateamos la fecha
+        $fechaReset = Carbon::parse($fecha)->format('Y-m-d');
+
         // Buscamos dentro de la tabla la historia clinica mas reciente por id y fecha de insercion
         $registroreciente = Oftalmoscopia::where('id_historia', $id)
-                                         ->latest('created_at')->first();
+                                              ->whereDate('created_at', $fechaReset)
+                                              ->orderBy('created_at', 'desc')
+                                              ->first();
 
         // Validamos si la variable con la data esta vacia
         if (!$registroreciente){
@@ -309,7 +315,7 @@ class oftalmoscopiaController extends Controller
                 'mensaje' => 'no hay registros recientes con esta historia',
                 'status' => 404
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         // Retornamos los datos obtenidos anteriormente

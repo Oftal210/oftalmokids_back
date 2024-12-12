@@ -121,7 +121,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/agudezasxhistoria/{historia_clinica}', [agudezavisualController::class, 'traeragudezashistoriaclinica']);
 
     // Ruta API para traer el registro de agudeza visual mas reciente segun historia clinica
-    Route::get('/agudezavisualreciente/{historia_clinica}', [agudezavisualController::class, 'traeragudezasmasreciente']);
+    Route::get('/agudezavisualreciente/{historia_clinica}/{fecha}', [agudezavisualController::class, 'traeragudezasmasreciente']);
 
 
     // RUTAS A ALINEAMIENTO MOTOR
@@ -132,7 +132,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/alineamientoxhistoria/{historia_clinica}', [alineamientomotorController::class, 'traeralineamientoshistoriaclinica']);
 
     // Ruta API para traer el registro de alineamiento motor mas reciente segun historia clinica
-    Route::get('/alineamientoreciente/{historia_clinica}', [alineamientomotorController::class, 'traeralineamientosmasreciente']);
+    Route::get('/alineamientoreciente/{historia_clinica}/{fecha}', [alineamientomotorController::class, 'traeralineamientosmasreciente']);
 
 
     // RUTAS A DIAGNOSTICO X HISTORIA CLINICA
@@ -154,7 +154,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/duccionxhistoria/{historia_clinica}', [duccionController::class, 'traerduccioneshistoriaclinica']);
 
     // Ruta API para traer el registro de duccion mas reciente segun historia clinica
-    Route::get('/duccionreciente/{historia_clinica}', [duccionController::class, 'traerduccionesmasreciente']);
+    Route::get('/duccionreciente/{historia_clinica}/{fecha}', [duccionController::class, 'traerduccionesmasreciente']);
 
 
     // RUTAS A EXPLORACION DE EXTERNO
@@ -165,7 +165,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/exploracionxhistoria/{historia_clinica}', [exploracionexternoController::class, 'traerexploracioneshistoriaclinica']);
 
     // Ruta API para traer el registro de duccion mas reciente segun historia clinica
-    Route::get('/exploracionreciente/{historia_clinica}', [exploracionexternoController::class, 'traerexploracionmasreciente']);
+    Route::get('/exploracionreciente/{historia_clinica}/{fecha}', [exploracionexternoController::class, 'traerexploracionmasreciente']);
 
 
     // RUTAS A MOTALIDAD OCULAR
@@ -176,7 +176,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/motalidadxhistoria/{historia_clinica}', [motalidadocularController::class, 'traermotalidadeshistoriaclinica']);
 
     // Ruta API para traer el registro de motalidad ocular mas reciente segun historia clinica
-    Route::get('/motalidadxreciente/{historia_clinica}', [motalidadocularController::class, 'traermotalidadmasreciente']);
+    Route::get('/motalidadxreciente/{historia_clinica}/{fecha}', [motalidadocularController::class, 'traermotalidadmasreciente']);
 
 
     // RUTAS A OFTALMOSCOPIA
@@ -187,7 +187,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/oftalmoscopiaxhistoria/{historia_clinica}', [oftalmoscopiaController::class, 'traeroftalmoscopiashistoriaclinica']);
 
     // Ruta API para traer el registro de oftalmoscopia mas reciente segun historia clinica
-    Route::get('/oftalmoscopiaxreciente/{historia_clinica}', [oftalmoscopiaController::class, 'traeroftalmoscopiamasreciente']);
+    Route::get('/oftalmoscopiaxreciente/{historia_clinica}/{fecha}', [oftalmoscopiaController::class, 'traeroftalmoscopiamasreciente']);
 
 
     // RUTAS A RETINOSCOPIA
@@ -198,7 +198,7 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/retinoscopiaxhistoria/{historia_clinica}', [retinoscopiaController::class, 'traerretinoscopiashistoriaclinica']);
 
     // Ruta API para traer el registro de Retinoscopia mas reciente segun historia clinica
-    Route::get('/retinoscopiareciente/{historia_clinica}', [retinoscopiaController::class, 'traerretinoscopiamasreciente']);
+    Route::get('/retinoscopiareciente/{historia_clinica}/{fecha}', [retinoscopiaController::class, 'traerretinoscopiamasreciente']);
 
 
     // RUTAS A VERSION
@@ -209,12 +209,12 @@ Route::middleware(['auth:api', 'rol:1,2'])->group(function () {
     Route::get('/versionxhistoria/{historia_clinica}', [versionController::class, 'traerversioneshistoriaclinica']);
 
     // Ruta API para traer el registro de Versiones mas reciente segun historia clinica
-    Route::get('/versionreciente/{historia_clinica}', [versionController::class, 'traerversionmasreciente']);
+    Route::get('/versionreciente/{historia_clinica}/{fecha}', [versionController::class, 'traerversionmasreciente']);
 
 
     // RUTAS A ANTECEDENTES VISUALES
     // Ruta API para llamar a un Antecedente visual especifco de una historia especifica
-    Route::get('/antevisureciente/{cod_historia}', [antecedentevisualController::class, 'traerantevisualmasreciente']);
+    Route::get('/antevisureciente/{cod_historia}/{fecha}', [antecedentevisualController::class, 'traerantevisualmasreciente']);
 
 
     //RUTAS A DIAGNOSTICO
@@ -436,6 +436,9 @@ Route::middleware(['auth:api', 'rol:1'])->group(function () {
 
     // Ruta API para traer estadistica de datos de diagnostico y edad
     Route::get('/diagxedad', [diagnosticohistoriaclinicaController::class, 'sacarEdadesDiagnosticos']);
+
+    // Ruta API para llamar a los controles de los diagnosticos de todos los hijos
+    Route::get('/fechasdiaghijos', [diagnosticohistoriaclinicaController::class, 'sacarFechaControlHijos']);
 });
 
     

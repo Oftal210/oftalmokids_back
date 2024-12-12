@@ -20,6 +20,24 @@ return new class extends Migration
             // observaciones para la seccion de versiones de la historia clinica
             $table->text('observacion')->nullable(false);
 
+            // datos de versiones RSD OII (SUPERIOR IZQUIERDO)
+            $table->string('rsd_oii')->nullable();
+
+            // datos de versiones RLD RMI (MEDIO IZQUIERDO)
+            $table->string('rld_rmi')->nullable();
+
+            // datos de versiones RID OSI (INFERIRO IZQUIERDO)
+            $table->string('rid_osi')->nullable();
+
+            // datos de versiones OID RSI (SUPERIOR DERECHO)
+            $table->string('oid_rsi')->nullable();
+
+            // datos de versiones RMD RLI (MEDIO DERECHO)
+            $table->string('rmd_rli')->nullable();
+
+            // datos de versiones OSD RII (INFERIOR DERECHO)
+            $table->string('osd_rii')->nullable();
+
             // fechas de creacion y actualizacion
             $table->timestamps();
             
