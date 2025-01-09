@@ -101,13 +101,14 @@ class usuarioController extends Controller
 
         // aqui se validan los datos que llegan en la variable $request segunda haga falta
         $validator = Validator::make($request->all(), [
-            'documento' => 'required|string',
-            'rol'       => 'required',
-            'nombre'    => 'required|string|max:50',
-            'apellido'  => 'required|string|max:50',
-            'email'     => 'required|email|max:50',
-            'telefono'  => 'required|string|max:13',
-            'password'  => 'required|string|max:255'
+            'documento'     => 'required|string',
+            'tipodocumento' => 'required|string',
+            'rol'           => 'required',
+            'nombre'        => 'required|string|max:50',
+            'apellido'      => 'required|string|max:50',
+            'email'         => 'required|email|max:50',
+            'telefono'      => 'required|string|max:13',
+            'password'      => 'required|string|max:255'
         ]);
 
         // aqui se mandan los datos que quedaron mal segun la validacion
@@ -122,13 +123,14 @@ class usuarioController extends Controller
 
         // aqui intentamos crear un Usuario validando que los datos que vamos a agregar existan
         $usuario = User::create([
-            'documento'     => $request->documento,
-            'id_rol'        => 2,
-            'nombre'        => $request->nombre,
-            'apellido'      => $request->apellido,
-            'email'         => $request->email,
-            'telefono'      => $request->telefono,
-            'contrasena'    => Hash::make($request->password)
+            'documento'         => $request->documento,
+            'tipo_documento'    => $request->tipodocumento,
+            'id_rol'            => 2,
+            'nombre'            => $request->nombre,
+            'apellido'          => $request->apellido,
+            'email'             => $request->email,
+            'telefono'          => $request->telefono,
+            'contrasena'        => Hash::make($request->password)
         ]);
 
         // aqui validamos si se puedo crear el Usuario, en caso de que este vacia, no se deberia haber guardado

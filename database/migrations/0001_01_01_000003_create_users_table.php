@@ -17,6 +17,9 @@ return new class extends Migration
             // Identificador para el usuario (se espera el numero de la C.C.)
             $table->string('documento')->unique();
 
+            // tipo de documento del hijo
+            $table->string('tipo_documento', 50)->nullable(false);
+
             // Contraseña del usuario
             $table->string('contrasena', 255)->nullable(false);
 
